@@ -13,7 +13,7 @@
 //follows, pin 1 is GND, pin 2 is 5V, pin 3 to pin 4 on arduino, pin 4 to pin 3 on arduino, pin 5 to pin 2 on arduino. We found that the button we have installed next to the encoder-//
 //on the panel seems to not have a use at this time.
 #define ENCODER_DO_NOT_USE_INTERRUPTS
-#define PIN_ENABLE_FEED 27 // this is the enable for the feed stepper motor, make sure is installed, labeled as th EN slot on the driver, and has a brown wire in our case with our wiring harness. 
+#define PIN_ENABLE_FEED 23 // this is the enable for the feed stepper motor, make sure is installed, labeled as th EN slot on the driver, and has a brown wire in our case with our wiring harness. 
 #define PIN_SENSOR A8 // Hall effect sensor for determining position of cutter (RED wire to 5V, BLACK wire to GND, BLUE wire to A8)
 #define WIRE_QUANT_MIN 1
 #define WIRE_QUANT_MAX 100
@@ -24,12 +24,34 @@
 Adafruit_CharacterOLED lcd(OLED_V2, 6, 7, 8, 9, 10, 11, 12); //from the back of the screen, from left to right, the pins are as follows, pin 1 goes to GND, pin 2 to 5v, pin 3 to pin 12 arduino,- 
 //- pin4 to pin 11 arduino, pin 5 to pin 10 arduino, pin 6 to pin 9 arduino, pin 7&8&9&10 unused. pin 11 to pin 8 arduino, pin 12 to pin 7 arduino, pin 13 to pin 6 arduino, pin 14 unused, pin 15 to 5v, pin 16 to GND 
 
-AccelStepper stepCut(1, 43, 35); // (DRIVER, STEP, DIR)//the "1" after stepCut indicates the use of a motor driver module, pins to the arduino are as follows, 5V to 5V, step to arduino pin 41, dir to arduino pin 35, we dont have a current resistor and is set to OPEN. 
-// for the stepper motor to the driver for the cutter on the larger motor driver, red to a, blue to a-, green to b, black to b-,  
 
-AccelStepper stepFeed(1, 15, 14); // (DRIVER Type, step, dir) pinouts are as follows, DIR (Blue) to pin 14 on arduino, STEP (grey) to arduino pin 15, EN aka engage (brown) to arduino pin 21, COMM (yellow) to 5v, GND (black) to 24V GND, V+ (red) to 24V+. 
-//3 wires are unused: TXD(green), RXD(black), CHOP (white).  
-// for the stepper motor to the driver for the feeder, blue to b2, red to b1, green to a2, black to a1     https://www.omc-stepperonline.com/nema-17-bipolar-59ncm-84oz-in-2a-42x48mm-4-wires-w-1m-cable-and-connector.html?search=17hs19-2004s1//
+// (DRIVER, STEP, DIR)
+// "1" after stepCut indicates the use of a motor driver module
+// pins to the arduino are as follows
+// -- 5V to 5V
+// -- step to arduino pin 43
+// -- dir to arduino pin 35, 
+// -- current resistor and is set to OPEN. 
+// stepper motor to the driver for the cutter on the larger motor driver
+// -- red to a, blue to a-
+// -- green to b, black to b-,  
+
+
+AccelStepper stepCut(1, 43, 35); 
+
+// (DRIVER Type, step, dir) pinouts are as follows
+// -- DIR (Blue) to pin 27 on arduino
+// -- STEP (grey) to arduino pin 25
+// -- EN aka engage (brown) to arduino pin 23
+// -- COMM (yellow) to 5v ardiono pin 21
+// -- GND (black) to 24V GND
+// -- V+ (red) to 24V+. 
+// -- 3 wires are unused: TXD(green), RXD(black), CHOP (white).
+// Stepper motor to the driver for the feeder
+// -- blue to b2, red to b1
+// -- green to a2, black to a1     https://www.omc-stepperonline.com/nema-17-bipolar-59ncm-84oz-in-2a-42x48mm-4-wires-w-1m-cable-and-connector.html?search=17hs19-2004s1//
+
+AccelStepper stepFeed(1, 25, 27);  
 
 Encoder encoder(PIN_ENC_A, PIN_ENC_B); 
 Bounce buttonOK = Bounce();
