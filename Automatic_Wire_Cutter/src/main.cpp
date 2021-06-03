@@ -110,6 +110,37 @@ MCUFRIEND_kbv tft;
 // Last parameter is X-Y resistance, measure or use 300 if unsure
 TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
 
+void showTouch() {// diagnostic method to display touch locations on screen
+
+  // with the reset button at the top of the board, the touches
+  //are oriented with the x,y origin in the LOWER LEFT CORNER
+  if (millis() - lastTouch > tThresh) { // if it's been long enough since last touch
+    TSPoint p = ts.getPoint(); // get the screen touch
+
+    if ((p.z > MINPRESSURE && p.z < MAXPRESSURE)) { // if it's a valid touch
+      pinMode(YP, OUTPUT);  //restore the TFT control pins
+      pinMode(XM, OUTPUT);// for display after detecting a touch
+     // tft.fillScreen(BLUE);
+      tft.fillRect(70, 80, 100, 30, WHITE);// erase previously displayed coordinates
+      tft.setTextSize(2);
+      tft.setTextColor(BLACK);
+      tft.setCursor(80, 85);// top left corner of text
+      tft.print(p.x);
+      tft.print(",");
+      tft.print(p.y);
+      // ***remember TOUCH coordinates are not the same as DISPLAY COORDINATES
+      if (abs(p.x - 236) < 70 && abs(p.y - 117 < 20)) {// menu button
+        Serial.println("menu press");
+      }
+    }
+
+    lastTouch = millis();// reset lastTouch for the next touch event
+  }
+}
+
+
+
+
 void setup(void) {
 
   Serial.begin(9600);
@@ -264,30 +295,3 @@ void loop(void) {
 
 }
 
-void showTouch() {// diagnostic method to display touch locations on screen
-
-  // with the reset button at the top of the board, the touches
-  //are oriented with the x,y origin in the LOWER LEFT CORNER
-  if (millis() - lastTouch > tThresh) { // if it's been long enough since last touch
-    TSPoint p = ts.getPoint(); // get the screen touch
-
-    if ((p.z > MINPRESSURE && p.z < MAXPRESSURE)) { // if it's a valid touch
-      pinMode(YP, OUTPUT);  //restore the TFT control pins
-      pinMode(XM, OUTPUT);// for display after detecting a touch
-     // tft.fillScreen(BLUE);
-      tft.fillRect(70, 80, 100, 30, WHITE);// erase previously displayed coordinates
-      tft.setTextSize(2);
-      tft.setTextColor(BLACK);
-      tft.setCursor(80, 85);// top left corner of text
-      tft.print(p.x);
-      tft.print(",");
-      tft.print(p.y);
-      // ***remember TOUCH coordinates are not the same as DISPLAY COORDINATES
-      if (abs(p.x - 236) < 70 && abs(p.y - 117 < 20)) {// menu button
-        Serial.println("menu press");
-      }
-    }
-
-    lastTouch = millis();// reset lastTouch for the next touch event
-  }
-}
