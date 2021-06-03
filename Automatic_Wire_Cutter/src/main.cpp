@@ -57,8 +57,8 @@
 #define ILI9341_PINK        0xF81F
 
 /******************* UI details */
-#define BUTTON_X 52
-#define BUTTON_Y 150
+#define BUTTON_X 250
+#define BUTTON_Y 70
 #define BUTTON_W 80
 #define BUTTON_H 45
 #define BUTTON_SPACING_X 26
@@ -161,14 +161,14 @@ void setup(void) {
   // Setup the Display
   tft.begin(identifier);
   Serial.print("TFT size is "); Serial.print(tft.width()); Serial.print("x"); Serial.println(tft.height());
-  tft.setRotation(0);
+  tft.setRotation(3);
   tft.fillScreen(BLACK);
 
   // Draw buttons
   for (uint8_t row = 0; row < 3; row++) {
     for (uint8_t col = 0; col < 3; col++) {
-      buttons[col + row * 3].initButton(&tft, BUTTON_X + col * (BUTTON_W + BUTTON_SPACING_X),
-                                        BUTTON_Y + row * (BUTTON_H + BUTTON_SPACING_Y), // x, y, w, h, outline, fill, text
+      buttons[col + row * 3].initButton(&tft, BUTTON_Y + col * (BUTTON_W + BUTTON_SPACING_Y),
+                                        BUTTON_X + row * (BUTTON_H + BUTTON_SPACING_X), // x, y, w, h, outline, fill, text
                                         BUTTON_W, BUTTON_H, ILI9341_WHITE, buttoncolors[col + row * 3], ILI9341_WHITE,
                                         buttonlabels[col + row * 3], BUTTON_TEXTSIZE);
       buttons[col + row * 3].drawButton();
