@@ -103,6 +103,13 @@ Adafruit_GFX_Button buttons[3];
 char buttonlabels[3][5] = {"R", "G", "B"};
 uint16_t buttoncolors[6] = {ILI9341_RED, ILI9341_GREEN, ILI9341_BLUE};
 
+//For Show Touch
+String msg = ""; // message string to build from keyboard app
+long lastTouch = millis();// last touch time for minimum delay between touches
+long tThresh = 200;// minimum time between touches
+int mode = 0;// current display function - starts with 0 - menu screen
+int tMode = 0;// the current touch mode - starts with 0 - menu screen
+
 // Define object for TFT (LCD)display
 MCUFRIEND_kbv tft;
 
