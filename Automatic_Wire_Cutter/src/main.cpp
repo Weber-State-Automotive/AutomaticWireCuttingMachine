@@ -237,7 +237,7 @@ void loop(void) {
     p.x = p.x + p.y;
     p.y = p.x - p.y;
     p.x = p.x - p.y;
-    p.x = map(p.x, TS_MINX, TS_MAXX, tft.width(), 0);
+    p.x = map(p.y, TS_MINY, TS_MAXY, tft.width(), 0);
     p.y = tft.height() - (map(p.y, TS_MINY, TS_MAXY, tft.height(), 0));
 
   }
