@@ -75,7 +75,7 @@ Adafruit_GFX_Button buttons[3];
 
 // Define arrays with button text and colors
 char buttonlabels[3][5] = {"R", "G", "B"};
-uint16_t buttoncolors[6] = {ILI9341_RED, ILI9341_GREEN, ILI9341_BLUE};
+uint16_t buttoncolors[6] = {RED, GREEN, BLUE};
 
 // Define object for TFT (LCD)display
 MCUFRIEND_kbv tft;
@@ -110,7 +110,7 @@ void setup(void) {
       buttons[col + row * 3].initButton(&tft, 
                                         x_coord,
                                         y_coord, // x, y, w, h, outline, fill, text
-                                        BUTTON_W, BUTTON_H, ILI9341_WHITE, buttoncolors[col + row * 3], ILI9341_WHITE,
+                                        BUTTON_W, BUTTON_H, WHITE, buttoncolors[col + row * 3], WHITE,
                                         buttonlabels[col + row * 3], BUTTON_TEXTSIZE);
       buttons[col + row * 3].drawButton();
       Serial.print("XCoord: ");
