@@ -36,8 +36,8 @@
 #define WHITE   0xFFFF
 
 /******************* UI details */
-#define BUTTON_X 300
-#define BUTTON_Y 155
+#define BUTTON_X 100
+#define BUTTON_Y 200
 #define BUTTON_W 80
 #define BUTTON_H 45
 #define BUTTON_SPACING_X 26
@@ -104,28 +104,27 @@ void setup(void) {
   tft.fillScreen(BLACK);
 
   // Draw buttons
-  for (uint8_t row = 0; row < 1; row++) {
-    for (uint8_t col = 0; col < 3; col++) {
+  for (uint8_t col = 0; col < 3; col++) {
 
-      int x_coord = BUTTON_Y + col * (BUTTON_W + BUTTON_SPACING_Y);
-      int y_coord = BUTTON_X + row * (BUTTON_H + BUTTON_SPACING_X);
-      buttons[col + row * 3].initButton(&tft, 
+      int x_coord = BUTTON_X + col * (BUTTON_W + BUTTON_SPACING_Y);;
+      int y_coord = BUTTON_Y;
+      buttons[col].initButton(&tft, 
                                         x_coord,
                                         y_coord, // x, y, w, h, outline, fill, text
                                         BUTTON_W, 
                                         BUTTON_H, 
                                         WHITE, 
-                                        buttoncolors[col + row * 3], 
+                                        buttoncolors[col], 
                                         WHITE,
-                                        buttonlabels[col + row * 3], 
+                                        buttonlabels[col], 
                                         BUTTON_TEXTSIZE);
-      buttons[col + row * 3].drawButton();
+      buttons[col].drawButton();
       Serial.print("XCoord: ");
       Serial.println(x_coord);
       Serial.print("YCoord: ");
       Serial.println(y_coord);
 
-    }
+    
   }
 
 }
