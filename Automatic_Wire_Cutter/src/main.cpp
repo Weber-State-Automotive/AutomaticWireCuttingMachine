@@ -112,8 +112,13 @@ void setup(void) {
       buttons[col + row * 3].initButton(&tft, 
                                         x_coord,
                                         y_coord, // x, y, w, h, outline, fill, text
-                                        BUTTON_W, BUTTON_H, WHITE, buttoncolors[col + row * 3], WHITE,
-                                        buttonlabels[col + row * 3], BUTTON_TEXTSIZE);
+                                        BUTTON_W, 
+                                        BUTTON_H, 
+                                        WHITE, 
+                                        buttoncolors[col + row * 3], 
+                                        WHITE,
+                                        buttonlabels[col + row * 3], 
+                                        BUTTON_TEXTSIZE);
       buttons[col + row * 3].drawButton();
       Serial.print("XCoord: ");
       Serial.println(x_coord);
@@ -142,26 +147,37 @@ void loop(void) {
   if (p.z > MINPRESSURE && p.z < MAXPRESSURE)
   {
 
+    Serial.print("p.x= ");
+    Serial.println(p.x);
+    Serial.println("");
+    
     Serial.print("p.y= ");
     Serial.println(p.y);
+    Serial.println("");
 
     p.x = p.x + p.y;
     p.y = p.x - p.y;
     p.x = p.x - p.y;
 
-  
+    Serial.print("Calcp.x= ");
+    Serial.println(p.x);
+    Serial.println("");
+
     Serial.print("Calcp.y= ");
     Serial.println(p.y);
+    Serial.println("");
 
 
     p.x = map(p.x, TS_MINX, TS_MAXX, tft.height(),0);
     p.y = map(p.y, TS_MINY, TS_MAXY, tft.width(),0);
 
-    Serial.print("X= ");
+    Serial.print("Final p.x= ");
     Serial.println(p.x);
+    Serial.println("");
     
-    Serial.print("Y= ");
+    Serial.print("Final p.y= ");
     Serial.println(p.y);
+    Serial.println("");
 
   }
 
@@ -204,7 +220,7 @@ void loop(void) {
       buttons[b].drawButton(true);  // draw invert!
 
 
-      delay(100); // UI debouncing
+      delay(200); // UI debouncing
     }
   }
 
