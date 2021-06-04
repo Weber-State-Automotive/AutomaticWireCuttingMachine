@@ -90,16 +90,11 @@ TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
 void setup(void) {
 
   Serial.begin(9600);
-  Serial.println(F("TFT LCD test"));
-
-
-
   tft.reset();
 
   // Setup the Display
   uint16_t identifier = 0x9486;
   tft.begin(identifier);
-  Serial.print("TFT size is "); Serial.print(tft.height()); Serial.print("x"); Serial.println(tft.width());
   tft.setRotation(3);
   tft.fillScreen(BLACK);
 
@@ -119,12 +114,6 @@ void setup(void) {
                                         buttonlabels[col], 
                                         BUTTON_TEXTSIZE);
       buttons[col].drawButton();
-      Serial.print("XCoord: ");
-      Serial.println(x_coord);
-      Serial.print("YCoord: ");
-      Serial.println(y_coord);
-
-    
   }
 
 }
@@ -139,44 +128,15 @@ void loop(void) {
   pinMode(XM, OUTPUT);
   pinMode(YP, OUTPUT);
 
-
   // There is a minimum pressure that is consider valid
   // Pressure of 0 means no pressing
-
   if (p.z > MINPRESSURE && p.z < MAXPRESSURE)
   {
-
-    Serial.print("p.x= ");
-    Serial.println(p.x);
-    Serial.println("");
-    
-    Serial.print("p.y= ");
-    Serial.println(p.y);
-    Serial.println("");
-
     p.x = p.x + p.y;
     p.y = p.x - p.y;
     p.x = p.x - p.y;
-
-    Serial.print("Calcp.x= ");
-    Serial.println(p.x);
-    Serial.println("");
-
-    Serial.print("Calcp.y= ");
-    Serial.println(p.y);
-    Serial.println("");
-
-
     p.x = map(p.x, TS_MINX, TS_MAXX, tft.height(),0);
     p.y = map(p.y, TS_MINY, TS_MAXY, tft.width(),0);
-
-    Serial.print("Final p.x= ");
-    Serial.println(p.x);
-    Serial.println("");
-    
-    Serial.print("Final p.y= ");
-    Serial.println(p.y);
-    Serial.println("");
 
   }
 
@@ -184,7 +144,6 @@ void loop(void) {
   for (uint8_t b = 0; b < 3; b++) {
     if ((buttons[b].contains(p.y, p.x)) && p.x > 10)
     {
-      Serial.print("Pressing: "); Serial.println(b);
       buttons[b].press(true);  // tell the button it is pressed
 
       //Button has been pressed
@@ -201,7 +160,6 @@ void loop(void) {
         BLU_state = !BLU_state;
       }
 
-      
 
     } else {
       buttons[b].press(false);  // tell the button it is NOT pressed
@@ -211,13 +169,11 @@ void loop(void) {
   // now we can ask the buttons if their state has changed
   for (uint8_t b = 0; b < 3; b++) {
     if (buttons[b].justReleased()) {
-      Serial.print("Released: "); Serial.println(b);
       buttons[b].drawButton();  // draw normal
     }
 
     if (buttons[b].justPressed()) {
       buttons[b].drawButton(true);  // draw invert!
-
 
       delay(200); // UI debouncing
     }
