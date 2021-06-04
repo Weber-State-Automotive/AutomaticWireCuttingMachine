@@ -57,8 +57,8 @@
 #define ILI9341_PINK        0xF81F
 
 /******************* UI details */
-#define BUTTON_X 250
-#define BUTTON_Y 70
+#define BUTTON_X 300
+#define BUTTON_Y 155
 #define BUTTON_W 80
 #define BUTTON_H 45
 #define BUTTON_SPACING_X 26
@@ -103,13 +103,6 @@ Adafruit_GFX_Button buttons[3];
 char buttonlabels[3][5] = {"R", "G", "B"};
 uint16_t buttoncolors[6] = {ILI9341_RED, ILI9341_GREEN, ILI9341_BLUE};
 
-//For Show Touch
-String msg = ""; // message string to build from keyboard app
-long lastTouch = millis();// last touch time for minimum delay between touches
-long tThresh = 200;// minimum time between touches
-int mode = 0;// current display function - starts with 0 - menu screen
-int tMode = 0;// the current touch mode - starts with 0 - menu screen
-
 // Define object for TFT (LCD)display
 MCUFRIEND_kbv tft;
 
@@ -117,33 +110,6 @@ MCUFRIEND_kbv tft;
 // Last parameter is X-Y resistance, measure or use 300 if unsure
 TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
 
-void showTouch() {// diagnostic method to display touch locations on screen
-
-  // with the reset button at the top of the board, the touches
-  //are oriented with the x,y origin in the LOWER LEFT CORNER
-  if (millis() - lastTouch > tThresh) { // if it's been long enough since last touch
-    TSPoint p = ts.getPoint(); // get the screen touch
-
-    if ((p.z > MINPRESSURE && p.z < MAXPRESSURE)) { // if it's a valid touch
-      pinMode(YP, OUTPUT);  //restore the TFT control pins
-      pinMode(XM, OUTPUT);// for display after detecting a touch
-     // tft.fillScreen(BLUE);
-      tft.fillRect(70, 80, 100, 30, WHITE);// erase previously displayed coordinates
-      tft.setTextSize(2);
-      tft.setTextColor(BLACK);
-      tft.setCursor(80, 85);// top left corner of text
-      tft.print(p.x);
-      tft.print(",");
-      tft.print(p.y);
-      // ***remember TOUCH coordinates are not the same as DISPLAY COORDINATES
-      if (abs(p.x - 236) < 70 && abs(p.y - 117 < 20)) {// menu button
-        Serial.println("menu press");
-      }
-    }
-
-    lastTouch = millis();// reset lastTouch for the next touch event
-  }
-}
 
 
 
@@ -198,26 +164,33 @@ void setup(void) {
 
   // Setup the Display
   tft.begin(identifier);
-  Serial.print("TFT size is "); Serial.print(tft.width()); Serial.print("x"); Serial.println(tft.height());
+  Serial.print("TFT size is "); Serial.print(tft.height()); Serial.print("x"); Serial.println(tft.width());
   tft.setRotation(3);
   tft.fillScreen(BLACK);
 
   // Draw buttons
-  for (uint8_t row = 0; row < 3; row++) {
+  for (uint8_t row = 0; row < 1; row++) {
     for (uint8_t col = 0; col < 3; col++) {
-      buttons[col + row * 3].initButton(&tft, BUTTON_Y + col * (BUTTON_W + BUTTON_SPACING_Y),
-                                        BUTTON_X + row * (BUTTON_H + BUTTON_SPACING_X), // x, y, w, h, outline, fill, text
+
+      int x_coord = BUTTON_Y + col * (BUTTON_W + BUTTON_SPACING_Y);
+      int y_coord = BUTTON_X + row * (BUTTON_H + BUTTON_SPACING_X);
+      buttons[col + row * 3].initButton(&tft, 
+                                        x_coord,
+                                        y_coord, // x, y, w, h, outline, fill, text
                                         BUTTON_W, BUTTON_H, ILI9341_WHITE, buttoncolors[col + row * 3], ILI9341_WHITE,
                                         buttonlabels[col + row * 3], BUTTON_TEXTSIZE);
       buttons[col + row * 3].drawButton();
+      Serial.print("XCoord: ");
+      Serial.println(x_coord);
+      Serial.print("YCoord: ");
+      Serial.println(y_coord);
+
     }
   }
 
 }
 
 void loop(void) {
-
-  showTouch();
 
   digitalWrite(13, HIGH);
   TSPoint p = ts.getPoint();
@@ -234,11 +207,26 @@ void loop(void) {
   if (p.z > MINPRESSURE && p.z < MAXPRESSURE)
   {
 
+    Serial.print("p.y= ");
+    Serial.println(p.y);
+
     p.x = p.x + p.y;
     p.y = p.x - p.y;
     p.x = p.x - p.y;
-    p.x = map(p.y, TS_MINY, TS_MAXY, tft.width(), 0);
-    p.y = tft.height() - (map(p.y, TS_MINY, TS_MAXY, tft.height(), 0));
+
+  
+    Serial.print("Calcp.y= ");
+    Serial.println(p.y);
+
+
+    p.x = map(p.x, TS_MINX, TS_MAXX, tft.height(),0);
+    p.y = map(p.y, TS_MINY, TS_MAXY, tft.width(),0);
+
+    Serial.print("X= ");
+    Serial.println(p.x);
+    
+    Serial.print("Y= ");
+    Serial.println(p.y);
 
   }
 
