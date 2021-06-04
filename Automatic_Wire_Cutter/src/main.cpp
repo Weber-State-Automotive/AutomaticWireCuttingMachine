@@ -106,7 +106,7 @@ void setup(void) {
   // Draw buttons
   for (uint8_t col = 0; col < 3; col++) {
 
-      int x_coord = BUTTON_X + col * (BUTTON_W + BUTTON_SPACING_Y);;
+      int x_coord = BUTTON_X + col * (BUTTON_W + BUTTON_SPACING_Y);
       int y_coord = BUTTON_Y;
       buttons[col].initButton(&tft, 
                                         x_coord,
