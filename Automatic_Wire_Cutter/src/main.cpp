@@ -65,10 +65,12 @@
 #define STATUS_X 10
 #define STATUS_Y 65
 
-//Define LED outputs
-#define RED_LED 51
-#define GRN_LED 49
-#define BLU_LED 47
+//Define button states
+
+
+boolean RED_state = 0;
+boolean GRN_state = 0;
+boolean BLU_state = 0;
 
 // Define button array object
 Adafruit_GFX_Button buttons[3];
@@ -184,22 +186,7 @@ void loop(void) {
         BLU_state = !BLU_state;
       }
 
-      // Button Display
-      if (RED_state == 1) {
-        digitalWrite(RED_LED, HIGH);
-      } else {
-        digitalWrite(RED_LED, LOW);
-      }
-      if (GRN_state == 1) {
-        digitalWrite(GRN_LED, HIGH);
-      } else {
-        digitalWrite(GRN_LED, LOW);
-      }
-      if (BLU_state == 1) {
-        digitalWrite(BLU_LED, HIGH);
-      } else {
-        digitalWrite(BLU_LED, LOW);
-      }
+      
 
     } else {
       buttons[b].press(false);  // tell the button it is NOT pressed
