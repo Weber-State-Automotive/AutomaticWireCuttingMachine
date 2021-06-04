@@ -182,7 +182,7 @@ void loop(void) {
 
   // Go thru all the buttons, checking if they were pressed
   for (uint8_t b = 0; b < 3; b++) {
-    if ((buttons[b].contains(p.x, p.y)) && p.x > 10)
+    if ((buttons[b].contains(p.y, p.x)) && p.x > 10)
     {
       Serial.print("Pressing: "); Serial.println(b);
       buttons[b].press(true);  // tell the button it is pressed
