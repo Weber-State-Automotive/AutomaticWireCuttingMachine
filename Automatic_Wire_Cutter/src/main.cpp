@@ -128,6 +128,7 @@ int bladeCycleState = 0;
 int sensorVal = 0;
 
 void setBlade(char bladePos){
+  Serial.println('settingBlade');
   switch (bladePos){
     case 'H': // home
       while (!isHomed){
@@ -136,6 +137,7 @@ void setBlade(char bladePos){
         if (curTime - lastTime > 100){
           lastTime = curTime;
           sensorVal = analogRead(PIN_SENSOR);
+          Serial.println(PIN_SENSOR);
           if (sensorVal > 60){  //change me to adjust the home 
             targetPos -= 20; //this is how fast and accurate i find home (which is a closed cutter with no gaps)
             stepCut.moveTo(targetPos);
