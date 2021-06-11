@@ -12,8 +12,6 @@
 #include <TouchScreen.h> // Touchscreen Library
 #include <MCUFRIEND_kbv.h> // Touchscreen Hardware-specific library
 #include <AccelStepper.h>
-#include <Bounce2.h>
-#include <Encoder.h>
 
 #define LCD_CS A3 // Chip Select goes to Analog 3
 #define LCD_CD A2 // Command/Data goes to Analog 2
@@ -80,12 +78,6 @@ MCUFRIEND_kbv tft;
 // Define object for touchscreen
 // Last parameter is X-Y resistance, measure or use 300 if unsure
 TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
-
-//For the buttons and encoder info, we built a break out board to handle the repeated need for the 5v and GND bus, as long as the pins match, 
-//and requirements are followed for the pins, it should be fine. While looking at the bottom of the encoder with the pins being on the bottom looking at the pcb, the goes as- 
-//follows, pin 1 is GND, pin 2 is 5V, pin 3 to pin 4 on arduino, pin 4 to pin 3 on arduino, pin 5 to pin 2 on arduino. We found that the button we have installed next to the encoder-//
-//on the panel seems to not have a use at this time.
-#define ENCODER_DO_NOT_USE_INTERRUPTS
 #define PIN_ENABLE_FEED 23 // this is the enable for the feed stepper motor, make sure is installed, labeled as th EN slot on the driver, and has a brown wire in our case with our wiring harness. 
 #define PIN_SENSOR A8 // Hall effect sensor for determining position of cutter (RED wire to 5V, BLACK wire to GND, BLUE wire to A8)
 #define WIRE_QUANT_MIN 1
@@ -121,16 +113,58 @@ AccelStepper stepCut(1, 43, 35);
 
 AccelStepper stepFeed(1, 25, 27);  
 
-Encoder encoder(PIN_ENC_A, PIN_ENC_B); 
-Bounce buttonOK = Bounce();
-Bounce buttonRED = Bounce();
+boolean ledState = 0;
+long curTime = 0;
+long lastTime = 0;
+int deltaTime = 100;
+long retractPos = 1700; //how much should i be open, lower the number, smaller the hole, and make sure the blades are always touching. 
+long stripPos = 270; //how shut must i be to strip , smaller the number, the smaller the hole and the deeper the cut
+long stripFeedDistance = 0;
+long lengthFeedDistance = 0;
+long cutPos = -200; //how far do I need to go to make sure I cut it. dont go to far or might damage blades
+long targetPos = 0;
+boolean isHomed = false;
+int bladeCycleState = 0;
+int sensorVal = 0;
+
+void setBlade(char bladePos){
+  switch (bladePos){
+    case 'H': // home
+      while (!isHomed){
+        curTime = millis();
+      
+        if (curTime - lastTime > 100){
+          lastTime = curTime;
+          sensorVal = analogRead(PIN_SENSOR);
+          if (sensorVal > 60){  //change me to adjust the home 
+            targetPos -= 20; //this is how fast and accurate i find home (which is a closed cutter with no gaps)
+            stepCut.moveTo(targetPos);
+          } else {
+            isHomed = true;
+            stepCut.setCurrentPosition(0);
+          } 
+        }
+        stepCut.run();
+      }
+    break;
+    case 'R': // retract
+      stepCut.moveTo(retractPos);
+    break;
+    case 'S': // strip
+      stepCut.moveTo(stripPos);
+    break;
+    case 'C': // cut
+      stepCut.moveTo(cutPos);
+    break;
+  }
+}
+
 
 
 
 void setup(void) {
 
   Serial.begin(115200);
-
   tft.reset();
 
   // Setup the Display
@@ -156,14 +190,7 @@ void setup(void) {
   delay(200);
   digitalWrite(PIN_ENABLE_FEED, LOW);
   setBlade('H');
- 
   setBlade('R');
-
-
-
-
-
-
 
   // Draw buttons
   for (uint8_t col = 0; col < 3; col++) {
@@ -249,35 +276,5 @@ void loop(void) {
 
 }
 
-void setBlade(char bladePos){
-  switch (bladePos){
-    case 'H': // home
-      while (!isHomed){
-        curTime = millis();
-      
-        if (curTime - lastTime > 100){
-          lastTime = curTime;
-          sensorVal = analogRead(PIN_SENSOR);
-          if (sensorVal > 60){  //change me to adjust the home 
-            targetPos -= 20; //this is how fast and accurate i find home (which is a closed cutter with no gaps)
-            stepCut.moveTo(targetPos);
-          } else {
-            isHomed = true;
-            stepCut.setCurrentPosition(0);
-          } 
-        }
-        stepCut.run();
-      }
-    break;
-    case 'R': // retract
-      stepCut.moveTo(retractPos);
-    break;
-    case 'S': // strip
-      stepCut.moveTo(stripPos);
-    break;
-    case 'C': // cut
-      stepCut.moveTo(cutPos);
-    break;
-  }
-}
+
 
