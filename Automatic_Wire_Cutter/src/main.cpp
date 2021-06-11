@@ -166,7 +166,7 @@ void setBlade(char bladePos){
 
 void setup(void) {
 
-  Serial.begin(115200);
+  Serial.begin(9600);
   tft.reset();
 
   // Setup the Display
