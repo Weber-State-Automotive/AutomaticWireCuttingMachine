@@ -176,7 +176,7 @@ void setFeedPosition(float position){
   lengthFeedDistance = -(32* ((wireLength - 2*(wireStripLength))/feed_res));// the motor spins counterclockwise, hence the negative on the thirty two 
   stepFeed.setCurrentPosition(stripFeedDistance); 
   stepFeed.run();
-  Serial.println('feed on');   
+  Serial.println("feed on");   
 }
 
 void setup(void) {
@@ -184,6 +184,7 @@ void setup(void) {
   // setFeedPosition(0);
 
   Serial.begin(9600);
+  Serial.println("Serial Start");
   tft.reset();
 
   // Setup the Display
@@ -202,9 +203,9 @@ void setup(void) {
   stepFeed.setMaxSpeed(2000);
   stepFeed.setAcceleration(6000);
   pinMode(PIN_ENABLE_FEED, OUTPUT);
-  Serial.println('feed call'); 
-  setFeedPosition(10.0);
-  Serial.println('feed return'); 
+  Serial.println("feed call"); 
+  setFeedPosition(10000.0);
+  Serial.println("feed return"); 
 
   digitalWrite(PIN_ENABLE_FEED, LOW);
   delay(200);
@@ -235,7 +236,7 @@ void setup(void) {
 
 }
 
-void loop(void) {
+void loop() {
 
   digitalWrite(13, HIGH);
   TSPoint p = ts.getPoint();
