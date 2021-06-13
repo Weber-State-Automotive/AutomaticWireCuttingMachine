@@ -6,22 +6,19 @@
  
 #define feed_dir  29    // Blue
 #define feed_step  27     // Pink
-#define PIN_ENABLE_FEED 21
+#define PIN_ENABLE_FEED 25
  
 //AccelStepper mystepper(1, pinStep, pinDirection); A stepper motor controlled by a dedicated driver board.
 AccelStepper stepper(1, feed_step, feed_dir); 
  
 void setup()
 {
-  digitalWrite(PIN_ENABLE_FEED, LOW);
-  delay(200);
   digitalWrite(PIN_ENABLE_FEED, HIGH);
-  delay(200);
-  digitalWrite(PIN_ENABLE_FEED, LOW);
   // 1 revolution Motor 1 CW
   stepper.setMaxSpeed(1000.0);
   stepper.setAcceleration(50.0);
   stepper.setSpeed(200);
+  stepper.setCurrentPosition(0);
   stepper.moveTo(2048);  
   
   
