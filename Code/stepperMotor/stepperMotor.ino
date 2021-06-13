@@ -4,13 +4,11 @@
  
 // Define Motor Pins (2 Motors used)
  
-#define motorPin1  8     // Blue
-#define motorPin2  9     // Pink
-#define motorPin7  6     // Yellow - 28BYJ48 pin 3
-#define motorPin8  7     // Orange - 28BYJ48 pin 4
+#define feed_dir  27    // Blue
+#define feed_step  25     // Pink
  
 // Define two motor objects
-AccelStepper stepper(FULLSTEP, motorPin5, motorPin7, motorPin6, motorPin8);
+AccelStepper stepper(FULLSTEP, feed_dir, feed_step);
  
 void setup()
 {
@@ -27,6 +25,6 @@ void loop()
 {
   //Change direction at the limits
   if (stepper.distanceToGo() == 0) 
-    stepper.moveTo(-stepper1.currentPosition());
+    stepper.moveTo(-stepper.currentPosition());
   stepper.run();
 }
