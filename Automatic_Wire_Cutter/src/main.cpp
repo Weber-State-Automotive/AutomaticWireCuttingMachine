@@ -179,9 +179,9 @@ void setFeedPosition(float position){
 
 void setup(void) {
 
-  setFeedPosition(0);
+  // setFeedPosition(0);
 
-  Serial.begin(9600);
+  // Serial.begin(9600);
   tft.reset();
 
   // Setup the Display
@@ -251,6 +251,9 @@ void loop(void) {
     p.y = map(p.y, TS_MINY, TS_MAXY, tft.width(),0);
 
   }
+
+
+  setFeedPosition(10.0);
 
   // Go thru all the buttons, checking if they were pressed
   for (uint8_t b = 0; b < 3; b++) {
