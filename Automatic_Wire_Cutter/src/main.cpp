@@ -169,6 +169,8 @@ void setBlade(char bladePos){
 }
 
 void setFeedPosition(float position){
+  wireStripLength = 10;
+  
   stepFeed.setCurrentPosition(0);
   stripFeedDistance = -(32* round(float(wireStripLength)/feed_res)); // the motor spins counterclockwise, hence the negative on the thirty two
   lengthFeedDistance = -(32* ((wireLength - 2*(wireStripLength))/feed_res));// the motor spins counterclockwise, hence the negative on the thirty two 
@@ -200,6 +202,9 @@ void setup(void) {
   stepFeed.setMaxSpeed(2000);
   stepFeed.setAcceleration(6000);
   pinMode(PIN_ENABLE_FEED, OUTPUT);
+
+  setFeedPosition(10.0);
+
 
   digitalWrite(PIN_ENABLE_FEED, LOW);
   delay(200);
@@ -253,7 +258,7 @@ void loop(void) {
   }
 
 
-  setFeedPosition(10.0);
+  
 
   // Go thru all the buttons, checking if they were pressed
   for (uint8_t b = 0; b < 3; b++) {
