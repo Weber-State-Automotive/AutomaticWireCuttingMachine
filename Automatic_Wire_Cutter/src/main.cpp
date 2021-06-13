@@ -145,13 +145,13 @@ void setBlade(char bladePos){
           lastTime = curTime;
           sensorVal = analogRead(PIN_SENSOR);
           // Serial.println(PIN_SENSOR);
-          if (sensorVal > 60){  //change me to adjust the home 
-            targetPos -= 20; //this is how fast and accurate i find home (which is a closed cutter with no gaps)
-            stepCut.moveTo(targetPos);
-          } else {
-            isHomed = true;
-            stepCut.setCurrentPosition(0);
-          } 
+          // if (sensorVal > 60){  //change me to adjust the home 
+          //   targetPos -= 20; //this is how fast and accurate i find home (which is a closed cutter with no gaps)
+          //   stepCut.moveTo(targetPos);
+          // } else {
+          //   isHomed = true;
+          //   stepCut.setCurrentPosition(0);
+          // } 
         }
         stepCut.run();
       }
@@ -173,6 +173,7 @@ void setFeedPosition(float position){
   stripFeedDistance = -(32* round(float(wireStripLength)/feed_res)); // the motor spins counterclockwise, hence the negative on the thirty two
   lengthFeedDistance = -(32* ((wireLength - 2*(wireStripLength))/feed_res));// the motor spins counterclockwise, hence the negative on the thirty two 
   stepFeed.setCurrentPosition(stripFeedDistance); 
+  stepFeed.run();
   Serial.println('feed on');   
 }
 
