@@ -9,7 +9,7 @@
 #define PIN_ENABLE_FEED 25
  
 //AccelStepper mystepper(1, pinStep, pinDirection); A stepper motor controlled by a dedicated driver board.
-AccelStepper stepper(1, feed_step, feed_dir); 
+AccelStepper stepper(1, feed_dir, feed_step); 
  
 void setup()
 {
