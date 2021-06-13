@@ -95,8 +95,6 @@ TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
 // stepper motor to the driver for the cutter on the larger motor driver
 // -- red to a, blue to a-
 // -- green to b, black to b-,  
-
-
 AccelStepper stepCut(1, 43, 35); 
 
 // (DRIVER Type, step, dir) pinouts are as follows
@@ -110,7 +108,6 @@ AccelStepper stepCut(1, 43, 35);
 // Stepper motor to the driver for the feeder
 // -- blue to b2, red to b1
 // -- green to a2, black to a1     https://www.omc-stepperonline.com/nema-17-bipolar-59ncm-84oz-in-2a-42x48mm-4-wires-w-1m-cable-and-connector.html?search=17hs19-2004s1//
-
 AccelStepper stepFeed(1, 25, 27);  
 
 boolean ledState = 0;
@@ -126,6 +123,16 @@ long targetPos = 0;
 boolean isHomed = false;
 int bladeCycleState = 0;
 int sensorVal = 0;
+
+uint16_t wireQuantity = 0;
+uint16_t wireLength = 0; // in milimeters
+uint16_t wireStripLength = 0; 
+uint16_t wiresCut = 0;
+float conductor_diam = 0.64516; // 22 AWG
+float feed_diam = 22; // uncalibrated!
+float feed_circum = PI * feed_diam; // 69.115mm per rev
+float feed_res = feed_circum / 200.0; // .346mm per step
+
 
 void setBlade(char bladePos){
   Serial.println('settingBlade');
@@ -161,10 +168,16 @@ void setBlade(char bladePos){
   }
 }
 
-
-
+void setFeedPosition(float position){
+  stepFeed.setCurrentPosition(0);
+  stripFeedDistance = -(32* round(float(wireStripLength)/feed_res)); // the motor spins counterclockwise, hence the negative on the thirty two
+  lengthFeedDistance = -(32* ((wireLength - 2*(wireStripLength))/feed_res));// the motor spins counterclockwise, hence the negative on the thirty two 
+  stepFeed.setCurrentPosition(stripFeedDistance);    
+}
 
 void setup(void) {
+
+  setFeedPosition(0);
 
   Serial.begin(9600);
   tft.reset();
