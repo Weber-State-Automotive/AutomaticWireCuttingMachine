@@ -7,8 +7,8 @@
 #define feed_dir  27    // Blue
 #define feed_step  25     // Pink
  
-// Define two motor objects
-AccelStepper stepper(FULLSTEP, feed_dir, feed_step);
+//AccelStepper mystepper(1, pinStep, pinDirection); A stepper motor controlled by a dedicated driver board.
+AccelStepper stepper(1, feed_step, feed_dir); 
  
 void setup()
 {
