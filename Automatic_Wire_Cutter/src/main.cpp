@@ -169,7 +169,7 @@ void setBlade(char bladePos){
 }
 
 void setFeedPosition(float position){
-  wireStripLength = 10;
+  wireStripLength = 1000;
   
   stepFeed.setCurrentPosition(0);
   stripFeedDistance = -(32* round(float(wireStripLength)/feed_res)); // the motor spins counterclockwise, hence the negative on the thirty two
@@ -183,7 +183,7 @@ void setup(void) {
 
   // setFeedPosition(0);
 
-  // Serial.begin(9600);
+  Serial.begin(9600);
   tft.reset();
 
   // Setup the Display
@@ -202,9 +202,9 @@ void setup(void) {
   stepFeed.setMaxSpeed(2000);
   stepFeed.setAcceleration(6000);
   pinMode(PIN_ENABLE_FEED, OUTPUT);
-
+  Serial.println('feed call'); 
   setFeedPosition(10.0);
-
+  Serial.println('feed return'); 
 
   digitalWrite(PIN_ENABLE_FEED, LOW);
   delay(200);
