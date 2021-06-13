@@ -108,7 +108,7 @@ AccelStepper stepCut(1, 43, 35);
 // Stepper motor to the driver for the feeder
 // -- blue to b2, red to b1
 // -- green to a2, black to a1     https://www.omc-stepperonline.com/nema-17-bipolar-59ncm-84oz-in-2a-42x48mm-4-wires-w-1m-cable-and-connector.html?search=17hs19-2004s1//
-AccelStepper stepFeed(1,29,27 );  
+AccelStepper stepFeed(1,27,29);  
 
 boolean ledState = 0;
 long curTime = 0;
