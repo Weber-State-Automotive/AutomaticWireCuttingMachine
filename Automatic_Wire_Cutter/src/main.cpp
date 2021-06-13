@@ -78,7 +78,7 @@ MCUFRIEND_kbv tft;
 // Define object for touchscreen
 // Last parameter is X-Y resistance, measure or use 300 if unsure
 TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
-#define PIN_ENABLE_FEED 23 // this is the enable for the feed stepper motor, make sure is installed, labeled as th EN slot on the driver, and has a brown wire in our case with our wiring harness. 
+#define PIN_ENABLE_FEED 25 // this is the enable for the feed stepper motor, make sure is installed, labeled as th EN slot on the driver, and has a brown wire in our case with our wiring harness. 
 #define PIN_SENSOR A8 // Hall effect sensor for determining position of cutter (RED wire to 5V, BLACK wire to GND, BLUE wire to A8)
 #define WIRE_QUANT_MIN 1
 #define WIRE_QUANT_MAX 100
@@ -98,17 +98,17 @@ TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
 AccelStepper stepCut(1, 43, 35); 
 
 // (DRIVER Type, step, dir) pinouts are as follows
-// -- DIR (Blue) to pin 27 on arduino
-// -- STEP (grey) to arduino pin 25
-// -- EN aka engage (brown) to arduino pin 23
-// -- COMM (yellow) to 5v ardiono pin 21
+// -- DIR (Blue) to pin 29 on arduino
+// -- STEP (grey) to arduino pin 27 wht at connector
+// -- EN aka engage (brown) to arduino pin 25 blk at connector
+// -- COMM (yellow) to 5v ardiono pin 23 wht and blk stripe
 // -- GND (black) to 24V GND
 // -- V+ (red) to 24V+. 
 // -- 3 wires are unused: TXD(green), RXD(black), CHOP (white).
 // Stepper motor to the driver for the feeder
 // -- blue to b2, red to b1
 // -- green to a2, black to a1     https://www.omc-stepperonline.com/nema-17-bipolar-59ncm-84oz-in-2a-42x48mm-4-wires-w-1m-cable-and-connector.html?search=17hs19-2004s1//
-AccelStepper stepFeed(1, 25, 27);  
+AccelStepper stepFeed(1,29,27 );  
 
 boolean ledState = 0;
 long curTime = 0;
