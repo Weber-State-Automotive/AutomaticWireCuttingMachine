@@ -171,10 +171,10 @@ void setBlade(char bladePos){
 void setFeedPosition(float position){
   wireStripLength = 1000;
   
-  stepFeed.setCurrentPosition(0);
-  stripFeedDistance = -(32* round(float(wireStripLength)/feed_res)); // the motor spins counterclockwise, hence the negative on the thirty two
-  lengthFeedDistance = -(32* ((wireLength - 2*(wireStripLength))/feed_res));// the motor spins counterclockwise, hence the negative on the thirty two 
-  stepFeed.setCurrentPosition(stripFeedDistance); 
+  // stepFeed.setCurrentPosition(0);
+  // stripFeedDistance = -(32* round(float(wireStripLength)/feed_res)); // the motor spins counterclockwise, hence the negative on the thirty two
+  // lengthFeedDistance = -(32* ((wireLength - 2*(wireStripLength))/feed_res));// the motor spins counterclockwise, hence the negative on the thirty two 
+  // stepFeed.setCurrentPosition(stripFeedDistance); 
   stepFeed.run();
   Serial.println("feed on");   
 }
