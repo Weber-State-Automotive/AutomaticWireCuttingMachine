@@ -98,41 +98,6 @@ boolean cut_stepper_is_homed = false;
 #define FEED_STP_PIN 27
 AccelStepper FEED_stepper(1, FEED_STP_PIN, FEED_DIR_PIN);  
 
-
-void setBlade(char bladePos){
-  Serial.println('settingBlade');
-  switch (bladePos){
-    case 'H': // home
-      while (!isHomed){
-        curTime = millis();
-      
-        if (curTime - lastTime > 100){
-          lastTime = curTime;
-          sensorVal = analogRead(PIN_SENSOR);
-          // Serial.println(PIN_SENSOR);
-          // if (sensorVal > 60){  //change me to adjust the home 
-          //   targetPos -= 20; //this is how fast and accurate i find home (which is a closed cutter with no gaps)
-          //   stepCut.moveTo(targetPos);
-          // } else {
-          //   isHomed = true;
-          //   stepCut.setCurrentPosition(0);
-          // } 
-        }
-        CUT_stepper.run();
-      }
-    break;
-    case 'R': // retract
-      CUT_stepper.moveTo(retractPos);
-    break;
-    case 'S': // strip
-      CUT_stepper.moveTo(stripPos);
-    break;
-    case 'C': // cut
-      CUT_stepper.moveTo(cutPos);
-    break;
-  }
-}
-
 void setFeedPosition(float position){ 
 }
 
