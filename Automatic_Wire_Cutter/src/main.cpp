@@ -96,9 +96,10 @@ boolean cut_stepper_is_homed = false;
 #define FEED_PIN_ENABLE 25
 #define FEED_DIR_PIN 29
 #define FEED_STP_PIN 27
-AccelStepper FEED_stepper(1, FEED_STP_PIN, FEED_DIR_PIN);  
+AccelStepper FEED_stepper(1, FEED_STP_PIN, FEED_DIR_PIN);
+float feed_current_pos = 0;
 
-void setFeedPosition(float position, float feed_current_pos){
+float setFeedPosition(float position, float feed_current_pos){
   
   FEED_stepper.moveTo(position + feed_current_pos);
   // FEED_stepper.run();
@@ -106,6 +107,7 @@ void setFeedPosition(float position, float feed_current_pos){
   // if (FEED_stepper.distanceToGo() == 0) 
   //   FEED_stepper.moveTo(-FEED_stepper.currentPosition());
   FEED_stepper.run();
+  return(FEED_stepper.currentPosition());
 
 }
 
@@ -213,8 +215,8 @@ void loop() {
     }
   }
 
+  feed_current_pos = setFeedPosition(2048,feed_current_pos);
 
-  setFeedPosition(2048);
   delay(500);
 
 }
