@@ -37,7 +37,7 @@ Adafruit_CharacterOLED lcd(OLED_V2, 6, 7, 8, 9, 10, 11, 12); //from the back of 
 // -- green to b, black to b-,  
 
 
-AccelStepper stepCut(1, 43, 35); 
+AccelStepper CUT_stepper(1, 43, 35); 
 
 // (DRIVER Type, step, dir) pinouts are as follows
 // -- DIR (Blue) to pin 27 on arduino
@@ -51,7 +51,7 @@ AccelStepper stepCut(1, 43, 35);
 // -- blue to b2, red to b1
 // -- green to a2, black to a1     https://www.omc-stepperonline.com/nema-17-bipolar-59ncm-84oz-in-2a-42x48mm-4-wires-w-1m-cable-and-connector.html?search=17hs19-2004s1//
 
-AccelStepper stepFeed(1, 25, 27);  
+AccelStepper FEED_stepper(1, 25, 27);  
 
 Encoder encoder(PIN_ENC_A, PIN_ENC_B); 
 Bounce buttonOK = Bounce();
@@ -69,13 +69,13 @@ int lastScrollPos = -99;
 long encPos = -999;
 long lastEncPos = 0;
 
-long retractPos = 1700; //how much should i be open, lower the number, smaller the hole, and make sure the blades are always touching. 
+long retracted_cut_position = 1700; //how much should i be open, lower the number, smaller the hole, and make sure the blades are always touching. 
 long stripPos = 270; //how shut must i be to strip , smaller the number, the smaller the hole and the deeper the cut
 long stripFeedDistance = 0;
 long lengthFeedDistance = 0;
 long cutPos = -200; //how far do I need to go to make sure I cut it. dont go to far or might damage blades
 long targetPos = 0;
-boolean isHomed = false;
+boolean cut_stepper_is_homed = false;
 int bladeCycleState = 0;
 int sensorVal = 0;
 
@@ -97,21 +97,21 @@ float feed_res = feed_circum / 200.0; // .346mm per step
 // leaving us with ~1260 steps per mm z travel
 
 boolean ledState = 0;
-long curTime = 0;
-long lastTime = 0;
-int deltaTime = 100;
+long current_time = 0;
+long last_time = 0;
+int delta_time = 100;
 
 void setup(){
 
   Serial.begin(115200);
   lcd.begin(16, 2);
   lcd.print("AWCS READY!");
-  stepCut.setPinsInverted(true, true);
-  stepFeed.setPinsInverted(true, true);
-  stepFeed.setMaxSpeed(2000);
-  stepFeed.setAcceleration(6000);
-  stepCut.setMaxSpeed(20000);
-  stepCut.setAcceleration(40000);
+  CUT_stepper.setPinsInverted(true, true);
+  FEED_stepper.setPinsInverted(true, true);
+  FEED_stepper.setMaxSpeed(2000);
+  FEED_stepper.setAcceleration(6000);
+  CUT_stepper.setMaxSpeed(20000);
+  CUT_stepper.setAcceleration(40000);
   pinMode(PIN_ENABLE_FEED, OUTPUT);
   pinMode(PIN_BUTTON_ENC, INPUT_PULLUP);
   pinMode(PIN_BUTTON_RED, INPUT_PULLUP);
@@ -155,7 +155,7 @@ void loop(){
   } 
 */
   //be sure to turn to comment above here suring normal operation
-  stepCut.run();
+  CUT_stepper.run();
   
   getInput();
   
@@ -210,7 +210,7 @@ void loop(){
               lcd.print("NOW CUTTING:");
               printJobStatus();
               setBlade('R');
-              stepFeed.setCurrentPosition(0);
+              FEED_stepper.setCurrentPosition(0);
               stripFeedDistance = -(32* round(float(wireStripLength)/feed_res)); // the motor spins counterclockwise, hence the negative on the thirty two
               lengthFeedDistance = -(32* ((wireLength - 2*(wireStripLength))/feed_res));// the motor spins counterclockwise, hence the negative on the thirty two 
               Serial.print("FEED STEPS: ");Serial.println(stripFeedDistance);
@@ -243,59 +243,59 @@ void loop(){
       // loop through quantity, allow mid-job canceling
       switch (bladeCycleState){
         case 0: // initial retract, then feed length of strip
-          if (stepCut.distanceToGo() == 0){ // allow the blade to retract
+          if (CUT_stepper.distanceToGo() == 0){ // allow the blade to retract
             printJobStatus(); // show wire X of N wires
             bladeCycleState++;
-            stepFeed.setCurrentPosition(0);
-            stepFeed.moveTo(stripFeedDistance); // feed length of strip
+            FEED_stepper.setCurrentPosition(0);
+            FEED_stepper.moveTo(stripFeedDistance); // feed length of strip
           }
         break;
         case 1: // feed, then strip
-          if (stepFeed.distanceToGo() == 0){ // allow strip length to fininsh feeding
+          if (FEED_stepper.distanceToGo() == 0){ // allow strip length to fininsh feeding
             bladeCycleState++;
             setBlade('S');
           }
         break;
         case 2: // strip, then retract
-          if (stepCut.distanceToGo() == 0){ // allow time to strip
+          if (CUT_stepper.distanceToGo() == 0){ // allow time to strip
             bladeCycleState++;
             setBlade('R');
           }
         break;
         case 3: // retract, then feed length of wire
-          if (stepCut.distanceToGo() == 0){ // allow retraction
+          if (CUT_stepper.distanceToGo() == 0){ // allow retraction
             bladeCycleState++;
-            stepFeed.setCurrentPosition(0);
-            stepFeed.moveTo(lengthFeedDistance);
+            FEED_stepper.setCurrentPosition(0);
+            FEED_stepper.moveTo(lengthFeedDistance);
           }
         break;
         case 4: // feed, then strip
-          if (stepFeed.distanceToGo() == 0){ // allow feed movement etc.
+          if (FEED_stepper.distanceToGo() == 0){ // allow feed movement etc.
             bladeCycleState++;
             setBlade('S');
           }
         break;
         case 5: // strip, then retract
-          if (stepCut.distanceToGo() == 0){ // allow feed movement etc.
+          if (CUT_stepper.distanceToGo() == 0){ // allow feed movement etc.
             bladeCycleState++;
             setBlade('R');
           }
         break;
          case 6: // retract, then feed
-          if (stepCut.distanceToGo() == 0){ // allow feed movement etc.
+          if (CUT_stepper.distanceToGo() == 0){ // allow feed movement etc.
             bladeCycleState++;
-            stepFeed.setCurrentPosition(0);
-            stepFeed.moveTo(stripFeedDistance);
+            FEED_stepper.setCurrentPosition(0);
+            FEED_stepper.moveTo(stripFeedDistance);
           }
         break;
         case 7: // retract, then feed
-          if (stepFeed.distanceToGo() == 0){ // allow feed movement etc.
+          if (FEED_stepper.distanceToGo() == 0){ // allow feed movement etc.
             bladeCycleState++;
             setBlade('C');
           }
         break;
         case 8: // cut, then retract and loop if more wires need to run.
-          if (stepCut.distanceToGo() == 0){ // allow feed movement etc.
+          if (CUT_stepper.distanceToGo() == 0){ // allow feed movement etc.
             bladeCycleState = 0;
             wiresCut++;
             setBlade('R');
@@ -318,8 +318,8 @@ void loop(){
   // the motors only really move if there is a remaning position to travel,
   // and this needs to be called often enough that nesting it 
   // inside some other function doesn't help much, so we'll just keep the .run() here
-  stepFeed.run();
-  stepCut.run();
+  FEED_stepper.run();
+  CUT_stepper.run();
   
   
 
@@ -337,31 +337,31 @@ void printJobStatus(){
 void setBlade(char bladePos){
   switch (bladePos){
     case 'H': // home
-      while (!isHomed){
-        curTime = millis();
+      while (!cut_stepper_is_homed){
+        current_time = millis();
       
-        if (curTime - lastTime > 100){
-          lastTime = curTime;
+        if (current_time - last_time > 100){
+          last_time = current_time;
           sensorVal = analogRead(PIN_SENSOR);
           if (sensorVal > 60){  //change me to adjust the home 
             targetPos -= 20; //this is how fast and accurate i find home (which is a closed cutter with no gaps)
-            stepCut.moveTo(targetPos);
+            CUT_stepper.moveTo(targetPos);
           } else {
-            isHomed = true;
-            stepCut.setCurrentPosition(0);
+            cut_stepper_is_homed = true;
+            CUT_stepper.setCurrentPosition(0);
           } 
         }
-        stepCut.run();
+        CUT_stepper.run();
       }
     break;
     case 'R': // retract
-      stepCut.moveTo(retractPos);
+      CUT_stepper.moveTo(retracted_cut_position);
     break;
     case 'S': // strip
-      stepCut.moveTo(stripPos);
+      CUT_stepper.moveTo(stripPos);
     break;
     case 'C': // cut
-      stepCut.moveTo(cutPos);
+      CUT_stepper.moveTo(cutPos);
     break;
   }
 }
