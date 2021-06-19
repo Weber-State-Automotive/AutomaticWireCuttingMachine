@@ -78,7 +78,7 @@ MCUFRIEND_kbv tft;
 // Define object for touchscreen
 // Last parameter is X-Y resistance, measure or use 300 if unsure
 TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
-#define PIN_ENABLE_FEED 25 // this is the enable for the feed stepper motor, make sure is installed, labeled as th EN slot on the driver, and has a brown wire in our case with our wiring harness. 
+
 #define PIN_SENSOR A8 // Hall effect sensor for determining position of cutter (RED wire to 5V, BLACK wire to GND, BLUE wire to A8)
 #define WIRE_QUANT_MIN 1
 #define WIRE_QUANT_MAX 100
@@ -97,6 +97,7 @@ TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
 // -- green to b, black to b-,  
 AccelStepper stepCut(1, 43, 35); 
 
+// Feed Driver
 // (DRIVER Type, step, dir) pinouts are as follows
 // -- DIR (Blue) to pin 29 on arduino
 // -- STEP (grey) to arduino pin 27 wht at connector
@@ -108,16 +109,22 @@ AccelStepper stepCut(1, 43, 35);
 // Stepper motor to the driver for the feeder
 // -- blue to b2, red to b1
 // -- green to a2, black to a1     https://www.omc-stepperonline.com/nema-17-bipolar-59ncm-84oz-in-2a-42x48mm-4-wires-w-1m-cable-and-connector.html?search=17hs19-2004s1//
-AccelStepper stepFeed(1,27,29);  
+// Feed Motor Controller variable. 
+#define FEED_PIN_ENABLE 25;
+#define FEED_DIR_PIN 29;
+#define FEED_STP_PIN 27;
+AccelStepper stepFeed(1, FEED_STP_PIN, FEED_DIR_PIN);  
 
 boolean ledState = 0;
 long curTime = 0;
 long lastTime = 0;
 int deltaTime = 100;
 long retractPos = 1700; //how much should i be open, lower the number, smaller the hole, and make sure the blades are always touching. 
+
 long stripPos = 270; //how shut must i be to strip , smaller the number, the smaller the hole and the deeper the cut
 long stripFeedDistance = 0;
 long lengthFeedDistance = 0;
+
 long cutPos = -200; //how far do I need to go to make sure I cut it. dont go to far or might damage blades
 long targetPos = 0;
 boolean isHomed = false;
@@ -199,19 +206,17 @@ void setup(void) {
   stepCut.setAcceleration(40000);
 
   // Setup the feeding stepper motor
-  stepFeed.setPinsInverted(true, true);
+  stepFeed.setPinsInverted(true, true, true);
   stepFeed.setMaxSpeed(2000);
   stepFeed.setAcceleration(6000);
-  pinMode(PIN_ENABLE_FEED, OUTPUT);
-  Serial.println("feed call"); 
-  setFeedPosition(10000.0);
-  Serial.println("feed return"); 
+  stepFeed.currentPosition(0);
+  stepFeed.moveTo(2048);
+  stepFeed.setEnablePin(FEED_PIN_ENABLE);
+  stepFeed.enableOutputs();
 
-  digitalWrite(PIN_ENABLE_FEED, LOW);
-  delay(200);
-  digitalWrite(PIN_ENABLE_FEED, HIGH);
-  delay(200);
-  digitalWrite(PIN_ENABLE_FEED, LOW);
+
+
+
   setBlade('H');
   setBlade('R');
 
@@ -257,6 +262,8 @@ void loop() {
     p.y = map(p.y, TS_MINY, TS_MAXY, tft.width(),0);
 
   }
+
+  stepFeed.run();
 
 
   
