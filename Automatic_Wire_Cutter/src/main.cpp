@@ -81,39 +81,22 @@ TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
 
 #define PIN_SENSOR A8 // Hall effect sensor for determining position of cutter (RED wire to 5V, BLACK wire to GND, BLUE wire to A8)
 
-/
-AccelStepper stepCut(1, 43, 35); 
+// ----------Cut Stepper ---------- //
+#define CUT_DIR_PIN 35
+#define CUT_STP_PIN 43
+AccelStepper CUT_stepper(1, CUT_STP_PIN, CUT_DIR_PIN);
 
+long current_time = 0;
+long last_time = 0;
+int delta_time = 100;
+long retracted_cut_position = 1700; 
+boolean cut_stepper_is_homed = false;
 
+// ----------Feed Stepper ---------- //
 #define FEED_PIN_ENABLE 25
 #define FEED_DIR_PIN 29
 #define FEED_STP_PIN 27
-AccelStepper stepFeed(1, FEED_STP_PIN, FEED_DIR_PIN);  
-
-boolean ledState = 0;
-long curTime = 0;
-long lastTime = 0;
-int deltaTime = 100;
-long retractPos = 1700; //how much should i be open, lower the number, smaller the hole, and make sure the blades are always touching. 
-
-long stripPos = 270; //how shut must i be to strip , smaller the number, the smaller the hole and the deeper the cut
-long stripFeedDistance = 0;
-long lengthFeedDistance = 0;
-
-long cutPos = -200; //how far do I need to go to make sure I cut it. dont go to far or might damage blades
-long targetPos = 0;
-boolean isHomed = false;
-int bladeCycleState = 0;
-int sensorVal = 0;
-
-uint16_t wireQuantity = 0;
-uint16_t wireLength = 0; // in milimeters
-uint16_t wireStripLength = 0; 
-uint16_t wiresCut = 0;
-float conductor_diam = 0.64516; // 22 AWG
-float feed_diam = 22; // uncalibrated!
-float feed_circum = PI * feed_diam; // 69.115mm per rev
-float feed_res = feed_circum / 200.0; // .346mm per step
+AccelStepper FEED_stepper(1, FEED_STP_PIN, FEED_DIR_PIN);  
 
 
 void setBlade(char bladePos){
@@ -135,66 +118,34 @@ void setBlade(char bladePos){
           //   stepCut.setCurrentPosition(0);
           // } 
         }
-        stepCut.run();
+        CUT_stepper.run();
       }
     break;
     case 'R': // retract
-      stepCut.moveTo(retractPos);
+      CUT_stepper.moveTo(retractPos);
     break;
     case 'S': // strip
-      stepCut.moveTo(stripPos);
+      CUT_stepper.moveTo(stripPos);
     break;
     case 'C': // cut
-      stepCut.moveTo(cutPos);
+      CUT_stepper.moveTo(cutPos);
     break;
   }
 }
 
-void setFeedPosition(float position){
-  wireStripLength = 1000;
-  
-  // stepFeed.setCurrentPosition(0);
-  // stripFeedDistance = -(32* round(float(wireStripLength)/feed_res)); // the motor spins counterclockwise, hence the negative on the thirty two
-  // lengthFeedDistance = -(32* ((wireLength - 2*(wireStripLength))/feed_res));// the motor spins counterclockwise, hence the negative on the thirty two 
-  // stepFeed.setCurrentPosition(stripFeedDistance); 
-  stepFeed.run();
-  Serial.println("feed on");   
+void setFeedPosition(float position){ 
 }
 
-void setup(void) {
-
-  // setFeedPosition(0);
-
-  Serial.begin(9600);
-  Serial.println("Serial Start");
+void setupTouchscreen(){
+  Serial.println("Setting up Touchscreen...");
+  
+  // ---------- Setup the Touchscreen Display ---------- //
   tft.reset();
-
-  // Setup the Display
   uint16_t identifier = 0x9486;
   tft.begin(identifier);
   tft.setRotation(3);
   tft.fillScreen(BLACK);
-
-  // Setup the cutting stepper motor
-  stepCut.setPinsInverted(true, true);
-  stepCut.setMaxSpeed(20000);
-  stepCut.setAcceleration(40000);
-
-  // Setup the feeding stepper motor
-  stepFeed.setPinsInverted(true, true, true);
-  stepFeed.setMaxSpeed(10000.0);
-  stepFeed.setAcceleration(1000.0);
-  stepFeed.setCurrentPosition(0);
-  stepFeed.moveTo(2048);
-  stepFeed.setEnablePin(FEED_PIN_ENABLE);
-  stepFeed.enableOutputs();
-
-
-
-
-  setBlade('H');
-  setBlade('R');
-
+  
   // Draw buttons
   for (uint8_t col = 0; col < 3; col++) {
 
@@ -211,18 +162,45 @@ void setup(void) {
                                         buttonlabels[col], 
                                         BUTTON_TEXTSIZE);
       buttons[col].drawButton();
+      Serial.println("Touchscreen Setup");
   }
+}
+
+void setupCutStepper(){
+  Serial.println("Setting up Stepper Cut...");
+  // Setup the cutting stepper motor
+  CUT_stepper.setPinsInverted(true, true);
+  CUT_stepper.setMaxSpeed(20000);
+  CUT_stepper.setAcceleration(40000);
+  Serial.println("Cut Stepper Setup");
+}
+
+void setupFeedStepper(){
+  Serial.println("Setting up Feed Stepper...");
+  // Setup the feeding stepper motor
+  FEED_stepper.setPinsInverted(true, true, true);
+  FEED_stepper.setMaxSpeed(10000.0);
+  FEED_stepper.setAcceleration(1000.0);
+  FEED_stepper.setCurrentPosition(0);
+  FEED_stepper.moveTo(2048);
+  FEED_stepper.setEnablePin(FEED_PIN_ENABLE);
+  FEED_stepper.enableOutputs();
+  Serial.println("Feed Stepper Setup");
+}
+
+void setup(void) {
+
+  Serial.begin(9600);
   
+  setupTouchscreen();
+  setupCutStepper();
+  setupFeedStepper();
 
 }
 
 void loop() {
 
-  digitalWrite(13, HIGH);
   TSPoint p = ts.getPoint();
-  digitalWrite(13, LOW);
-
-  // if sharing pins, you'll need to fix the directions of the touchscreen pins
   pinMode(XM, OUTPUT);
   pinMode(YP, OUTPUT);
 
@@ -236,51 +214,6 @@ void loop() {
     p.x = map(p.x, TS_MINX, TS_MAXX, tft.height(),0);
     p.y = map(p.y, TS_MINY, TS_MAXY, tft.width(),0);
 
-  }
-  if (stepFeed.distanceToGo() == 0) 
-    stepFeed.moveTo(-stepFeed.currentPosition());
-  stepFeed.run();
-
-
-  
-
-  // Go thru all the buttons, checking if they were pressed
-  for (uint8_t b = 0; b < 3; b++) {
-    if ((buttons[b].contains(p.y, p.x)) && p.x > 10)
-    {
-      buttons[b].press(true);  // tell the button it is pressed
-
-      //Button has been pressed
-      if (b == 0) {
-        // Toggle Red status
-        RED_state = !RED_state;
-      }
-      if (b == 1) {
-        // Toggle Green status
-        GRN_state = !GRN_state;
-      }
-      if (b == 2) {
-        // Toggle Blue status
-        BLU_state = !BLU_state;
-      }
-
-
-    } else {
-      buttons[b].press(false);  // tell the button it is NOT pressed
-    }
-  }
-
-  // now we can ask the buttons if their state has changed
-  for (uint8_t b = 0; b < 3; b++) {
-    if (buttons[b].justReleased()) {
-      buttons[b].drawButton();  // draw normal
-    }
-
-    if (buttons[b].justPressed()) {
-      buttons[b].drawButton(true);  // draw invert!
-
-      delay(200); // UI debouncing
-    }
   }
 
 }
