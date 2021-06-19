@@ -127,8 +127,9 @@ void setupTouchscreen(){
                                         buttonlabels[col], 
                                         BUTTON_TEXTSIZE);
       buttons[col].drawButton();
-      Serial.println("Touchscreen Setup");
+      
   }
+  Serial.println("Touchscreen Setup");
 }
 
 void setupCutStepper(){
