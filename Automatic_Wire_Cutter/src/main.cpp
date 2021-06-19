@@ -149,7 +149,7 @@ void setupFeedStepper(){
   FEED_stepper.setCurrentPosition(0);
   FEED_stepper.setPinsInverted(true,true,true);
   FEED_stepper.moveTo(2048);
-  FEED_stepper.setEnablePin(25);
+  FEED_stepper.setEnablePin(FEED_PIN_ENABLE);
   FEED_stepper.enableOutputs();
   Serial.println("Feed Stepper Setup");
 }
