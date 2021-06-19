@@ -1,4 +1,5 @@
 #include <AccelStepper.h>
+#
 // Define step constants
 #define FULLSTEP 4
  
@@ -9,17 +10,20 @@
 #define PIN_ENABLE_FEED 25
  
 //AccelStepper mystepper(1, pinStep, pinDirection); A stepper motor controlled by a dedicated driver board.
-AccelStepper stepper(1, feed_dir, feed_step); 
+AccelStepper stepper(1, feed_step, feed_dir); 
  
 void setup()
 {
-  digitalWrite(PIN_ENABLE_FEED, HIGH);
+  
   // 1 revolution Motor 1 CW
-  stepper.setMaxSpeed(1000.0);
-  stepper.setAcceleration(50.0);
-  stepper.setSpeed(200);
+  stepper.setMaxSpeed(10000.0);
+  stepper.setAcceleration(1000.0);
   stepper.setCurrentPosition(0);
-  stepper.moveTo(2048);  
+  stepper.setPinsInverted(true,true,true);
+  stepper.moveTo(2048);
+  stepper.setEnablePin(25);
+  stepper.enableOutputs();
+    
   
   
 }
