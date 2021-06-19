@@ -190,6 +190,30 @@ void loop() {
 
   }
 
+  // Go thru all the buttons, checking if they were pressed
+  for (uint8_t b = 0; b < 3; b++) {
+    if ((buttons[b].contains(p.y, p.x)) && p.x > 10)
+    {
+      buttons[b].press(true);  // tell the button it is pressed
+      //Button has been pressed
+      if (b == 0) {
+        // Toggle Red status
+        RED_state = !RED_state;
+      }
+      if (b == 1) {
+        // Toggle Green status
+        GRN_state = !GRN_state;
+      }
+      if (b == 2) {
+        // Toggle Blue status
+        BLU_state = !BLU_state;
+      }
+    } else {
+      buttons[b].press(false);  // tell the button it is NOT pressed
+    }
+  }
+
+
   setFeedPosition(2048);
   delay(500);
 
