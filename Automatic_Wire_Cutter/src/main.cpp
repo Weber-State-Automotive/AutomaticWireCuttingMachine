@@ -98,7 +98,15 @@ boolean cut_stepper_is_homed = false;
 #define FEED_STP_PIN 27
 AccelStepper FEED_stepper(1, FEED_STP_PIN, FEED_DIR_PIN);  
 
-void setFeedPosition(float position){ 
+void setFeedPosition(float position){
+  
+  FEED_stepper.moveTo(position);
+  FEED_stepper.run();
+  
+  // if (FEED_stepper.distanceToGo() == 0) 
+  //   FEED_stepper.moveTo(-FEED_stepper.currentPosition());
+  // FEED_stepper.run();
+
 }
 
 void setupTouchscreen(){
@@ -182,10 +190,8 @@ void loop() {
 
   }
 
-  //Change direction at the limits
-  if (FEED_stepper.distanceToGo() == 0) 
-    FEED_stepper.moveTo(-FEED_stepper.currentPosition());
-  FEED_stepper.run();
+  setFeedPosition(100);
+  delay(500);
 
 }
 
