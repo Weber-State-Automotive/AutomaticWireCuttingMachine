@@ -98,14 +98,14 @@ boolean cut_stepper_is_homed = false;
 #define FEED_STP_PIN 27
 AccelStepper FEED_stepper(1, FEED_STP_PIN, FEED_DIR_PIN);  
 
-void setFeedPosition(float position){
+void setFeedPosition(float position, float feed_current_pos){
   
-  FEED_stepper.moveTo(position);
-  FEED_stepper.run();
+  FEED_stepper.moveTo(position + feed_current_pos);
+  // FEED_stepper.run();
   
   // if (FEED_stepper.distanceToGo() == 0) 
   //   FEED_stepper.moveTo(-FEED_stepper.currentPosition());
-  // FEED_stepper.run();
+  FEED_stepper.run();
 
 }
 
@@ -190,8 +190,9 @@ void loop() {
 
   }
 
-  setFeedPosition(2048);
-  delay(500);
+  float feed_current_pos = 0;
+  setFeedPosition(2048, feed_current_pos);
+  // delay(500);
 
 }
 
