@@ -143,13 +143,13 @@ void setupCutStepper(){
 
 void setupFeedStepper(){
   Serial.println("Setting up Feed Stepper...");
-  // Setup the feeding stepper motor
-  FEED_stepper.setPinsInverted(true, true, true);
+  
   FEED_stepper.setMaxSpeed(10000.0);
   FEED_stepper.setAcceleration(1000.0);
   FEED_stepper.setCurrentPosition(0);
+  FEED_stepper.setPinsInverted(true,true,true);
   FEED_stepper.moveTo(2048);
-  FEED_stepper.setEnablePin(FEED_PIN_ENABLE);
+  FEED_stepper.setEnablePin(25);
   FEED_stepper.enableOutputs();
   Serial.println("Feed Stepper Setup");
 }
@@ -181,6 +181,11 @@ void loop() {
     p.y = map(p.y, TS_MINY, TS_MAXY, tft.width(),0);
 
   }
+
+  //Change direction at the limits
+  if (FEED_stepper.distanceToGo() == 0) 
+    FEED_stepper.moveTo(-FEED_stepper.currentPosition());
+  FEED_stepper.run();
 
 }
 
