@@ -81,7 +81,6 @@ TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
 
 #define PIN_SENSOR A8 // Hall effect sensor for determining position of cutter (RED wire to 5V, BLACK wire to GND, BLUE wire to A8)
 
-/
 AccelStepper stepCut(1, 43, 35); 
 
 
