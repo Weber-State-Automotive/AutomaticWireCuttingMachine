@@ -190,7 +190,7 @@ void loop() {
 
   }
 
-  setFeedPosition(100);
+  setFeedPosition(2048);
   delay(500);
 
 }
