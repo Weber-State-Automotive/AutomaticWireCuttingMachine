@@ -80,10 +80,6 @@ MCUFRIEND_kbv tft;
 TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
 
 #define PIN_SENSOR A8 // Hall effect sensor for determining position of cutter (RED wire to 5V, BLACK wire to GND, BLUE wire to A8)
-#define WIRE_QUANT_MIN 1
-#define WIRE_QUANT_MAX 100
-#define WIRE_MIN_LEN 5 
-#define WIRE_AWG 18
 
 // (DRIVER, STEP, DIR)
 // "1" after stepCut indicates the use of a motor driver module
@@ -110,9 +106,9 @@ AccelStepper stepCut(1, 43, 35);
 // -- blue to b2, red to b1
 // -- green to a2, black to a1     https://www.omc-stepperonline.com/nema-17-bipolar-59ncm-84oz-in-2a-42x48mm-4-wires-w-1m-cable-and-connector.html?search=17hs19-2004s1//
 // Feed Motor Controller variable. 
-#define FEED_PIN_ENABLE 25;
-#define FEED_DIR_PIN 29;
-#define FEED_STP_PIN 27;
+#define FEED_PIN_ENABLE 25
+#define FEED_DIR_PIN 29
+#define FEED_STP_PIN 27
 AccelStepper stepFeed(1, FEED_STP_PIN, FEED_DIR_PIN);  
 
 boolean ledState = 0;
@@ -207,9 +203,9 @@ void setup(void) {
 
   // Setup the feeding stepper motor
   stepFeed.setPinsInverted(true, true, true);
-  stepFeed.setMaxSpeed(2000);
-  stepFeed.setAcceleration(6000);
-  stepFeed.currentPosition(0);
+  stepFeed.setMaxSpeed(10000.0);
+  stepFeed.setAcceleration(1000.0);
+  stepFeed.setCurrentPosition(0);
   stepFeed.moveTo(2048);
   stepFeed.setEnablePin(FEED_PIN_ENABLE);
   stepFeed.enableOutputs();
@@ -262,7 +258,8 @@ void loop() {
     p.y = map(p.y, TS_MINY, TS_MAXY, tft.width(),0);
 
   }
-
+  if (stepFeed.distanceToGo() == 0) 
+    stepFeed.moveTo(-stepFeed.currentPosition());
   stepFeed.run();
 
 
