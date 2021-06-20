@@ -138,20 +138,37 @@ void setupTouchscreen(){
   
   // Draw buttons
   for (uint8_t row = 0; row < 3; row++){
-    int y_coord = BUTTON_Y + row * 40;
+    int y_coord = BUTTON_Y + row * 50;
     for (uint8_t col = 0; col < 2; col++) {
 
         int x_coord = BUTTON_X + col * (90);
         buttons[col].initButton(&tft, 
-                                          x_coord,
-                                          y_coord, // x, y, w, h, outline, fill, text
-                                          BUTTON_W, 
-                                          BUTTON_H, 
-                                          WHITE, 
-                                          buttoncolors[col],
-                                          WHITE,
-                                          buttonlabels[row][col], 
-                                          BUTTON_TEXTSIZE);
+                                x_coord,
+                                y_coord, // x, y, w, h, outline, fill, text
+                                BUTTON_W, 
+                                BUTTON_H, 
+                                WHITE, 
+                                buttoncolors[col],
+                                WHITE,
+                                buttonlabels[row][col], 
+                                BUTTON_TEXTSIZE);
+        buttons[col].drawButton();
+    }
+    for (uint8_t row = 0; row < 3; row++){
+    int y_coord = BUTTON_Y + row * 50;
+    for (uint8_t col = 0; col < 2; col++) {
+
+        int x_coord = BUTTON_X + col * (190);
+        buttons[col].initButton(&tft, 
+                                x_coord,
+                                y_coord, // x, y, w, h, outline, fill, text
+                                BUTTON_W, 
+                                BUTTON_H, 
+                                WHITE, 
+                                buttoncolors[col],
+                                WHITE,
+                                buttonlabels[row][col], 
+                                BUTTON_TEXTSIZE);
         buttons[col].drawButton();
     }
   }
