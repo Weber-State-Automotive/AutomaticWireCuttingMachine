@@ -149,7 +149,7 @@ void setupTouchscreen(){
   tft.setTextColor(TEXT_TCOLOR, BLACK);
   tft.setTextSize(TEXT_TSIZE);
   tft.print("Wire");
-  tft.setCursor(TEXT_X + 2, TEXT_Y+20);
+  tft.setCursor(TEXT_X + 2, TEXT_Y+40);
   tft.setTextColor(TEXT_TCOLOR, BLACK);
   tft.setTextSize(TEXT_TSIZE);
   tft.print(" Len");
