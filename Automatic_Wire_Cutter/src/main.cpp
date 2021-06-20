@@ -154,7 +154,9 @@ void setupTouchscreen(){
                                 BUTTON_TEXTSIZE);
         buttons[col].drawButton();
     }
-    for (uint8_t row = 0; row < 3; row++){
+    
+  }
+  for (uint8_t row = 0; row < 3; row++){
     int y_coord = BUTTON_Y + row * 50;
     for (uint8_t col = 0; col < 2; col++) {
 
@@ -172,7 +174,6 @@ void setupTouchscreen(){
         buttons[col].drawButton();
     }
   }
-
   for (uint8_t col = 0; col < 3; col++) {
     tft.setCursor(TEXT_X + 2 + (col*(160)), TEXT_Y+10);
     tft.setTextColor(TEXT_TCOLOR, BLACK);
