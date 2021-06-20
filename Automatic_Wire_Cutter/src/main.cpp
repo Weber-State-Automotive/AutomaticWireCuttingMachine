@@ -135,7 +135,7 @@ void setupTouchscreen(){
   uint16_t buttoncolors[6] = {RED, GREEN, BLUE, YELLOW, GREY, CYAN};
 
 
-  #define TITLE_X 40
+  #define TITLE_X 60
   #define TITLE_Y 120
   int TITLE_W = (BUTTON_W * 2) + BUTTON_Padding;
   int TITLE_H = BUTTON_H;
@@ -151,6 +151,8 @@ void setupTouchscreen(){
   
 
   for (uint8_t col = 0; col < 3; col++) {
+
+        int x_coord = TITLE_X + col * (TITLE_W + TITLE_Padding);
         buttons[col].initButton(&tft, 
                                 TITLE_X,
                                 TITLE_Y, // x, y, w, h, outline, fill, text
