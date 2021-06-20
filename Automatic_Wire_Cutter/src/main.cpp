@@ -59,7 +59,7 @@ boolean length_button_state = 0;
 boolean qty_button_state = 0;
 boolean strip_button_state = 0;
 const char* current_button_state_list[3] = {"length", "qty", "strip"};
-String current_menu_state = current_button_state_list[0];
+const char* current_menu_state = "length";
 
 //Define button array object
 Adafruit_GFX_Button buttons[2];
