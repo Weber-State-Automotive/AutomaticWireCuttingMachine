@@ -128,7 +128,7 @@ void setupTouchscreen(){
   int TITLE_TEXTSIZE = 3;
 
   // ----------Text Box ---------- //
-  #define TEXT_X 40
+  #define TEXT_X 60
   #define TEXT_Y 10
   #define TEXT_W 220
   #define TEXT_H 50
