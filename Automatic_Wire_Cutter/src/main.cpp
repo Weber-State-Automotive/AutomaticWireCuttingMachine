@@ -152,16 +152,26 @@ void setupTouchscreen(){
   tft.setCursor(TEXT_X + 2, TEXT_Y+40);
   tft.setTextColor(TEXT_TCOLOR, BLACK);
   tft.setTextSize(TEXT_TSIZE);
-  tft.print(" Len");
+  tft.print("Len");
 
   tft.setCursor(TEXT_X + 140, TEXT_Y+10);
   tft.setTextColor(TEXT_TCOLOR, BLACK);
   tft.setTextSize(TEXT_TSIZE);
-  tft.print("Wire QTY");
+  tft.print("Wire");
+  tft.setCursor(TEXT_X + 140, TEXT_Y+40);
+  tft.setTextColor(TEXT_TCOLOR, BLACK);
+  tft.setTextSize(TEXT_TSIZE);
+  tft.print("QTY");
+
+
   tft.setCursor(TEXT_X + 280, TEXT_Y+10);
   tft.setTextColor(TEXT_TCOLOR, BLACK);
   tft.setTextSize(TEXT_TSIZE);
-  tft.print("Strp LEN");
+  tft.print("Strp");
+  tft.setCursor(TEXT_X + 280, TEXT_Y+40);
+  tft.setTextColor(TEXT_TCOLOR, BLACK);
+  tft.setTextSize(TEXT_TSIZE);
+  tft.print("Len");
 
   Serial.println("Touchscreen Setup");
 }
