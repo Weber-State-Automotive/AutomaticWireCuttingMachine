@@ -262,22 +262,22 @@ void loop() {
       current_menu_state = current_button_state_list[b];
       Serial.println(current_menu_state);
       
-      //Button has been pressed
-      if (b == 0) {
-        buttons[0].drawButton(true);
-        buttons[1].drawButton();
-        buttons[2].drawButton();
-      }
-      if (b == 1) {
-        buttons[0].drawButton();
-        buttons[1].drawButton(true);
-        buttons[2].drawButton();
-      }
-      if (b == 2) {
-        buttons[0].drawButton();
-        buttons[1].drawButton();
-        buttons[2].drawButton(true);
-      }
+      // //Button has been pressed
+      // if (b == 0) {
+      //   buttons[0].drawButton(true);
+      //   buttons[1].drawButton();
+      //   buttons[2].drawButton();
+      // }
+      // if (b == 1) {
+      //   buttons[0].drawButton();
+      //   buttons[1].drawButton(true);
+      //   buttons[2].drawButton();
+      // }
+      // if (b == 2) {
+      //   buttons[0].drawButton();
+      //   buttons[1].drawButton();
+      //   buttons[2].drawButton(true);
+      // }
  
       // // Button Display
       // if (length_button_state == 1) {
