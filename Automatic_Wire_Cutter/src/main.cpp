@@ -141,7 +141,7 @@ void setupTouchscreen(){
     int y_coord = BUTTON_Y + row * 60;
     for (uint8_t col = 0; col < 6; col++) {
 
-        int x_coord = BUTTON_X + col * (160);
+        int x_coord = BUTTON_X + col * (80);
         buttons[col].initButton(&tft, 
                                           x_coord,
                                           y_coord, // x, y, w, h, outline, fill, text
