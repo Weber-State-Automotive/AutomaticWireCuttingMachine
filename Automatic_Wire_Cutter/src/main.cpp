@@ -107,7 +107,10 @@ float setFeedPosition(float position, float feed_current_pos){
   // if (FEED_stepper.distanceToGo() == 0) 
   //   FEED_stepper.moveTo(-FEED_stepper.currentPosition());
   float current_position = FEED_stepper.currentPosition();
+  Serial.print("current position = ");
+  Serial.print(current_position);
   while(current_position != position){
+    Serial.println("loop");
     FEED_stepper.run();
     current_position = FEED_stepper.currentPosition();
   }
