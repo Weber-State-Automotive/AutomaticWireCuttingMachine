@@ -98,12 +98,11 @@ TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
 
 // ----------Text Box ---------- //
 #define TEXT_X 10
-#define TEXT_Y 10
+#define TEXT_Y 40
 #define TEXT_W 220
 #define TEXT_H 50
 #define TEXT_TSIZE 3
 #define TEXT_TCOLOR MAGENTA
-// the data (phone #) we store in the textfield
 #define TEXT_LEN 12
 char textfield[TEXT_LEN+1] = "";
 uint8_t textfield_i=0;
