@@ -24,8 +24,6 @@ void setup()
   stepper.setEnablePin(25);
   stepper.enableOutputs();
     
-  
-  
 }
  
 void loop()
