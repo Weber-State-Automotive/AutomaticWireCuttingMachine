@@ -17,7 +17,6 @@
 #define LCD_CD A2 // Command/Data goes to Analog 2
 #define LCD_WR A1 // LCD Write goes to Analog 1
 #define LCD_RD A0 // LCD Read goes to Analog 0
-
 #define LCD_RESET A4 // Can alternately just connect to Arduino's reset pin
 
 // Assign human-readable names to some common 16-bit color values:
@@ -98,26 +97,6 @@ boolean cut_stepper_is_homed = false;
 #define FEED_STP_PIN 27
 AccelStepper FEED_stepper(1, FEED_STP_PIN, FEED_DIR_PIN);
 float feed_current_pos = 0;
-
-float setFeedPosition(float position, float feed_current_pos){
-  
-  FEED_stepper.moveTo(position + feed_current_pos);
-  FEED_stepper.run();
-  
-  if (FEED_stepper.distanceToGo() == 0) 
-    FEED_stepper.moveTo(-FEED_stepper.currentPosition());
-  // float current_position = FEED_stepper.currentPosition();
-  // Serial.print("current position = ");
-  // Serial.print(current_position);
-  // while(current_position != position){
-  //   // Serial.println("loop");
-  //   FEED_stepper.run();
-  //   current_position = FEED_stepper.currentPosition();
-  // }
-  
-  return(FEED_stepper.currentPosition());
-
-}
 
 void setupTouchscreen(){
   Serial.println("Setting up Touchscreen...");
@@ -225,24 +204,16 @@ void loop() {
       if (RED_state == 1) {
         Serial.println("RED ON ");
         FEED_stepper.move(-2000);
-        // digitalWrite(RED_LED, HIGH);
-      } else {
-        // digitalWrite(RED_LED, LOW);
       }
       if (GRN_state == 1) {
         Serial.println("GRN");
-        // digitalWrite(GRN_LED, HIGH);
         FEED_stepper.move(-4000);
-      } else {
-        // digitalWrite(GRN_LED, LOW);
       }
       if (BLU_state == 1) {
         Serial.println("BLU");
         FEED_stepper.move(-8000);
        
-      } else {
-        // digitalWrite(BLU_LED, LOW);
-      }
+      } 
  
     } else {
       buttons[b].press(false);  // tell the button it is NOT pressed
@@ -258,18 +229,11 @@ void loop() {
  
     if (buttons[b].justPressed()) {
       buttons[b].drawButton(true);  // draw invert!
- 
- 
       delay(100); // UI debouncing
     }
   }
 
-   
-  //  if (FEED_stepper.distanceToGo() == 0){
-  //    FEED_stepper.moveTo(-FEED_stepper.currentPosition());
-  //  }
    FEED_stepper.run();
-
 }
 
 
