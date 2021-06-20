@@ -35,14 +35,7 @@
 #define GREY    0x8410
 
 
-/******************* UI details */
-#define BUTTON_X 40
-#define BUTTON_Y 180
-#define BUTTON_W 60
-#define BUTTON_H 45
-#define BUTTON_SPACING_X 60
-#define BUTTON_SPACING_Y 30
-#define BUTTON_TEXTSIZE 3
+
 
 // Define pins for resistive touchscreen
 #define YP A2  // must be an analog pin, use "An" notation!
@@ -70,22 +63,7 @@ boolean RED_state = 0;
 boolean GRN_state = 0;
 boolean BLU_state = 0;
 
-// Define button array object
-Adafruit_GFX_Button buttons[2];
 
-// Define arrays with button text and colors
-const char* buttonlabels[3][6] ={ 
-    { "-1", "+1", "-1", "+1", "-1", "+1"}, 
-    { "-10", "+10", "-10", "+10", "-10", "+10"}, 
-    { "-50", "+50", "-50", "+50", "-50", "+50"} };
-uint16_t buttoncolors[6] = {RED, GREEN, BLUE, YELLOW, GREY, CYAN};
-
-// Define Menu Array
-String menu_titles[3] = {
-  "LEN",
-  "QTY",
-  "Strip"
-};
 
 
 
@@ -138,26 +116,79 @@ void setupTouchscreen(){
   tft.setRotation(3);
   tft.fillScreen(BLACK);
   
-  // Draw buttons
-  for (uint8_t row = 0; row < 3; row++){
-    int y_coord = BUTTON_Y + row * 50;
-    for (uint8_t col = 0; col < 6; col++) {
+  /******************* UI details */
+  #define BUTTON_X 40
+  #define BUTTON_Y 180
+  #define BUTTON_W 60
+  #define BUTTON_H 45
+  #define BUTTON_SPACING_X 60
+  #define BUTTON_Padding 20
+  #define BUTTON_SPACING_Y 30
+  #define BUTTON_TEXTSIZE 3
+  
+  #define TITLE_X 40
+  #define TITLE_Y 120
+  int TITLE_W = (BUTTON_W * 2) + BUTTON_Padding;
+  int TITLE_H = BUTTON_H;
+  int TITLE_SPACING_X = TITLE_W + BUTTON_Padding;
+  int TITLE_Padding = BUTTON_Padding;
+  int TITLE_TEXTSIZE = 3;
 
-        int x_coord = BUTTON_X + col * (80);
+  // Define button array object
+  Adafruit_GFX_Button buttons[2];
+
+  // Define arrays with button text and colors
+  const char* buttonlabels[3][6] ={ 
+      { "-1", "+1", "-1", "+1", "-1", "+1"}, 
+      { "-10", "+10", "-10", "+10", "-10", "+10"}, 
+      { "-50", "+50", "-50", "+50", "-50", "+50"} };
+  uint16_t buttoncolors[6] = {RED, GREEN, BLUE, YELLOW, GREY, CYAN};
+
+  // Define Menu Array
+  String menu_titles[3] = {
+    "LEN",
+    "QTY",
+    "Strip"
+  };
+
+  for (uint8_t col = 0; col < 6; col++) {
+
+        int x_coord = TITLE_X + col * (TITLE_W + TITLE_Padding);
         buttons[col].initButton(&tft, 
                                 x_coord,
-                                y_coord, // x, y, w, h, outline, fill, text
+                                TITLE_Y, // x, y, w, h, outline, fill, text
                                 BUTTON_W, 
                                 BUTTON_H, 
                                 WHITE, 
                                 buttoncolors[col],
                                 WHITE,
-                                buttonlabels[row][col], 
+                                buttonlabels[0][col], 
                                 BUTTON_TEXTSIZE);
         buttons[col].drawButton();
     }
+
+
+
+  // // Draw buttons
+  // for (uint8_t row = 0; row < 3; row++){
+  //   int y_coord = BUTTON_Y + row * 50;
+  //   for (uint8_t col = 0; col < 6; col++) {
+
+  //       int x_coord = BUTTON_X + col * (80);
+  //       buttons[col].initButton(&tft, 
+  //                               x_coord,
+  //                               y_coord, // x, y, w, h, outline, fill, text
+  //                               BUTTON_W, 
+  //                               BUTTON_H, 
+  //                               WHITE, 
+  //                               buttoncolors[col],
+  //                               WHITE,
+  //                               buttonlabels[row][col], 
+  //                               BUTTON_TEXTSIZE);
+  //       buttons[col].drawButton();
+  //   }
     
-  }
+  // }
   for (uint8_t col = 0; col < 3; col++) {
     tft.setCursor(TEXT_X + 2 + (col*(160)), TEXT_Y+10);
     tft.setTextColor(TEXT_TCOLOR, BLACK);
