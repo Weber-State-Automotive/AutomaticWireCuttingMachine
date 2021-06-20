@@ -127,6 +127,14 @@ void setupTouchscreen(){
   #define BUTTON_SPACING_Y 30
   #define BUTTON_TEXTSIZE 3
   
+  // Define arrays with button text and colors
+  const char* buttonlabels[3][6] ={ 
+      { "-1", "+1", "-1", "+1", "-1", "+1"}, 
+      { "-10", "+10", "-10", "+10", "-10", "+10"}, 
+      { "-50", "+50", "-50", "+50", "-50", "+50"} };
+  uint16_t buttoncolors[6] = {RED, GREEN, BLUE, YELLOW, GREY, CYAN};
+
+
   #define TITLE_X 40
   #define TITLE_Y 120
   int TITLE_W = (BUTTON_W * 2) + BUTTON_Padding;
@@ -135,13 +143,11 @@ void setupTouchscreen(){
   int TITLE_Padding = BUTTON_Padding;
   int TITLE_TEXTSIZE = 3;
 
-
   // Define arrays with button text and colors
-  const char* buttonlabels[3][6] ={ 
-      { "-1", "+1", "-1", "+1", "-1", "+1"}, 
-      { "-10", "+10", "-10", "+10", "-10", "+10"}, 
-      { "-50", "+50", "-50", "+50", "-50", "+50"} };
-  uint16_t buttoncolors[6] = {RED, GREEN, BLUE, YELLOW, GREY, CYAN};
+  const char* title_labels[3] ={ 
+      { "Length", "Qty", "Strip"}};
+  uint16_t title_colors[3] = {RED, GREEN, BLUE};
+  
 
   // Define Menu Array
   String menu_titles[3] = {
@@ -150,7 +156,7 @@ void setupTouchscreen(){
     "Strip"
   };
 
-  for (uint8_t col = 0; col < 6; col++) {
+  for (uint8_t col = 0; col < 3; col++) {
 
         int x_coord = TITLE_X + col * (TITLE_W + TITLE_Padding);
         buttons[col].initButton(&tft, 
@@ -159,9 +165,9 @@ void setupTouchscreen(){
                                 TITLE_W, 
                                 TITLE_H, 
                                 WHITE, 
-                                buttoncolors[col],
+                                title_colors[col],
                                 WHITE,
-                                buttonlabels[0][col], 
+                                title_labels[col], 
                                 BUTTON_TEXTSIZE);
         buttons[col].drawButton();
     }
