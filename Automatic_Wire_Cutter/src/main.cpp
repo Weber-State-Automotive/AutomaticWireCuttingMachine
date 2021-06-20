@@ -166,7 +166,7 @@ void setupFeedStepper(){
   FEED_stepper.setAcceleration(1000.0);
   FEED_stepper.setCurrentPosition(0);
   FEED_stepper.setPinsInverted(true,true,true);
-  FEED_stepper.moveTo(2048);
+  // FEED_stepper.moveTo(2048);
   FEED_stepper.setEnablePin(FEED_PIN_ENABLE);
   FEED_stepper.enableOutputs();
   Serial.println("Feed Stepper Setup");
@@ -236,7 +236,7 @@ void loop() {
       }
       if (BLU_state == 1) {
         Serial.println("BLU");
-        
+        FEED_stepper.moveTo(2048);
        
       } else {
         // digitalWrite(BLU_LED, LOW);
