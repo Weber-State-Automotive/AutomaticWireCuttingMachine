@@ -298,18 +298,18 @@ void loop() {
     }
   }
  
-  // now we can ask the buttons if their state has changed
-  for (uint8_t b = 0; b < 3; b++) {
-    // if (buttons[b].justReleased()) {
-    //   Serial.print("Released: "); Serial.println(b);
-    //   buttons[b].drawButton();  // draw normal
-    // }
+  // // now we can ask the buttons if their state has changed
+  // for (uint8_t b = 0; b < 3; b++) {
+  //   // if (buttons[b].justReleased()) {
+  //   //   Serial.print("Released: "); Serial.println(b);
+  //   //   buttons[b].drawButton();  // draw normal
+  //   // }
  
-    if (buttons[b].justPressed()) {
-      buttons[b].drawButton(true);  // draw invert!
-      delay(100); // UI debouncing
-    }
-  }
+  //   if (buttons[b].justPressed()) {
+  //     buttons[b].drawButton(true);  // draw invert!
+  //     delay(100); // UI debouncing
+  //   }
+  // }
    FEED_stepper.run();
 
 }
