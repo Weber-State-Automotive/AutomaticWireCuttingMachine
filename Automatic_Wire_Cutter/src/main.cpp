@@ -261,55 +261,56 @@ void loop() {
       buttons[b].press(true);  // tell the button it is pressed
       current_menu_state = current_button_state_list[b];
       Serial.println(current_menu_state);
-      
-      // //Button has been pressed
-      // if (b == 0) {
-      //   buttons[0].drawButton(true);
-      //   buttons[1].drawButton();
-      //   buttons[2].drawButton();
-      // }
-      // if (b == 1) {
-      //   buttons[0].drawButton();
-      //   buttons[1].drawButton(true);
-      //   buttons[2].drawButton();
-      // }
-      // if (b == 2) {
-      //   buttons[0].drawButton();
-      //   buttons[1].drawButton();
-      //   buttons[2].drawButton(true);
-      // }
+      //Button has been pressed
+      if (b == 0) {
+        // Toggle Length button on turn off qty and strip   
+        length_button_state = !length_button_state;
+        // qty_button_state = 0;
+        // strip_button_state = 0;
+        // buttons[1].drawButton();
+        // buttons[2].drawButton();
+      }
+      if (b == 1) {
+        // Toggle qty button on turn off length and strip
+        
+        length_button_state = !length_button_state;
+      }
+      if (b == 2) {
+        // Toggle Blue status
+        strip_button_state = !strip_button_state;
+      }
  
-      // // Button Display
-      // if (length_button_state == 1) {
-      //   Serial.println("Length ON ");
-      //   FEED_stepper.move(-2000);
-      // }
-      // if (qty_button_state == 1) {
-      //   Serial.println("QTY ON");
-      //   FEED_stepper.move(-4000);
-      // }
-      // if (strip_button_state == 1) {
-      //   Serial.println("Strip ON");
-      //   FEED_stepper.move(-8000);   
-      // } 
+      // Button Display
+      if (length_button_state == 1) {
+        Serial.println("Length ON ");
+        FEED_stepper.move(-2000);
+      }
+      if (qty_button_state == 1) {
+        Serial.println("QTY ON");
+        FEED_stepper.move(-4000);
+      }
+      if (strip_button_state == 1) {
+        Serial.println("Strip ON");
+        FEED_stepper.move(-8000);   
+      } 
  
     } else {
       buttons[b].press(false);  // tell the button it is NOT pressed
     }
   }
  
-  // // now we can ask the buttons if their state has changed
-  // for (uint8_t b = 0; b < 3; b++) {
-  //   // if (buttons[b].justReleased()) {
-  //   //   Serial.print("Released: "); Serial.println(b);
-  //   //   buttons[b].drawButton();  // draw normal
-  //   // }
+  // now we can ask the buttons if their state has changed
+  for (uint8_t b = 0; b < 3; b++) {
+    // if (buttons[b].justReleased()) {
+    //   Serial.print("Released: "); Serial.println(b);
+    //   buttons[b].drawButton();  // draw normal
+    // }
  
-  //   if (buttons[b].justPressed()) {
-  //     buttons[b].drawButton(true);  // draw invert!
-  //     delay(100); // UI debouncing
-  //   }
-  // }
+    if (buttons[b].justPressed()) {
+      buttons[b].drawButton(true);  // draw invert!
+      delay(100); // UI debouncing
+    }
+  }
    FEED_stepper.run();
 
 }
