@@ -255,7 +255,10 @@ void loop() {
       if (RED_state == 1) {
         Serial.println("RED ON ");
         FEED_stepper.move(-2000);
-        
+        tft.setCursor(TEXT_X + 12, TEXT_Y+80);
+        tft.setTextColor(TEXT_TCOLOR, BLACK);
+        tft.setTextSize(TEXT_TSIZE);
+        tft.print("100 mm ");
       }
       if (GRN_state == 1) {
         Serial.println("GRN");
