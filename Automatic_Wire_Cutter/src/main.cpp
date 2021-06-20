@@ -38,7 +38,7 @@
 /******************* UI details */
 #define BUTTON_X 40
 #define BUTTON_Y 180
-#define BUTTON_W 80
+#define BUTTON_W 60
 #define BUTTON_H 45
 #define BUTTON_SPACING_X 60
 #define BUTTON_SPACING_Y 30
@@ -77,7 +77,7 @@ Adafruit_GFX_Button buttons[2];
 const char* buttonlabels[3][6] ={ 
     { "-1", "+1", "-1", "+1", "-1", "+1"}, 
     { "-10", "+10", "-10", "+10", "-10", "+10"}, 
-    { "-100", "+100", "-100", "+100", "-100", "+100"} };
+    { "-50", "+50", "-50", "+50", "-50", "+50"} };
 uint16_t buttoncolors[6] = {RED, GREEN, BLUE, YELLOW, GREY, CYAN};
 
 // Define Menu Array
