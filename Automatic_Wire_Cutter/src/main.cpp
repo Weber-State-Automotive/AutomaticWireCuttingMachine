@@ -84,6 +84,19 @@ MCUFRIEND_kbv tft;
 // Last parameter is X-Y resistance, measure or use 300 if unsure
 TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
 
+// ----------Text Box ---------- //
+#define TEXT_X 10
+#define TEXT_Y 10
+#define TEXT_W 220
+#define TEXT_H 50
+#define TEXT_TSIZE 3
+#define TEXT_TCOLOR MAGENTA
+// the data (phone #) we store in the textfield
+#define TEXT_LEN 12
+char textfield[TEXT_LEN+1] = "";
+uint8_t textfield_i=0;
+
+
 #define PIN_SENSOR A8 // Hall effect sensor for determining position of cutter (RED wire to 5V, BLACK wire to GND, BLUE wire to A8)
 
 // ----------Cut Stepper ---------- //
@@ -130,8 +143,15 @@ void setupTouchscreen(){
                                         buttonlabels[col], 
                                         BUTTON_TEXTSIZE);
       buttons[col].drawButton();
-      
   }
+
+
+
+
+
+
+
+
   Serial.println("Touchscreen Setup");
 }
 
@@ -223,6 +243,10 @@ void loop() {
       if (RED_state == 1) {
         Serial.println("RED ON ");
         FEED_stepper.move(-2000);
+        tft.setCursor(TEXT_X + 2, TEXT_Y+10);
+        tft.setTextColor(TEXT_TCOLOR, BLACK);
+        tft.setTextSize(TEXT_TSIZE);
+        tft.print("RED");
       }
       if (GRN_state == 1) {
         Serial.println("GRN");
