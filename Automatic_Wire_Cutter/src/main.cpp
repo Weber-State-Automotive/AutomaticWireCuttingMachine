@@ -128,14 +128,15 @@ void setupTouchscreen(){
   int TITLE_TEXTSIZE = 3;
 
   // ----------Text Box ---------- //
-  #define TEXT_X 10
-  #define TEXT_Y 10
+  #define TEXT_X 60
+  #define TEXT_Y 60
   #define TEXT_TSIZE 8
   int TEXT_W = TITLE_W ;
   int TEXT_H = BUTTON_H *2;
   int TEXT_SPACING_X = TITLE_SPACING_X;
   int TEXT_PADDING = BUTTON_Padding;
   uint8_t textfield_i=0;
+  const char* text_labels[3] = { "000", "000", "000"};
 
   // Define arrays with button text and colors
   const char* title_labels[3] = { "Length", "Qty", "Strip"};
@@ -156,7 +157,7 @@ void setupTouchscreen(){
                                 WHITE, 
                                 title_colors[col],
                                 WHITE,
-                                title_labels[col], 
+                                text_labels[col], 
                                 TEXT_TSIZE);
         buttons[col].drawButton();
   }
