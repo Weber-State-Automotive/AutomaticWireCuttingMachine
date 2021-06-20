@@ -36,7 +36,7 @@
 
 
 /******************* UI details */
-#define BUTTON_X 50
+#define BUTTON_X 40
 #define BUTTON_Y 180
 #define BUTTON_W 80
 #define BUTTON_H 45
@@ -141,7 +141,7 @@ void setupTouchscreen(){
   
   // Draw buttons
   for (uint8_t row = 0; row < 3; row++){
-    int y_coord = BUTTON_Y + row * 40;
+    int y_coord = BUTTON_Y + row * 50;
     for (uint8_t col = 0; col < 6; col++) {
 
         int x_coord = BUTTON_X + col * (80);
