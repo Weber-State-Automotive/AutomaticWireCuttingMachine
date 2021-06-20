@@ -154,7 +154,7 @@ void setupTouchscreen(){
 
         int x_coord = TITLE_X + col * (TITLE_W + TITLE_Padding);
         buttons[col].initButton(&tft, 
-                                TITLE_X,
+                                x_coord,
                                 TITLE_Y, // x, y, w, h, outline, fill, text
                                 TITLE_W, 
                                 TITLE_H, 
