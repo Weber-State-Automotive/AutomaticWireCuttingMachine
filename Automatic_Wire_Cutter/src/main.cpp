@@ -74,7 +74,7 @@ boolean BLU_state = 0;
 Adafruit_GFX_Button buttons[2];
 
 // Define arrays with button text and colors
-const char* buttonlabels[3][4] ={ { "-1", "+1"}, { "-10", "+10"} };
+const char* buttonlabels[3][2] ={ { "-1", "+1"}, { "-10", "+10"}, { "-100", "+100"} };
 uint16_t buttoncolors[6] = {RED, GREEN, BLUE};
 
 // Define Menu Array
@@ -137,11 +137,11 @@ void setupTouchscreen(){
   tft.fillScreen(BLACK);
   
   // Draw buttons
-  for (uint8_t row = 0; row < 2; row++){
-    int y_coord = BUTTON_Y + row * 60;
+  for (uint8_t row = 0; row < 3; row++){
+    int y_coord = BUTTON_Y + row * 40;
     for (uint8_t col = 0; col < 2; col++) {
 
-        int x_coord = BUTTON_X + col * (80);
+        int x_coord = BUTTON_X + col * (90);
         buttons[col].initButton(&tft, 
                                           x_coord,
                                           y_coord, // x, y, w, h, outline, fill, text
