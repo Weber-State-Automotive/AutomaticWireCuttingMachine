@@ -71,10 +71,10 @@ boolean GRN_state = 0;
 boolean BLU_state = 0;
 
 // Define button array object
-Adafruit_GFX_Button buttons[3];
+Adafruit_GFX_Button buttons[2];
 
 // Define arrays with button text and colors
-char buttonlabels[4][5] = {"-1", "+1", "-10", "+10"};
+const char* buttonlabels[3][4] ={ { "-1", "+1"}, { "-10", "+10"} };
 uint16_t buttoncolors[6] = {RED, GREEN, BLUE};
 
 // Define Menu Array
@@ -137,9 +137,9 @@ void setupTouchscreen(){
   tft.fillScreen(BLACK);
   
   // Draw buttons
-  for (uint8_t row = 0; row < 3; row++){
+  for (uint8_t row = 0; row < 2; row++){
     int y_coord = BUTTON_Y + row * 60;
-    for (uint8_t col = 0; col < 3; col++) {
+    for (uint8_t col = 0; col < 2; col++) {
 
         int x_coord = BUTTON_X + col * (80);
         buttons[col].initButton(&tft, 
@@ -148,9 +148,9 @@ void setupTouchscreen(){
                                           BUTTON_W, 
                                           BUTTON_H, 
                                           WHITE, 
-                                          buttoncolors[col], 
+                                          buttoncolors[col],
                                           WHITE,
-                                          buttonlabels[col], 
+                                          buttonlabels[row][col], 
                                           BUTTON_TEXTSIZE);
         buttons[col].drawButton();
     }
