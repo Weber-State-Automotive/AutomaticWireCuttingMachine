@@ -137,21 +137,23 @@ void setupTouchscreen(){
   tft.fillScreen(BLACK);
   
   // Draw buttons
-  for (uint8_t col = 0; col < 3; col++) {
+  for (uint8_t row = 0; row < 4; row++){
+    int y_coord = BUTTON_Y + row * 60;
+    for (uint8_t col = 0; col < 3; col++) {
 
-      int x_coord = BUTTON_X + col * (160);
-      int y_coord = BUTTON_Y;
-      buttons[col].initButton(&tft, 
-                                        x_coord,
-                                        y_coord, // x, y, w, h, outline, fill, text
-                                        BUTTON_W, 
-                                        BUTTON_H, 
-                                        WHITE, 
-                                        buttoncolors[col], 
-                                        WHITE,
-                                        buttonlabels[col], 
-                                        BUTTON_TEXTSIZE);
-      buttons[col].drawButton();
+        int x_coord = BUTTON_X + col * (160);
+        buttons[col].initButton(&tft, 
+                                          x_coord,
+                                          y_coord, // x, y, w, h, outline, fill, text
+                                          BUTTON_W, 
+                                          BUTTON_H, 
+                                          WHITE, 
+                                          buttoncolors[col], 
+                                          WHITE,
+                                          buttonlabels[col], 
+                                          BUTTON_TEXTSIZE);
+        buttons[col].drawButton();
+    }
   }
 
   for (uint8_t col = 0; col < 3; col++) {
@@ -160,36 +162,6 @@ void setupTouchscreen(){
     tft.setTextSize(TEXT_TSIZE);
     tft.print(menu_titles[col]);
   }
-
-  // // Draw menu
-
-  // tft.setCursor(TEXT_X + 2, TEXT_Y+10);
-  // tft.setTextColor(TEXT_TCOLOR, BLACK);
-  // tft.setTextSize(TEXT_TSIZE);
-  // tft.print("Wire");
-  // tft.setCursor(TEXT_X + 2, TEXT_Y+40);
-  // tft.setTextColor(TEXT_TCOLOR, BLACK);
-  // tft.setTextSize(TEXT_TSIZE);
-  // tft.print("Len");
-
-  // tft.setCursor(TEXT_X + 160, TEXT_Y+10);
-  // tft.setTextColor(TEXT_TCOLOR, BLACK);
-  // tft.setTextSize(TEXT_TSIZE);
-  // tft.print("Wire");
-  // tft.setCursor(TEXT_X + 160, TEXT_Y+40);
-  // tft.setTextColor(TEXT_TCOLOR, BLACK);
-  // tft.setTextSize(TEXT_TSIZE);
-  // tft.print("QTY");
-
-
-  // tft.setCursor(TEXT_X + 320, TEXT_Y+10);
-  // tft.setTextColor(TEXT_TCOLOR, BLACK);
-  // tft.setTextSize(TEXT_TSIZE);
-  // tft.print("Strp");
-  // tft.setCursor(TEXT_X + 320, TEXT_Y+40);
-  // tft.setTextColor(TEXT_TCOLOR, BLACK);
-  // tft.setTextSize(TEXT_TSIZE);
-  // tft.print("Len");
 
   Serial.println("Touchscreen Setup");
 }
