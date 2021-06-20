@@ -36,8 +36,8 @@
 
 
 /******************* UI details */
-#define BUTTON_X 20
-#define BUTTON_Y 150
+#define BUTTON_X 60
+#define BUTTON_Y 180
 #define BUTTON_W 80
 #define BUTTON_H 45
 #define BUTTON_SPACING_X 26
