@@ -182,7 +182,7 @@ void setupTouchscreen(){
   // }
   for (uint8_t col = 0; col < 3; col++) {
     tft.setCursor(TEXT_X + 2 + (col*(160)), TEXT_Y+10);
-    tft.setTextColor(TEXT_TCOLOR, BLACK);
+    tft.setTextColor(BLACK, WHITE);
     tft.setTextSize(TEXT_TSIZE);
     tft.print("000");
   }
