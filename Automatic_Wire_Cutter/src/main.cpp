@@ -246,7 +246,7 @@ void loop() {
         tft.setCursor(TEXT_X + 2, TEXT_Y+10);
         tft.setTextColor(TEXT_TCOLOR, BLACK);
         tft.setTextSize(TEXT_TSIZE);
-        tft.print("RED");
+        tft.print("123456789012345678901234567890");
       }
       if (GRN_state == 1) {
         Serial.println("GRN");
@@ -278,18 +278,18 @@ void loop() {
 
    FEED_stepper.run();
 
-   tft.fillScreen(BLACK);
-    showmsgXY(20, 10, 1, NULL, "System x1");
-    showmsgXY(20, 24, 2, NULL, "System x2");
-    showmsgXY(5, 190, 1, NULL, "System Font is drawn from topline");
-    tft.setTextColor(RED, GREY);
-    tft.setTextSize(2);
-    tft.setCursor(0, 220);
-    tft.print("7x5 can overwrite");
-    delay(1000);
-    tft.setCursor(0, 220);
-    tft.print("if background set");
-    delay(1000);
+  //  tft.fillScreen(BLACK);
+  //   showmsgXY(20, 10, 1, NULL, "System x1");
+  //   showmsgXY(20, 24, 2, NULL, "System x2");
+  //   showmsgXY(5, 190, 1, NULL, "System Font is drawn from topline");
+  //   tft.setTextColor(RED, GREY);
+  //   tft.setTextSize(2);
+  //   tft.setCursor(0, 220);
+  //   tft.print("7x5 can overwrite");
+  //   delay(1000);
+  //   tft.setCursor(0, 220);
+  //   tft.print("if background set");
+  //   delay(1000);
 }
 
 
