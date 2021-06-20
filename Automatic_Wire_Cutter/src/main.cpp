@@ -237,7 +237,7 @@ void loop() {
       if (BLU_state == 1) {
         Serial.println("BLU");
         
-       FEED_stepper.move(400);
+       FEED_stepper.moveTo(2048);
       } else {
         // digitalWrite(BLU_LED, LOW);
       }
