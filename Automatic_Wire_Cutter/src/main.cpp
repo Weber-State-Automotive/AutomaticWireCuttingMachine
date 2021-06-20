@@ -236,7 +236,11 @@ void loop() {
       }
       if (BLU_state == 1) {
         Serial.println("BLU");
-        // digitalWrite(BLU_LED, HIGH);
+        
+        FEED_stepper.move(400);
+        if (FEED_stepper.distanceToGo() == 0) 
+          FEED_stepper.moveTo(-FEED_stepper.currentPosition());
+        FEED_stepper.run();
       } else {
         // digitalWrite(BLU_LED, LOW);
       }
