@@ -283,7 +283,8 @@ void loop() {
       }
       if (strip_button_state == 1) {
         Serial.println("Strip ON");
-        FEED_stepper.move(-8000);     
+        FEED_stepper.move(-8000);
+        buttons[0].drawButton(true);    
       } 
  
     } else {
@@ -292,17 +293,17 @@ void loop() {
   }
  
   // now we can ask the buttons if their state has changed
-  for (uint8_t b = 0; b < 3; b++) {
-    // if (buttons[b].justReleased()) {
-    //   Serial.print("Released: "); Serial.println(b);
-    //   buttons[b].drawButton();  // draw normal
-    // }
+  // for (uint8_t b = 0; b < 3; b++) {
+  //   // if (buttons[b].justReleased()) {
+  //   //   Serial.print("Released: "); Serial.println(b);
+  //   //   buttons[b].drawButton();  // draw normal
+  //   // }
  
-    if (buttons[b].justPressed()) {
-      buttons[b].drawButton(true);  // draw invert!
-      delay(100); // UI debouncing
-    }
-  }
+  //   if (buttons[b].justPressed()) {
+  //     buttons[b].drawButton(true);  // draw invert!
+  //     delay(100); // UI debouncing
+  //   }
+  // }
 
    FEED_stepper.run();
 
