@@ -200,11 +200,13 @@ void loop() {
 
   }
 
-  // Go thru all the buttons, checking if they were pressed
+    // Go thru all the buttons, checking if they were pressed
   for (uint8_t b = 0; b < 3; b++) {
-    if ((buttons[b].contains(p.y, p.x)) && p.x > 10)
+    if ((buttons[b].contains(p.x, p.y)) && p.x > 10)
     {
+      Serial.print("Pressing: "); Serial.println(b);
       buttons[b].press(true);  // tell the button it is pressed
+ 
       //Button has been pressed
       if (b == 0) {
         // Toggle Red status
@@ -218,27 +220,48 @@ void loop() {
         // Toggle Blue status
         BLU_state = !BLU_state;
       }
+ 
+      // Button Display
+      if (RED_state == 1) {
+        Serial.println("RED ON ");
+        // digitalWrite(RED_LED, HIGH);
+      } else {
+        // digitalWrite(RED_LED, LOW);
+      }
+      if (GRN_state == 1) {
+        Serial.println("GRN");
+        // digitalWrite(GRN_LED, HIGH);
+      } else {
+        // digitalWrite(GRN_LED, LOW);
+      }
+      if (BLU_state == 1) {
+        Serial.println("BLU");
+        // digitalWrite(BLU_LED, HIGH);
+      } else {
+        // digitalWrite(BLU_LED, LOW);
+      }
+ 
     } else {
       buttons[b].press(false);  // tell the button it is NOT pressed
     }
   }
+ 
+  // now we can ask the buttons if their state has changed
+  for (uint8_t b = 0; b < 3; b++) {
+    if (buttons[b].justReleased()) {
+      Serial.print("Released: "); Serial.println(b);
+      buttons[b].drawButton();  // draw normal
+    }
+ 
+    if (buttons[b].justPressed()) {
+      buttons[b].drawButton(true);  // draw invert!
+ 
+ 
+      delay(100); // UI debouncing
+    }
+  }
 
-  FEED_stepper.moveTo(2048);
 
-  Serial.println("Start Feed");
-  if (FEED_stepper.distanceToGo() == 0) 
-    FEED_stepper.moveTo(-FEED_stepper.currentPosition());
-  FEED_stepper.run();
-  Serial.println("Start End");
-
-  // // feed_current_pos = setFeedPosition(2048,feed_current_pos);
-  // FEED_stepper.run();
-  
-  // if (FEED_stepper.distanceToGo() == 0) 
-  //   FEED_stepper.moveTo(-FEED_stepper.currentPosition());
-  // // float current_position = FEED_stepper.currentPosition();
-  // // Serial.print("current position = ");
-  // // delay(500);
 
 }
 
