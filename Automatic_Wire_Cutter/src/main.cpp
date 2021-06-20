@@ -144,17 +144,11 @@ void setupTouchscreen(){
   int TITLE_TEXTSIZE = 3;
 
   // Define arrays with button text and colors
-  const char* title_labels[3] ={ 
-      { "Length", "Qty", "Strip"}};
+  const char* title_labels[3] = { "Length", "Qty", "Strip"};
   uint16_t title_colors[3] = {RED, GREEN, BLUE};
   
 
-  // Define Menu Array
-  String menu_titles[3] = {
-    "LEN",
-    "QTY",
-    "Strip"
-  };
+  
 
   for (uint8_t col = 0; col < 3; col++) {
 
