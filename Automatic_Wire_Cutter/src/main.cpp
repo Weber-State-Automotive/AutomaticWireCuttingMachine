@@ -135,7 +135,7 @@ void setupTouchscreen(){
   uint16_t buttoncolors[6] = {RED, GREEN, BLUE, YELLOW, GREY, CYAN};
 
 
-  #define TITLE_X 60
+  #define TITLE_X 80
   #define TITLE_Y 120
   int TITLE_W = (BUTTON_W * 2) + BUTTON_Padding;
   int TITLE_H = BUTTON_H;
