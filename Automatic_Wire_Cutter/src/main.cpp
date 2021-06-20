@@ -12,6 +12,10 @@
 #include <TouchScreen.h> // Touchscreen Library
 #include <MCUFRIEND_kbv.h> // Touchscreen Hardware-specific library
 #include <AccelStepper.h>
+#include <Fonts/FreeSans9pt7b.h>
+#include <Fonts/FreeSans12pt7b.h>
+#include <Fonts/FreeSerif12pt7b.h>
+
 
 #define LCD_CS A3 // Chip Select goes to Analog 3
 #define LCD_CD A2 // Command/Data goes to Analog 2
@@ -28,6 +32,8 @@
 #define MAGENTA 0xF81F
 #define YELLOW  0xFFE0
 #define WHITE   0xFFFF
+#define GREY    0x8410
+
 
 /******************* UI details */
 #define BUTTON_X 100
@@ -151,6 +157,19 @@ void setupFeedStepper(){
   Serial.println("Feed Stepper Setup");
 }
 
+void showmsgXY(int x, int y, int sz, const GFXfont *f, const char *msg)
+{
+    int16_t x1, y1;
+    uint16_t wid, ht;
+    tft.drawFastHLine(0, y, tft.width(), WHITE);
+    tft.setFont(f);
+    tft.setCursor(x, y);
+    tft.setTextColor(GREEN);
+    tft.setTextSize(sz);
+    tft.print(msg);
+    delay(1000);
+}
+
 void setup(void) {
 
   Serial.begin(9600);
@@ -234,6 +253,19 @@ void loop() {
   }
 
    FEED_stepper.run();
+
+   tft.fillScreen(BLACK);
+    showmsgXY(20, 10, 1, NULL, "System x1");
+    showmsgXY(20, 24, 2, NULL, "System x2");
+    showmsgXY(5, 190, 1, NULL, "System Font is drawn from topline");
+    tft.setTextColor(RED, GREY);
+    tft.setTextSize(2);
+    tft.setCursor(0, 220);
+    tft.print("7x5 can overwrite");
+    delay(1000);
+    tft.setCursor(0, 220);
+    tft.print("if background set");
+    delay(1000);
 }
 
 
