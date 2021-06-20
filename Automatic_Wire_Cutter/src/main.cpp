@@ -145,6 +145,14 @@ void setupTouchscreen(){
       buttons[col].drawButton();
   }
 
+  tft.setCursor(TEXT_X + 2, TEXT_Y+10);
+  tft.setTextColor(TEXT_TCOLOR, BLACK);
+  tft.setTextSize(TEXT_TSIZE);
+  tft.print("Length of Wire: ");
+  tft.setCursor(TEXT_X + 2, TEXT_Y+20);
+  tft.setTextColor(TEXT_TCOLOR, BLACK);
+  tft.setTextSize(TEXT_TSIZE);
+  tft.print("QTY of Wire: ");
 
 
 
@@ -243,10 +251,7 @@ void loop() {
       if (RED_state == 1) {
         Serial.println("RED ON ");
         FEED_stepper.move(-2000);
-        tft.setCursor(TEXT_X + 2, TEXT_Y+10);
-        tft.setTextColor(TEXT_TCOLOR, BLACK);
-        tft.setTextSize(TEXT_TSIZE);
-        tft.print("123456789012345678901234567890");
+        
       }
       if (GRN_state == 1) {
         Serial.println("GRN");
