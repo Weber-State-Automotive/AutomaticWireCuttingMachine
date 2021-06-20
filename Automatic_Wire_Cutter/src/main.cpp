@@ -130,7 +130,7 @@ void setupTouchscreen(){
   // ----------Text Box ---------- //
   #define TEXT_X 80
   #define TEXT_Y 40
-  #define TEXT_TSIZE 8
+  #define TEXT_TSIZE 6
   int TEXT_W = TITLE_W ;
   int TEXT_H = BUTTON_H *2;
   int TEXT_SPACING_X = TITLE_SPACING_X;
