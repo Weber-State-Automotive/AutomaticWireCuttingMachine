@@ -137,9 +137,9 @@ void setupTouchscreen(){
   tft.fillScreen(BLACK);
   
   // Draw buttons
-  for (uint8_t row = 0; row < 4; row++){
+  for (uint8_t row = 0; row < 3; row++){
     int y_coord = BUTTON_Y + row * 60;
-    for (uint8_t col = 0; col < 3; col++) {
+    for (uint8_t col = 0; col < 6; col++) {
 
         int x_coord = BUTTON_X + col * (160);
         buttons[col].initButton(&tft, 
