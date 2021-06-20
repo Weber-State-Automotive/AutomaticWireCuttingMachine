@@ -16,7 +16,6 @@
 #include <Fonts/FreeSans12pt7b.h>
 #include <Fonts/FreeSerif12pt7b.h>
 
-
 #define LCD_CS A3 // Chip Select goes to Analog 3
 #define LCD_CD A2 // Command/Data goes to Analog 2
 #define LCD_WR A1 // LCD Write goes to Analog 1
@@ -33,9 +32,6 @@
 #define YELLOW  0xFFE0
 #define WHITE   0xFFFF
 #define GREY    0x8410
-
-
-
 
 // Define pins for resistive touchscreen
 #define YP A2  // must be an analog pin, use "An" notation!
@@ -59,14 +55,12 @@
 #define STATUS_Y 65
 
 //Define button states
-boolean RED_state = 0;
-boolean GRN_state = 0;
-boolean BLU_state = 0;
-
+boolean length_button_state = 0;
+boolean qty_button_state = 0;
+boolean strip_button_state = 0;
 
 //Define button array object
-  Adafruit_GFX_Button buttons[2];
-
+Adafruit_GFX_Button buttons[2];
 
 // Define object for TFT (LCD)display
 MCUFRIEND_kbv tft;
@@ -74,18 +68,6 @@ MCUFRIEND_kbv tft;
 // Define object for touchscreen
 // Last parameter is X-Y resistance, measure or use 300 if unsure
 TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
-
-// ----------Text Box ---------- //
-#define TEXT_X 10
-#define TEXT_Y 40
-#define TEXT_W 220
-#define TEXT_H 50
-#define TEXT_TSIZE 3
-#define TEXT_TCOLOR MAGENTA
-#define TEXT_LEN 12
-char textfield[TEXT_LEN+1] = "";
-uint8_t textfield_i=0;
-
 
 #define PIN_SENSOR A8 // Hall effect sensor for determining position of cutter (RED wire to 5V, BLACK wire to GND, BLUE wire to A8)
 
@@ -143,12 +125,20 @@ void setupTouchscreen(){
   int TITLE_Padding = BUTTON_Padding;
   int TITLE_TEXTSIZE = 3;
 
+  // ----------Text Box ---------- //
+  #define TEXT_X 10
+  #define TEXT_Y 40
+  #define TEXT_W 220
+  #define TEXT_H 50
+  #define TEXT_TSIZE 3
+  #define TEXT_TCOLOR MAGENTA
+  #define TEXT_LEN 12
+  char textfield[TEXT_LEN+1] = "";
+  uint8_t textfield_i=0;
+
   // Define arrays with button text and colors
   const char* title_labels[3] = { "Length", "Qty", "Strip"};
-  uint16_t title_colors[3] = {RED, GREEN, BLUE};
-  
-
-  
+  uint16_t title_colors[3] = {RED, GREY, BLUE};
 
   for (uint8_t col = 0; col < 3; col++) {
 
@@ -271,34 +261,29 @@ void loop() {
       //Button has been pressed
       if (b == 0) {
         // Toggle Red status
-        RED_state = !RED_state;
+        length_button_state = !length_button_state;
       }
       if (b == 1) {
         // Toggle Green status
-        GRN_state = !GRN_state;
+        qty_button_state = !qty_button_state;
       }
       if (b == 2) {
         // Toggle Blue status
-        BLU_state = !BLU_state;
+        strip_button_state = !strip_button_state;
       }
  
       // Button Display
-      if (RED_state == 1) {
-        Serial.println("RED ON ");
+      if (length_button_state == 1) {
+        Serial.println("Length ON ");
         FEED_stepper.move(-2000);
-        tft.setCursor(TEXT_X + 150, TEXT_Y+10);
-        tft.setTextColor(TEXT_TCOLOR, BLACK);
-        tft.setTextSize(TEXT_TSIZE);
-        tft.print("100 mm ");
       }
-      if (GRN_state == 1) {
-        Serial.println("GRN");
+      if (qty_button_state == 1) {
+        Serial.println("QTY ON");
         FEED_stepper.move(-4000);
       }
-      if (BLU_state == 1) {
-        Serial.println("BLU");
-        FEED_stepper.move(-8000);
-       
+      if (strip_button_state == 1) {
+        Serial.println("Strip ON");
+        FEED_stepper.move(-8000);     
       } 
  
     } else {
