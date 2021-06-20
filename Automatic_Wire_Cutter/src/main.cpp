@@ -263,9 +263,9 @@ void loop() {
   }
 
    
-   if (FEED_stepper.distanceToGo() == 0){
-     FEED_stepper.moveTo(-FEED_stepper.currentPosition());
-   }
+  //  if (FEED_stepper.distanceToGo() == 0){
+  //    FEED_stepper.moveTo(-FEED_stepper.currentPosition());
+  //  }
    FEED_stepper.run();
 
 }
