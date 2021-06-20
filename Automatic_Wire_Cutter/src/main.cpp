@@ -64,7 +64,8 @@ boolean GRN_state = 0;
 boolean BLU_state = 0;
 
 
-
+//Define button array object
+  Adafruit_GFX_Button buttons[2];
 
 
 // Define object for TFT (LCD)display
@@ -134,8 +135,6 @@ void setupTouchscreen(){
   int TITLE_Padding = BUTTON_Padding;
   int TITLE_TEXTSIZE = 3;
 
-  // Define button array object
-  Adafruit_GFX_Button buttons[2];
 
   // Define arrays with button text and colors
   const char* buttonlabels[3][6] ={ 
