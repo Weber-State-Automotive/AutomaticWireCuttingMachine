@@ -74,7 +74,7 @@ boolean BLU_state = 0;
 Adafruit_GFX_Button buttons[2];
 
 // Define arrays with button text and colors
-const char* buttonlabels[3][2] ={ { "-1", "+1"}, { "-10", "+10"}, { "-100", "+100"} };
+const char* buttonlabels[3][6] ={ { "-1", "+1", "-1", "+1", "-1", "+1"}, { "-10", "+10"}, { "-100", "+100"} };
 uint16_t buttoncolors[6] = {RED, GREEN, BLUE};
 
 // Define Menu Array
@@ -139,7 +139,7 @@ void setupTouchscreen(){
   // Draw buttons
   for (uint8_t row = 0; row < 3; row++){
     int y_coord = BUTTON_Y + row * 50;
-    for (uint8_t col = 0; col < 2; col++) {
+    for (uint8_t col = 0; col < 6; col++) {
 
         int x_coord = BUTTON_X + col * (90);
         buttons[col].initButton(&tft, 
@@ -155,24 +155,6 @@ void setupTouchscreen(){
         buttons[col].drawButton();
     }
     
-  }
-  for (uint8_t row = 0; row < 3; row++){
-    int y_coord = BUTTON_Y + row * 50;
-    for (uint8_t col = 0; col < 2; col++) {
-
-        int x_coord = BUTTON_X + col * (190);
-        buttons[col].initButton(&tft, 
-                                x_coord,
-                                y_coord, // x, y, w, h, outline, fill, text
-                                BUTTON_W, 
-                                BUTTON_H, 
-                                WHITE, 
-                                buttoncolors[col],
-                                WHITE,
-                                buttonlabels[row][col], 
-                                BUTTON_TEXTSIZE);
-        buttons[col].drawButton();
-    }
   }
   for (uint8_t col = 0; col < 3; col++) {
     tft.setCursor(TEXT_X + 2 + (col*(160)), TEXT_Y+10);
