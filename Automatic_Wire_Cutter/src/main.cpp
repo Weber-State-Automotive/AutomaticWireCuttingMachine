@@ -130,17 +130,36 @@ void setupTouchscreen(){
   // ----------Text Box ---------- //
   #define TEXT_X 10
   #define TEXT_Y 10
-  #define TEXT_W 220
-  #define TEXT_H 50
   #define TEXT_TSIZE 8
-  #define TEXT_TCOLOR MAGENTA
-  #define TEXT_LEN 12
-  char textfield[TEXT_LEN+1] = "";
+  int TEXT_W = TITLE_W ;
+  int TEXT_H = BUTTON_H *2;
+  int TEXT_SPACING_X = TITLE_SPACING_X;
+  int TEXT_PADDING = BUTTON_Padding;
   uint8_t textfield_i=0;
 
   // Define arrays with button text and colors
   const char* title_labels[3] = { "Length", "Qty", "Strip"};
   uint16_t title_colors[3] = {RED, GREY, BLUE};
+
+
+  for (uint8_t col = 0; col < 3; col++) {
+    // tft.setCursor(TEXT_X + 2 + (col*(160)), TEXT_Y+10);
+    // tft.setTextColor(BLACK, WHITE);
+    // tft.setTextSize(TEXT_TSIZE);
+    // tft.print("000");
+    int x_coord = TEXT_X + col * (TEXT_W + TEXT_PADDING);
+        buttons[col].initButton(&tft, 
+                                x_coord,
+                                TEXT_Y, // x, y, w, h, outline, fill, text
+                                TEXT_W, 
+                                TEXT_H, 
+                                WHITE, 
+                                title_colors[col],
+                                WHITE,
+                                title_labels[col], 
+                                TEXT_TSIZE);
+        buttons[col].drawButton();
+  }
 
   for (uint8_t col = 0; col < 3; col++) {
 
@@ -156,7 +175,7 @@ void setupTouchscreen(){
                                 title_labels[col], 
                                 BUTTON_TEXTSIZE);
         buttons[col].drawButton();
-    }
+  }
 
 
 
@@ -180,12 +199,7 @@ void setupTouchscreen(){
   //   }
     
   // }
-  for (uint8_t col = 0; col < 3; col++) {
-    tft.setCursor(TEXT_X + 2 + (col*(160)), TEXT_Y+10);
-    tft.setTextColor(BLACK, WHITE);
-    tft.setTextSize(TEXT_TSIZE);
-    tft.print("000");
-  }
+  
 
   Serial.println("Touchscreen Setup");
 }
