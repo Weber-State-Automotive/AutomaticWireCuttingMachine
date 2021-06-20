@@ -102,18 +102,18 @@ float feed_current_pos = 0;
 float setFeedPosition(float position, float feed_current_pos){
   
   FEED_stepper.moveTo(position + feed_current_pos);
-  // FEED_stepper.run();
+  FEED_stepper.run();
   
-  // if (FEED_stepper.distanceToGo() == 0) 
-  //   FEED_stepper.moveTo(-FEED_stepper.currentPosition());
-  float current_position = FEED_stepper.currentPosition();
-  Serial.print("current position = ");
-  Serial.print(current_position);
-  while(current_position != position){
-    Serial.println("loop");
-    FEED_stepper.run();
-    current_position = FEED_stepper.currentPosition();
-  }
+  if (FEED_stepper.distanceToGo() == 0) 
+    FEED_stepper.moveTo(-FEED_stepper.currentPosition());
+  // float current_position = FEED_stepper.currentPosition();
+  // Serial.print("current position = ");
+  // Serial.print(current_position);
+  // while(current_position != position){
+  //   // Serial.println("loop");
+  //   FEED_stepper.run();
+  //   current_position = FEED_stepper.currentPosition();
+  // }
   
   return(FEED_stepper.currentPosition());
 
@@ -166,7 +166,7 @@ void setupFeedStepper(){
   FEED_stepper.setAcceleration(1000.0);
   FEED_stepper.setCurrentPosition(0);
   FEED_stepper.setPinsInverted(true,true,true);
-  FEED_stepper.moveTo(2048);
+  // FEED_stepper.moveTo(2048);
   FEED_stepper.setEnablePin(FEED_PIN_ENABLE);
   FEED_stepper.enableOutputs();
   Serial.println("Feed Stepper Setup");
@@ -223,9 +223,22 @@ void loop() {
     }
   }
 
-  feed_current_pos = setFeedPosition(2048,feed_current_pos);
+  FEED_stepper.moveTo(2048);
 
-  delay(500);
+  Serial.println("Start Feed");
+  if (FEED_stepper.distanceToGo() == 0) 
+    FEED_stepper.moveTo(-FEED_stepper.currentPosition());
+  FEED_stepper.run();
+  Serial.println("Start End");
+
+  // // feed_current_pos = setFeedPosition(2048,feed_current_pos);
+  // FEED_stepper.run();
+  
+  // if (FEED_stepper.distanceToGo() == 0) 
+  //   FEED_stepper.moveTo(-FEED_stepper.currentPosition());
+  // // float current_position = FEED_stepper.currentPosition();
+  // // Serial.print("current position = ");
+  // // delay(500);
 
 }
 
