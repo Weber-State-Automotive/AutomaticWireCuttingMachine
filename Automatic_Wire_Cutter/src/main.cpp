@@ -259,8 +259,8 @@ void loop() {
     {
       Serial.print("Pressing: "); Serial.println(b);
       buttons[b].press(true);  // tell the button it is pressed
-      current_menu_state = current_button_state_list[b];
-      Serial.println(current_menu_state);
+      // current_menu_state = current_button_state_list[b];
+      // Serial.println(current_menu_state);
       //Button has been pressed
       if (b == 0) {
         // Toggle Length button on turn off qty and strip   
