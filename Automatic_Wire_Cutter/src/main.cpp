@@ -77,6 +77,15 @@ Adafruit_GFX_Button buttons[3];
 char buttonlabels[3][5] = {"R", "G", "B"};
 uint16_t buttoncolors[6] = {RED, GREEN, BLUE};
 
+// Define Menu Array
+String menu_titles[3] = {
+  "LEN",
+  "QTY",
+  "Strip"
+};
+
+
+
 // Define object for TFT (LCD)display
 MCUFRIEND_kbv tft;
 
@@ -145,33 +154,42 @@ void setupTouchscreen(){
       buttons[col].drawButton();
   }
 
-  tft.setCursor(TEXT_X + 2, TEXT_Y+10);
-  tft.setTextColor(TEXT_TCOLOR, BLACK);
-  tft.setTextSize(TEXT_TSIZE);
-  tft.print("Wire");
-  tft.setCursor(TEXT_X + 2, TEXT_Y+40);
-  tft.setTextColor(TEXT_TCOLOR, BLACK);
-  tft.setTextSize(TEXT_TSIZE);
-  tft.print("Len");
+  for (uint8_t col = 0; col < 3; col++) {
+    tft.setCursor(TEXT_X + 2 + (col*(80)), TEXT_Y+10);
+    tft.setTextColor(TEXT_TCOLOR, BLACK);
+    tft.setTextSize(TEXT_TSIZE);
+    tft.print(menu_titles[col]);
+  }
 
-  tft.setCursor(TEXT_X + 160, TEXT_Y+10);
-  tft.setTextColor(TEXT_TCOLOR, BLACK);
-  tft.setTextSize(TEXT_TSIZE);
-  tft.print("Wire");
-  tft.setCursor(TEXT_X + 160, TEXT_Y+40);
-  tft.setTextColor(TEXT_TCOLOR, BLACK);
-  tft.setTextSize(TEXT_TSIZE);
-  tft.print("QTY");
+  // // Draw menu
+
+  // tft.setCursor(TEXT_X + 2, TEXT_Y+10);
+  // tft.setTextColor(TEXT_TCOLOR, BLACK);
+  // tft.setTextSize(TEXT_TSIZE);
+  // tft.print("Wire");
+  // tft.setCursor(TEXT_X + 2, TEXT_Y+40);
+  // tft.setTextColor(TEXT_TCOLOR, BLACK);
+  // tft.setTextSize(TEXT_TSIZE);
+  // tft.print("Len");
+
+  // tft.setCursor(TEXT_X + 160, TEXT_Y+10);
+  // tft.setTextColor(TEXT_TCOLOR, BLACK);
+  // tft.setTextSize(TEXT_TSIZE);
+  // tft.print("Wire");
+  // tft.setCursor(TEXT_X + 160, TEXT_Y+40);
+  // tft.setTextColor(TEXT_TCOLOR, BLACK);
+  // tft.setTextSize(TEXT_TSIZE);
+  // tft.print("QTY");
 
 
-  tft.setCursor(TEXT_X + 320, TEXT_Y+10);
-  tft.setTextColor(TEXT_TCOLOR, BLACK);
-  tft.setTextSize(TEXT_TSIZE);
-  tft.print("Strp");
-  tft.setCursor(TEXT_X + 320, TEXT_Y+40);
-  tft.setTextColor(TEXT_TCOLOR, BLACK);
-  tft.setTextSize(TEXT_TSIZE);
-  tft.print("Len");
+  // tft.setCursor(TEXT_X + 320, TEXT_Y+10);
+  // tft.setTextColor(TEXT_TCOLOR, BLACK);
+  // tft.setTextSize(TEXT_TSIZE);
+  // tft.print("Strp");
+  // tft.setCursor(TEXT_X + 320, TEXT_Y+40);
+  // tft.setTextColor(TEXT_TCOLOR, BLACK);
+  // tft.setTextSize(TEXT_TSIZE);
+  // tft.print("Len");
 
   Serial.println("Touchscreen Setup");
 }
