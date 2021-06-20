@@ -74,7 +74,7 @@ boolean BLU_state = 0;
 Adafruit_GFX_Button buttons[3];
 
 // Define arrays with button text and colors
-char buttonlabels[3][5] = {"-1", "+1", "B"};
+char buttonlabels[4][5] = {"-1", "+1", "-10", "+10"};
 uint16_t buttoncolors[6] = {RED, GREEN, BLUE};
 
 // Define Menu Array
