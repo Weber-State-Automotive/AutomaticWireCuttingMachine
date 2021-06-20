@@ -36,11 +36,11 @@
 
 
 /******************* UI details */
-#define BUTTON_X 60
+#define BUTTON_X 50
 #define BUTTON_Y 180
 #define BUTTON_W 80
 #define BUTTON_H 45
-#define BUTTON_SPACING_X 26
+#define BUTTON_SPACING_X 60
 #define BUTTON_SPACING_Y 30
 #define BUTTON_TEXTSIZE 3
 
