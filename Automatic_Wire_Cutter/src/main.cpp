@@ -58,6 +58,8 @@
 boolean length_button_state = 0;
 boolean qty_button_state = 0;
 boolean strip_button_state = 0;
+const char* current_button_state_list[3] = {"length", "qty", "strip"};
+String current_menu_state = current_button_state_list[0];
 
 //Define button array object
 Adafruit_GFX_Button buttons[2];
@@ -257,35 +259,39 @@ void loop() {
     {
       Serial.print("Pressing: "); Serial.println(b);
       buttons[b].press(true);  // tell the button it is pressed
- 
+      current_menu_state = current_button_state_list[b];
+      Serial.println(current_menu_state);
+      
       //Button has been pressed
       if (b == 0) {
-        // Toggle Red status
-        length_button_state = !length_button_state;
+        buttons[0].drawButton(true);
+        buttons[1].drawButton();
+        buttons[2].drawButton();
       }
       if (b == 1) {
-        // Toggle Green status
-        qty_button_state = !qty_button_state;
+        buttons[0].drawButton();
+        buttons[1].drawButton(true);
+        buttons[2].drawButton();
       }
       if (b == 2) {
-        // Toggle Blue status
-        strip_button_state = !strip_button_state;
+        buttons[0].drawButton();
+        buttons[1].drawButton();
+        buttons[2].drawButton(true);
       }
  
-      // Button Display
-      if (length_button_state == 1) {
-        Serial.println("Length ON ");
-        FEED_stepper.move(-2000);
-      }
-      if (qty_button_state == 1) {
-        Serial.println("QTY ON");
-        FEED_stepper.move(-4000);
-      }
-      if (strip_button_state == 1) {
-        Serial.println("Strip ON");
-        FEED_stepper.move(-8000);
-        buttons[0].drawButton(true);    
-      } 
+      // // Button Display
+      // if (length_button_state == 1) {
+      //   Serial.println("Length ON ");
+      //   FEED_stepper.move(-2000);
+      // }
+      // if (qty_button_state == 1) {
+      //   Serial.println("QTY ON");
+      //   FEED_stepper.move(-4000);
+      // }
+      // if (strip_button_state == 1) {
+      //   Serial.println("Strip ON");
+      //   FEED_stepper.move(-8000);   
+      // } 
  
     } else {
       buttons[b].press(false);  // tell the button it is NOT pressed
@@ -293,32 +299,19 @@ void loop() {
   }
  
   // now we can ask the buttons if their state has changed
-  // for (uint8_t b = 0; b < 3; b++) {
-  //   // if (buttons[b].justReleased()) {
-  //   //   Serial.print("Released: "); Serial.println(b);
-  //   //   buttons[b].drawButton();  // draw normal
-  //   // }
+  for (uint8_t b = 0; b < 3; b++) {
+    // if (buttons[b].justReleased()) {
+    //   Serial.print("Released: "); Serial.println(b);
+    //   buttons[b].drawButton();  // draw normal
+    // }
  
-  //   if (buttons[b].justPressed()) {
-  //     buttons[b].drawButton(true);  // draw invert!
-  //     delay(100); // UI debouncing
-  //   }
-  // }
-
+    if (buttons[b].justPressed()) {
+      buttons[b].drawButton(true);  // draw invert!
+      delay(100); // UI debouncing
+    }
+  }
    FEED_stepper.run();
 
-  //  tft.fillScreen(BLACK);
-  //   showmsgXY(20, 10, 1, NULL, "System x1");
-  //   showmsgXY(20, 24, 2, NULL, "System x2");
-  //   showmsgXY(5, 190, 1, NULL, "System Font is drawn from topline");
-  //   tft.setTextColor(RED, GREY);
-  //   tft.setTextSize(2);
-  //   tft.setCursor(0, 220);
-  //   tft.print("7x5 can overwrite");
-  //   delay(1000);
-  //   tft.setCursor(0, 220);
-  //   tft.print("if background set");
-  //   delay(1000);
 }
 
 
