@@ -106,7 +106,12 @@ float setFeedPosition(float position, float feed_current_pos){
   
   // if (FEED_stepper.distanceToGo() == 0) 
   //   FEED_stepper.moveTo(-FEED_stepper.currentPosition());
-  FEED_stepper.run();
+  float current_position = FEED_stepper.currentPosition();
+  while(current_position != position){
+    FEED_stepper.run();
+    current_position = FEED_stepper.currentPosition();
+  }
+  
   return(FEED_stepper.currentPosition());
 
 }
