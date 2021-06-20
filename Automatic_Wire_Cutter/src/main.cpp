@@ -267,17 +267,23 @@ void loop() {
         length_button_state = !length_button_state;
         // qty_button_state = 0;
         // strip_button_state = 0;
-        // buttons[1].drawButton();
-        // buttons[2].drawButton();
+        buttons[0].drawButton(true);
+        buttons[1].drawButton();
+        buttons[2].drawButton();
       }
       if (b == 1) {
-        // Toggle qty button on turn off length and strip
-        
+        // Toggle qty button on turn off length and strip       
         length_button_state = !length_button_state;
+        buttons[0].drawButton();
+        buttons[1].drawButton(true);
+        buttons[2].drawButton();
       }
       if (b == 2) {
         // Toggle Blue status
         strip_button_state = !strip_button_state;
+        buttons[0].drawButton();
+        buttons[1].drawButton();
+        buttons[2].drawButton(true);
       }
  
       // Button Display
