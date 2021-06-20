@@ -141,10 +141,10 @@ void setupTouchscreen(){
   
   // Draw buttons
   for (uint8_t row = 0; row < 3; row++){
-    int y_coord = BUTTON_Y + row * 30;
+    int y_coord = BUTTON_Y + row * 40;
     for (uint8_t col = 0; col < 6; col++) {
 
-        int x_coord = BUTTON_X + col * (90);
+        int x_coord = BUTTON_X + col * (80);
         buttons[col].initButton(&tft, 
                                 x_coord,
                                 y_coord, // x, y, w, h, outline, fill, text
