@@ -162,8 +162,8 @@ void setupCutStepper(){
 void setupFeedStepper(){
   Serial.println("Setting up Feed Stepper...");
   
-  FEED_stepper.setMaxSpeed(10000.0);
-  FEED_stepper.setAcceleration(1000.0);
+  FEED_stepper.setMaxSpeed(50000.0);
+  FEED_stepper.setAcceleration(50000.0);
   FEED_stepper.setCurrentPosition(0);
   FEED_stepper.setPinsInverted(true,true,true);
   // FEED_stepper.moveTo(2048);
@@ -224,6 +224,7 @@ void loop() {
       // Button Display
       if (RED_state == 1) {
         Serial.println("RED ON ");
+        FEED_stepper.move(-2000);
         // digitalWrite(RED_LED, HIGH);
       } else {
         // digitalWrite(RED_LED, LOW);
@@ -231,12 +232,13 @@ void loop() {
       if (GRN_state == 1) {
         Serial.println("GRN");
         // digitalWrite(GRN_LED, HIGH);
+        FEED_stepper.move(-4000);
       } else {
         // digitalWrite(GRN_LED, LOW);
       }
       if (BLU_state == 1) {
         Serial.println("BLU");
-        FEED_stepper.moveTo(2048);
+        FEED_stepper.move(-8000);
        
       } else {
         // digitalWrite(BLU_LED, LOW);
