@@ -265,21 +265,24 @@ void loop() {
       if (b == 0) {
         // Toggle Length button on turn off qty and strip   
         length_button_state = !length_button_state;
-        // qty_button_state = 0;
-        // strip_button_state = 0;
+        qty_button_state = 0;
+        strip_button_state = 0;
         buttons[0].drawButton(true);
         buttons[1].drawButton();
         buttons[2].drawButton();
       }
       if (b == 1) {
         // Toggle qty button on turn off length and strip       
-        length_button_state = !length_button_state;
+        length_button_state = 0;
+        qty_button_state = !qty_button_state;
+        strip_button_state = 0;
         buttons[0].drawButton();
         buttons[1].drawButton(true);
         buttons[2].drawButton();
       }
       if (b == 2) {
-        // Toggle Blue status
+        length_button_state = 0;
+        qty_button_state = 0;
         strip_button_state = !strip_button_state;
         buttons[0].drawButton();
         buttons[1].drawButton();
@@ -289,15 +292,19 @@ void loop() {
       // Button Display
       if (length_button_state == 1) {
         Serial.println("Length ON ");
-        FEED_stepper.move(-2000);
+        current_menu_state = "length";
+        Serial.println(current_menu_state);
+        // FEED_stepper.move(-2000);
       }
       if (qty_button_state == 1) {
         Serial.println("QTY ON");
-        FEED_stepper.move(-4000);
+        current_menu_state = "qty";
+        Serial.println(current_menu_state);
       }
       if (strip_button_state == 1) {
         Serial.println("Strip ON");
-        FEED_stepper.move(-8000);   
+        current_menu_state = "strip";
+        Serial.println(current_menu_state);       
       } 
  
     } else {
