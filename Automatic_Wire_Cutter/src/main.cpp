@@ -128,7 +128,7 @@ void setupTouchscreen(){
   int TITLE_TEXTSIZE = 3;
 
   // ----------Text Box ---------- //
-  #define TEXT_X 60
+  #define TEXT_X 10
   #define TEXT_Y 10
   #define TEXT_W 220
   #define TEXT_H 50
@@ -184,7 +184,7 @@ void setupTouchscreen(){
     tft.setCursor(TEXT_X + 2 + (col*(160)), TEXT_Y+10);
     tft.setTextColor(TEXT_TCOLOR, BLACK);
     tft.setTextSize(TEXT_TSIZE);
-    tft.print("0");
+    tft.print("000");
   }
 
   Serial.println("Touchscreen Setup");
