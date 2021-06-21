@@ -280,12 +280,12 @@ int setMenu(uint8_t b){
 void setUnit(uint8_t function_button){
     Adafruit_GFX_Button unit_button = unit_buttons[function_button];
     
-    if (unit_button.isPressed()){
-      unit_buttons[function_button].drawButton(true);
-    }
-    if (unit_button.justReleased()){
-      unit_buttons[function_button].drawButton();
-    } 
+    // if (unit_button.isPressed()){
+    //   unit_buttons[function_button].drawButton(true);
+    // }
+    // if (unit_button.justReleased()){
+    //   unit_buttons[function_button].drawButton();
+    // } 
 }
 
 
@@ -328,9 +328,16 @@ void loop() {
   // Go thru all the unit buttons, checking if they were pressed
   
   for (uint8_t function_button = 0; function_button < 6; function_button++) {
-      if ((unit_buttons[function_button].contains(p.y, p.x)) && p.x > 10){
-        unit_buttons[function_button].press(true);  // tell the button it is pressed
+      Adafruit_GFX_Button btn = unit_buttons[function_button];
+      if ((btn.contains(p.y, p.x)) && p.x > 10){
+        btn.press(true);  // tell the button it is pressed
         setUnit(function_button);
+        if (btn.justReleased()){
+           btn.drawButton();
+        }
+        if (btn.justPressed()){
+          btn.drawButton(true);
+        }
       }
     
   }
