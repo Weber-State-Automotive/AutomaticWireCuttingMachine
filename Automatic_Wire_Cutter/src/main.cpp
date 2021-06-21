@@ -333,6 +333,11 @@ void loop() {
         btn.press(true);  // tell the button it is pressed
         setUnit(function_button);
       }
+    
+  }
+
+  for (uint8_t function_button = 0; function_button < 6; function_button++) {
+      Adafruit_GFX_Button btn = unit_buttons[function_button];
       if (btn.justReleased()){
         Serial.print("Released");
         btn.drawButton();
@@ -342,7 +347,6 @@ void loop() {
         Serial.print("Pressed");
       }
       delay(100);
-    
   }
  
    FEED_stepper.run();
