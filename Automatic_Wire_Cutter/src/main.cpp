@@ -339,8 +339,9 @@ void loop() {
       }
       if (btn.justPressed()){
         btn.drawButton(true);
-        Serial.print("Released");
+        Serial.print("Pressed");
       }
+      delay(100);
     
   }
  
