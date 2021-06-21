@@ -94,6 +94,12 @@ boolean cut_stepper_is_homed = false;
 AccelStepper FEED_stepper(1, FEED_STP_PIN, FEED_DIR_PIN);
 float feed_current_pos = 0;
 
+// ---------Custom Numbers ---------//
+int wire_length = 0;
+int wire_qty = 1;
+int strip_size = 10;
+
+
 void setupTouchscreen(){
   Serial.println("Setting up Touchscreen...");
   
@@ -271,21 +277,24 @@ void setUnit(uint8_t function_button){
         Serial.println("-1");
         break;
       case 1:
+        wire_length+=1;
         break;
       case 2:
         break;
       case 3:
+        wire_length+=10;
         break;
       case 4:
         break;
       case 5:
+        wire_length+=50;
         break;
       
 
 
 
     }
-    
+    Serial.println(wire_length);
     
 }
 
@@ -334,13 +343,13 @@ void loop() {
         btn.press(true);  // tell the button it is pressed
         setUnit(function_button);
       }
-      if (btn.justReleased()){
-        Serial.print("Released");
-        btn.drawButton();
-      }
-      if (btn.justPressed()){
-        btn.drawButton(true);
-        Serial.print("Pressed");
+      // if (btn.justReleased()){
+      //   Serial.print("Released");
+      //   btn.drawButton();
+      // }
+      // if (btn.justPressed()){
+      //   btn.drawButton(true);
+      //   Serial.print("Pressed");
       }
       delay(10);
     
