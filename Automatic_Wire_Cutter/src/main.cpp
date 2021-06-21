@@ -332,7 +332,7 @@ void loop() {
   }
 
   checkButtonPress(menu_buttons, p);
-
+  checkButtonPress(unit_buttons, p);
     // Go thru all the buttons, checking if they were pressed
   // for (uint8_t b = 0; b < 6; b++) {
   //   if ((menu_buttons[b].contains(p.y, p.x)) && p.x > 10)
