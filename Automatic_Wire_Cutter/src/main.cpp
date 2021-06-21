@@ -156,7 +156,7 @@ void setupTouchscreen(){
     tft.setCursor(TEXT_X + 2 + (col*(160)), TEXT_Y+10);
     tft.setTextColor(WHITE, BLACK);
     tft.setTextSize(TEXT_TSIZE);
-    tft.print("000");
+    tft.print(wire_length);
     // int x_coord = TEXT_X + col * (TEXT_W + TEXT_PADDING);
     //     number_buttons[col].initButton(&tft, 
     //                             x_coord,
