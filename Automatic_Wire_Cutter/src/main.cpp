@@ -271,28 +271,26 @@ int setMenu(uint8_t b){
 }
 
 void setUnit(uint8_t function_button){
-    Serial.println(function_button);
+    // Serial.println(function_button);
     switch (function_button){
       case 0:
-        Serial.println("-1");
+        wire_length-=1;
         break;
       case 1:
         wire_length+=1;
         break;
       case 2:
+        wire_length-=10;
         break;
       case 3:
         wire_length+=10;
         break;
       case 4:
+        wire_length-=50;
         break;
       case 5:
         wire_length+=50;
         break;
-      
-
-
-
     }
     Serial.println(wire_length);
     
@@ -343,6 +341,7 @@ void loop() {
         btn.press(true);  // tell the button it is pressed
         setUnit(function_button);
       }
+      
       // if (btn.justReleased()){
       //   Serial.print("Released");
       //   btn.drawButton();
@@ -351,9 +350,9 @@ void loop() {
       //   btn.drawButton(true);
       //   Serial.print("Pressed");
       // }
-      delay(10);
-    
+      delay(20);
   }
+  
  
    FEED_stepper.run();
 
