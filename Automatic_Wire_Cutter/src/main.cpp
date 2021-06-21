@@ -275,8 +275,8 @@ int setMenu(uint8_t b){
   }
 }
 
-void setUnit(uint8_t b){
-    // unit_buttons[b].drawButton(true);
+void setUnit(uint8_t row,uint8_t col){
+    unit_buttons[row][col].drawButton(true);
     // switch (b) {
       
     //   case 0:
@@ -330,7 +330,7 @@ void loop() {
     for (uint8_t col = 0; col < 2; col++) {
       if ((unit_buttons[row][col].contains(p.y, p.x)) && p.x > 10){
         unit_buttons[row][col].press(true);  // tell the button it is pressed
-        // setUnit(b);
+        setUnit(row, col);
       }
     }
   }
