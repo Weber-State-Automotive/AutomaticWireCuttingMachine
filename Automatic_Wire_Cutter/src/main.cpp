@@ -340,7 +340,7 @@ void loop() {
       if ((btn.contains(p.y, p.x)) && p.x > 10){
         btn.press(true);  // tell the button it is pressed
         setUnit(function_button);
-        tft.setCursor(TEXT_X + 2 + (function_button*(160)), TEXT_Y+10);
+        tft.setCursor(TEXT_X + 2, TEXT_Y+10);
         tft.setTextColor(WHITE, BLACK);
         tft.setTextSize(TEXT_TSIZE);
         tft.print(wire_length);
