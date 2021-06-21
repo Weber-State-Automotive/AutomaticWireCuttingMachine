@@ -137,8 +137,8 @@ void setupTouchscreen(){
   int TITLE_TEXTSIZE = 3;
 
   // ----------Text Box ---------- //
-  #define TEXT_X 80
-  #define TEXT_Y 45
+  #define TEXT_X 20
+  #define TEXT_Y 20
   #define TEXT_TSIZE 6
   int TEXT_W = TITLE_W ;
   int TEXT_H = BUTTON_H *2;
@@ -154,7 +154,7 @@ void setupTouchscreen(){
 
   for (uint8_t col = 0; col < 3; col++) {
     tft.setCursor(TEXT_X + 2 + (col*(160)), TEXT_Y+10);
-    tft.setTextColor(BLACK, WHITE);
+    tft.setTextColor(WHITE, BLACK);
     tft.setTextSize(TEXT_TSIZE);
     tft.print("000");
     // int x_coord = TEXT_X + col * (TEXT_W + TEXT_PADDING);
