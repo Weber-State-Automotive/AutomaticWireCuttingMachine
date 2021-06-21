@@ -344,7 +344,7 @@ void loop() {
         if (wire_length < 10){
           tft.print("00");
         }
-        if (wire_length < 100){
+        else if (wire_length < 100){
           tft.print("0");
         }
         tft.print(wire_length);
