@@ -154,8 +154,8 @@ void setupTouchscreen(){
     tft.setCursor(TEXT_X + 2 + (col*(160)), TEXT_Y+10);
     tft.setTextColor(WHITE, BLACK);
     tft.setTextSize(TEXT_TSIZE);
-    tft.print(" 0");
-    
+    tft.print("  0");
+  }
   for (uint8_t col = 0; col < 3; col++) {
 
         int x_coord = TITLE_X + col * (TITLE_W + TITLE_Padding);
