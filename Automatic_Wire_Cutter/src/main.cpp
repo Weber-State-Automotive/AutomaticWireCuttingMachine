@@ -328,9 +328,10 @@ void loop() {
   // Go thru all the unit buttons, checking if they were pressed
   for (uint8_t row = 0; row < 3; row++) {
     for (uint8_t col = 0; col < 2; col++) {
-    if ((unit_buttons[row][col].contains(p.y, p.x)) && p.x > 10){
-      unit_buttons[row][col].press(true);  // tell the button it is pressed
-      // setUnit(b);
+      if ((unit_buttons[row][col].contains(p.y, p.x)) && p.x > 10){
+        unit_buttons[row][col].press(true);  // tell the button it is pressed
+        // setUnit(b);
+      }
     }
   }
  
