@@ -62,7 +62,10 @@ const char* current_button_state_list[3] = {"length", "qty", "strip"};
 const char* current_menu_state = "length";
 
 //Define button array object
-Adafruit_GFX_Button buttons[2];
+Adafruit_GFX_Button unit_buttons[6];
+Adafruit_GFX_Button number_buttons[3];
+Adafruit_GFX_Button menu_buttons[3];
+
 
 // Define object for TFT (LCD)display
 MCUFRIEND_kbv tft;
@@ -112,10 +115,10 @@ void setupTouchscreen(){
   #define BUTTON_TEXTSIZE 3
   
   // Define arrays with button text and colors
-  const char* buttonlabels[3][6] ={ 
-      { "-1", "+1", "-1", "+1", "-1", "+1"}, 
-      { "-10", "+10", "-10", "+10", "-10", "+10"}, 
-      { "-50", "+50", "-50", "+50", "-50", "+50"} };
+  const char* buttonlabels[3][2] ={ 
+      { "-1", "+1"}, 
+      { "-10", "+10"}, 
+      { "-50", "+50"} };
   uint16_t buttoncolors[6] = {RED, GREEN, BLUE, YELLOW, GREY, CYAN};
 
 
@@ -129,7 +132,7 @@ void setupTouchscreen(){
 
   // ----------Text Box ---------- //
   #define TEXT_X 80
-  #define TEXT_Y 40
+  #define TEXT_Y 45
   #define TEXT_TSIZE 6
   int TEXT_W = TITLE_W ;
   int TEXT_H = BUTTON_H *2;
@@ -149,7 +152,7 @@ void setupTouchscreen(){
     // tft.setTextSize(TEXT_TSIZE);
     // tft.print("000");
     int x_coord = TEXT_X + col * (TEXT_W + TEXT_PADDING);
-        buttons[col].initButton(&tft, 
+        number_buttons[col].initButton(&tft, 
                                 x_coord,
                                 TEXT_Y, // x, y, w, h, outline, fill, text
                                 TEXT_W, 
@@ -159,13 +162,13 @@ void setupTouchscreen(){
                                 WHITE,
                                 text_labels[col], 
                                 TEXT_TSIZE);
-        buttons[col].drawButton();
+        number_buttons[col].drawButton();
   }
 
   for (uint8_t col = 0; col < 3; col++) {
 
         int x_coord = TITLE_X + col * (TITLE_W + TITLE_Padding);
-        buttons[col].initButton(&tft, 
+        menu_buttons[col].initButton(&tft, 
                                 x_coord,
                                 TITLE_Y, // x, y, w, h, outline, fill, text
                                 TITLE_W, 
@@ -175,7 +178,7 @@ void setupTouchscreen(){
                                 WHITE,
                                 title_labels[col], 
                                 BUTTON_TEXTSIZE);
-        buttons[col].drawButton();
+        menu_buttons[col].drawButton();
   }
 
 
@@ -183,10 +186,10 @@ void setupTouchscreen(){
   // Draw buttons
   for (uint8_t row = 0; row < 3; row++){
     int y_coord = BUTTON_Y + row * 50;
-    for (uint8_t col = 0; col < 3; col++) {
+    for (uint8_t col = 0; col < 2; col++) {
 
         int x_coord = BUTTON_X + col * (80);
-        buttons[col].initButton(&tft, 
+        unit_buttons[col].initButton(&tft, 
                                 x_coord,
                                 y_coord, // x, y, w, h, outline, fill, text
                                 BUTTON_W, 
@@ -196,7 +199,7 @@ void setupTouchscreen(){
                                 WHITE,
                                 buttonlabels[row][col], 
                                 BUTTON_TEXTSIZE);
-        buttons[col].drawButton();
+        unit_buttons[col].drawButton();
     }
     
   }
@@ -269,37 +272,37 @@ void loop() {
   }
 
     // Go thru all the buttons, checking if they were pressed
-  for (uint8_t b = 0; b < 3; b++) {
-    if ((buttons[b].contains(p.y, p.x)) && p.x > 10)
+  for (uint8_t b = 0; b < 6; b++) {
+    if ((menu_buttons[b].contains(p.y, p.x)) && p.x > 10)
     {
       Serial.print("Pressing: "); Serial.println(b);
-      buttons[b].press(true);  // tell the button it is pressed
+      menu_buttons[b].press(true);  // tell the button it is pressed
       //Button has been pressed
       if (b == 0) {
         // Toggle Length button on turn off qty and strip   
         length_button_state = !length_button_state;
         qty_button_state = 0;
         strip_button_state = 0;
-        buttons[0].drawButton(true);
-        buttons[1].drawButton();
-        buttons[2].drawButton();
+        menu_buttons[0].drawButton(true);
+        menu_buttons[1].drawButton();
+        menu_buttons[2].drawButton();
       }
       if (b == 1) {
         // Toggle qty button on turn off length and strip       
         length_button_state = 0;
         qty_button_state = !qty_button_state;
         strip_button_state = 0;
-        buttons[0].drawButton();
-        buttons[1].drawButton(true);
-        buttons[2].drawButton();
+        menu_buttons[0].drawButton();
+        menu_buttons[1].drawButton(true);
+        menu_buttons[2].drawButton();
       }
       if (b == 2) {
         length_button_state = 0;
         qty_button_state = 0;
         strip_button_state = !strip_button_state;
-        buttons[0].drawButton();
-        buttons[1].drawButton();
-        buttons[2].drawButton(true);
+        menu_buttons[0].drawButton();
+        menu_buttons[1].drawButton();
+        menu_buttons[2].drawButton(true);
       }
  
       // Button Display
@@ -321,7 +324,7 @@ void loop() {
       } 
  
     } else {
-      buttons[b].press(false);  // tell the button it is NOT pressed
+      menu_buttons[b].press(false);  // tell the button it is NOT pressed
     }
   }
  
