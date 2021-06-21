@@ -341,12 +341,12 @@ void loop() {
         tft.setCursor(TEXT_X + 2, TEXT_Y+10);
         tft.setTextColor(WHITE, BLACK);
         tft.setTextSize(TEXT_TSIZE);
-        char* printed_value = wire_length;
+        char printed_value = wire_length;
         if (wire_length < 10){
-            printed_value = (0,0,wire_length);
+            printed_value = ("0","0",wire_length);
         }
         if( wire_length < 100){
-            printed_value = (0, wire_length);
+            printed_value = ("0", wire_length);
         }
         tft.print(printed_value);
       }
