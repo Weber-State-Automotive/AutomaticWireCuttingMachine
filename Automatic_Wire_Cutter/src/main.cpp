@@ -15,6 +15,7 @@
 #include <Fonts/FreeSans9pt7b.h>
 #include <Fonts/FreeSans12pt7b.h>
 #include <Fonts/FreeSerif12pt7b.h>
+#include <iomanip>
 
 #define LCD_CS A3 // Chip Select goes to Analog 3
 #define LCD_CD A2 // Command/Data goes to Analog 2
@@ -343,7 +344,8 @@ void loop() {
         tft.setCursor(TEXT_X + 2, TEXT_Y+10);
         tft.setTextColor(WHITE, BLACK);
         tft.setTextSize(TEXT_TSIZE);
-        tft.print(wire_length);
+        
+        tft.print(std::stringstream << std::setfill('0') << std::setw(3) << wire_length);
       }
       
       // if (btn.justReleased()){
