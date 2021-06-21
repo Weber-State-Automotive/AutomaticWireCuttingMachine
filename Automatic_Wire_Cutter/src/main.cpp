@@ -314,6 +314,7 @@ void loop() {
       menu_buttons[b].press(true);  // tell the button it is pressed
       setMenu(b);
     }
+  }
   //     if (b == 0) {
   //       // Toggle Length button on turn off qty and strip   
   //       length_button_state = !length_button_state;
