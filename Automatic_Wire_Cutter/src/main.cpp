@@ -278,7 +278,14 @@ int setMenu(uint8_t b){
 }
 
 void setUnit(uint8_t function_button){
-    unit_buttons[function_button].drawButton(true);
+    Adafruit_GFX_Button unit_button = unit_buttons[function_button];
+    
+    if (unit_button.isPressed()){
+      unit_buttons[function_button].drawButton(true);
+    }
+    if (unit_button.justReleased()){
+      unit_buttons[function_button].drawButton();
+    } 
 }
 
 
