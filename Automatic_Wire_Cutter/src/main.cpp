@@ -278,14 +278,27 @@ int setMenu(uint8_t b){
 }
 
 void setUnit(uint8_t function_button){
-    Adafruit_GFX_Button unit_button = unit_buttons[function_button];
+    switch (function_button){
+      case 0:
+        Serial.println(-1);
+        break;
+      case 1:
+        break;
+      case 2:
+        break;
+      case 3:
+        break;
+      case 4:
+        break;
+      case 5:
+        break;
+      
+
+
+
+    }
     
-    // if (unit_button.isPressed()){
-    //   unit_buttons[function_button].drawButton(true);
-    // }
-    // if (unit_button.justReleased()){
-    //   unit_buttons[function_button].drawButton();
-    // } 
+    
 }
 
 
@@ -333,11 +346,6 @@ void loop() {
         btn.press(true);  // tell the button it is pressed
         setUnit(function_button);
       }
-    
-  }
-
-  for (uint8_t function_button = 0; function_button < 6; function_button++) {
-      Adafruit_GFX_Button btn = unit_buttons[function_button];
       if (btn.justReleased()){
         Serial.print("Released");
         btn.drawButton();
@@ -346,7 +354,8 @@ void loop() {
         btn.drawButton(true);
         Serial.print("Pressed");
       }
-      delay(100);
+      delay(50);
+    
   }
  
    FEED_stepper.run();
