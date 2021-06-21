@@ -243,64 +243,41 @@ void showmsgXY(int x, int y, int sz, const GFXfont *f, const char *msg)
     delay(1000);
 }
 
-void checkButtonPress(Adafruit_GFX_Button buttonGroup[], TSPoint p){
-  for (uint8_t b = 0; b < 6; b++) {
-    if ((buttonGroup[b].contains(p.y, p.x)) && p.x > 10)
-    {
-      Serial.print("Pressing: "); Serial.println(b);
-      buttonGroup[b].press(true);  // tell the button it is pressed
-      //Button has been pressed
-      if (b == 0) {
-        // Toggle Length button on turn off qty and strip   
-        length_button_state = !length_button_state;
-        qty_button_state = 0;
-        strip_button_state = 0;
-        buttonGroup[0].drawButton(true);
-        buttonGroup[1].drawButton();
-        buttonGroup[2].drawButton();
-      }
-      if (b == 1) {
-        // Toggle qty button on turn off length and strip       
-        length_button_state = 0;
-        qty_button_state = !qty_button_state;
-        strip_button_state = 0;
-        buttonGroup[0].drawButton();
-        buttonGroup[1].drawButton(true);
-        buttonGroup[2].drawButton();
-      }
-      if (b == 2) {
-        length_button_state = 0;
-        qty_button_state = 0;
-        strip_button_state = !strip_button_state;
-        buttonGroup[0].drawButton();
-        buttonGroup[1].drawButton();
-        buttonGroup[2].drawButton(true);
-      }
- 
-      // Button Display
-      if (length_button_state == 1) {
-        Serial.println("Length ON ");
-        current_menu_state = "length";
-        Serial.println(current_menu_state);
-        // FEED_stepper.move(-2000);
-      }
-      if (qty_button_state == 1) {
-        Serial.println("QTY ON");
-        current_menu_state = "qty";
-        Serial.println(current_menu_state);
-      }
-      if (strip_button_state == 1) {
-        Serial.println("Strip ON");
-        current_menu_state = "strip";
-        Serial.println(current_menu_state);       
-      } 
- 
-    } else {
-      buttonGroup[b].press(false);  // tell the button it is NOT pressed
-    }
+int setMenu(uint8_t b){
+  if (b == 0) {
+    // Toggle Length button on turn off qty and strip   
+    length_button_state = !length_button_state;
+    qty_button_state = 0;
+    strip_button_state = 0;
+    menu_buttons[0].drawButton(true);
+    menu_buttons[1].drawButton();
+    menu_buttons[2].drawButton();
+    return 0;
+  }
+  if (b == 1) {
+    // Toggle qty button on turn off length and strip       
+    length_button_state = 0;
+    qty_button_state = !qty_button_state;
+    strip_button_state = 0;
+    menu_buttons[0].drawButton();
+    menu_buttons[1].drawButton(true);
+    menu_buttons[2].drawButton();
+    return 1;
+  }
+  if (b == 2) {
+    length_button_state = 0;
+    qty_button_state = 0;
+    strip_button_state = !strip_button_state;
+    menu_buttons[0].drawButton();
+    menu_buttons[1].drawButton();
+    menu_buttons[2].drawButton(true);
+    return 2;
   }
 }
 
+void setUnit(){
+
+}
 
 
 void setup(void) {
@@ -330,16 +307,13 @@ void loop() {
     p.y = map(p.y, TS_MINY, TS_MAXY, tft.width(),0);
 
   }
-
-  checkButtonPress(menu_buttons, p);
-  checkButtonPress(unit_buttons, p);
-    // Go thru all the buttons, checking if they were pressed
-  // for (uint8_t b = 0; b < 6; b++) {
-  //   if ((menu_buttons[b].contains(p.y, p.x)) && p.x > 10)
-  //   {
-  //     Serial.print("Pressing: "); Serial.println(b);
-  //     menu_buttons[b].press(true);  // tell the button it is pressed
-  //     //Button has been pressed
+  
+  // Go thru all the buttons, checking if they were pressed
+  for (uint8_t b = 0; b < 6; b++) {
+    if ((menu_buttons[b].contains(p.y, p.x)) && p.x > 10){
+      menu_buttons[b].press(true);  // tell the button it is pressed
+      setMenu(b);
+    }
   //     if (b == 0) {
   //       // Toggle Length button on turn off qty and strip   
   //       length_button_state = !length_button_state;
