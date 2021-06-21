@@ -334,10 +334,12 @@ void loop() {
         setUnit(function_button);
       }
       if (btn.justReleased()){
+        Serial.print("Released");
         btn.drawButton();
       }
       if (btn.justPressed()){
         btn.drawButton(true);
+        Serial.print("Released");
       }
     
   }
