@@ -232,19 +232,6 @@ void setupFeedStepper(){
   Serial.println("Feed Stepper Setup");
 }
 
-void showmsgXY(int x, int y, int sz, const GFXfont *f, const char *msg)
-{
-    int16_t x1, y1;
-    uint16_t wid, ht;
-    tft.drawFastHLine(0, y, tft.width(), WHITE);
-    tft.setFont(f);
-    tft.setCursor(x, y);
-    tft.setTextColor(GREEN);
-    tft.setTextSize(sz);
-    tft.print(msg);
-    delay(1000);
-}
-
 int setMenu(uint8_t b){
   if (b == 0) {
     // Toggle Length button on turn off qty and strip   
@@ -278,9 +265,10 @@ int setMenu(uint8_t b){
 }
 
 void setUnit(uint8_t function_button){
+    Serial.println(function_button);
     switch (function_button){
       case 0:
-        Serial.println(-1);
+        Serial.println("-1");
         break;
       case 1:
         break;
@@ -354,7 +342,7 @@ void loop() {
         btn.drawButton(true);
         Serial.print("Pressed");
       }
-      delay(50);
+      delay(10);
     
   }
  
