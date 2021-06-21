@@ -290,6 +290,9 @@ void setUnit(uint8_t function_button){
         wire_length+=50;
         break;
     }
+    if (wire_length < 0){
+      wire_length = 0;
+    }
     Serial.println(wire_length);
     
 }
@@ -349,15 +352,6 @@ void loop() {
         }
         tft.print(wire_length);
       }
-      
-      // if (btn.justReleased()){
-      //   Serial.print("Released");
-      //   btn.drawButton();
-      // }
-      // if (btn.justPressed()){
-      //   btn.drawButton(true);
-      //   Serial.print("Pressed");
-      // }
       delay(20);
   }
   
