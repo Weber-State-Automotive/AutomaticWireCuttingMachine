@@ -154,21 +154,8 @@ void setupTouchscreen(){
     tft.setCursor(TEXT_X + 2 + (col*(160)), TEXT_Y+10);
     tft.setTextColor(WHITE, BLACK);
     tft.setTextSize(TEXT_TSIZE);
-    tft.print(wire_length);
-    // int x_coord = TEXT_X + col * (TEXT_W + TEXT_PADDING);
-    //     number_buttons[col].initButton(&tft, 
-    //                             x_coord,
-    //                             TEXT_Y, // x, y, w, h, outline, fill, text
-    //                             TEXT_W, 
-    //                             TEXT_H, 
-    //                             WHITE, 
-    //                             title_colors[col],
-    //                             WHITE,
-    //                             text_labels[col], 
-    //                             TEXT_TSIZE);
-    //     number_buttons[col].drawButton();
-  }
-
+    tft.print(" 0");
+    
   for (uint8_t col = 0; col < 3; col++) {
 
         int x_coord = TITLE_X + col * (TITLE_W + TITLE_Padding);
@@ -345,10 +332,10 @@ void loop() {
         tft.setTextColor(WHITE, BLACK);
         tft.setTextSize(TEXT_TSIZE);
         if (wire_length < 10){
-          tft.print("00");
+          tft.print("  ");
         }
         else if (wire_length < 100){
-          tft.print("0");
+          tft.print(" ");
         }
         tft.print(wire_length);
       }
