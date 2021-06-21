@@ -340,6 +340,7 @@ void loop() {
       if ((btn.contains(p.y, p.x)) && p.x > 10){
         btn.press(true);  // tell the button it is pressed
         setUnit(function_button);
+        tft.print(wire_length);
       }
       
       // if (btn.justReleased()){
