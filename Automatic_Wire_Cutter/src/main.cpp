@@ -157,18 +157,18 @@ void setupTouchscreen(){
     tft.setTextColor(BLACK, WHITE);
     tft.setTextSize(TEXT_TSIZE);
     tft.print("000");
-    int x_coord = TEXT_X + col * (TEXT_W + TEXT_PADDING);
-        number_buttons[col].initButton(&tft, 
-                                x_coord,
-                                TEXT_Y, // x, y, w, h, outline, fill, text
-                                TEXT_W, 
-                                TEXT_H, 
-                                WHITE, 
-                                title_colors[col],
-                                WHITE,
-                                text_labels[col], 
-                                TEXT_TSIZE);
-        number_buttons[col].drawButton();
+    // int x_coord = TEXT_X + col * (TEXT_W + TEXT_PADDING);
+    //     number_buttons[col].initButton(&tft, 
+    //                             x_coord,
+    //                             TEXT_Y, // x, y, w, h, outline, fill, text
+    //                             TEXT_W, 
+    //                             TEXT_H, 
+    //                             WHITE, 
+    //                             title_colors[col],
+    //                             WHITE,
+    //                             text_labels[col], 
+    //                             TEXT_TSIZE);
+    //     number_buttons[col].drawButton();
   }
 
   for (uint8_t col = 0; col < 3; col++) {
