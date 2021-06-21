@@ -62,7 +62,7 @@ const char* current_button_state_list[3] = {"length", "qty", "strip"};
 const char* current_menu_state = "length";
 
 //Define button array object
-Adafruit_GFX_Button unit_buttons[6];
+Adafruit_GFX_Button unit_buttons[3][2];
 Adafruit_GFX_Button number_buttons[3];
 Adafruit_GFX_Button menu_buttons[3];
 
@@ -189,7 +189,7 @@ void setupTouchscreen(){
     for (uint8_t col = 0; col < 2; col++) {
 
         int x_coord = BUTTON_X + col * (80);
-        unit_buttons[col].initButton(&tft, 
+        unit_buttons[row][col].initButton(&tft, 
                                 x_coord,
                                 y_coord, // x, y, w, h, outline, fill, text
                                 BUTTON_W, 
@@ -199,7 +199,7 @@ void setupTouchscreen(){
                                 WHITE,
                                 buttonlabels[row][col], 
                                 BUTTON_TEXTSIZE);
-        unit_buttons[col].drawButton();
+        unit_buttons[row][col].drawButton();
     }
     
   }
@@ -276,7 +276,7 @@ int setMenu(uint8_t b){
 }
 
 void setUnit(uint8_t b){
-    unit_buttons[b].drawButton(true);
+    // unit_buttons[b].drawButton(true);
     // switch (b) {
       
     //   case 0:
@@ -326,10 +326,11 @@ void loop() {
   }
 
   // Go thru all the unit buttons, checking if they were pressed
-  for (uint8_t b = 0; b < 6; b++) {
-    if ((unit_buttons[b].contains(p.y, p.x)) && p.x > 10){
-      unit_buttons[b].press(true);  // tell the button it is pressed
-      setUnit(b);
+  for (uint8_t row = 0; row < 3; row++) {
+    for (uint8_t col = 0; col < 2; col++) {
+    if ((unit_buttons[row][col].contains(p.y, p.x)) && p.x > 10){
+      unit_buttons[row][col].press(true);  // tell the button it is pressed
+      // setUnit(b);
     }
   }
  
