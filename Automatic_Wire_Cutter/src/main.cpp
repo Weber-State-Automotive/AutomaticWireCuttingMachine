@@ -53,17 +53,13 @@
 #define STATUS_Y 65
 
 //Define button states
-boolean length_button_state = 0;
-boolean qty_button_state = 0;
-boolean strip_button_state = 0;
 const char* current_button_state_list[3] = {"length", "qty", "strip"};
-const char* current_menu_state = "length";
+const char* current_menu_state = current_button_state_list[0];
 
 //Define button array object
 Adafruit_GFX_Button unit_buttons[6];
 Adafruit_GFX_Button number_buttons[3];
 Adafruit_GFX_Button menu_buttons[3];
-
 
 // Define object for TFT (LCD)display
 MCUFRIEND_kbv tft;
@@ -146,7 +142,7 @@ void setupTouchscreen(){
   const char* text_labels[3] = { "000", "000", "000"};
 
   // Define arrays with button text and colors
-  const char* title_labels[3] = { "Length", "Qty", "Strip"};
+  const char* menu_labels[3] = { "Length", "Qty", "Strip"};
   uint16_t title_colors[3] = {RED, GREY, BLUE};
 
 
@@ -167,12 +163,12 @@ void setupTouchscreen(){
                                 WHITE, 
                                 title_colors[col],
                                 WHITE,
-                                title_labels[col], 
+                                menu_labels[col], 
                                 BUTTON_TEXTSIZE);
         menu_buttons[col].drawButton();
   }
 
-
+  setButtonState(0,1,2); //Make length the active button
 
   // Draw buttons
   int function_button = 0;
