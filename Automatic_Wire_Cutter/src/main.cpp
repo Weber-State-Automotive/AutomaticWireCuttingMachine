@@ -108,6 +108,13 @@ int wire_strip_length = 10;
 int cut_values [3] = {wire_length, wire_qty, wire_strip_length};
 
 /**========================================================================
+ **                           Menu field variables
+ *========================================================================**/
+
+const char* current_button_state_list[3] = {"length", "qty", "strip"};
+const char* current_menu_state = current_button_state_list[0];
+
+/**========================================================================
  **                           Feed stepper variables
  *========================================================================**/
 #define FEED_PIN_ENABLE 25
@@ -130,9 +137,10 @@ void setButtonState(int activeButton, int inactiveButton1, int inactiveButton2){
   menu_buttons[activeButton].drawButton(true);
   menu_buttons[inactiveButton1].drawButton();
   menu_buttons[inactiveButton2].drawButton();
+  current_menu_state = current_button_state_list[activeButton];
 }
 
- /**========================================================================
+ /**================================================================================================
   **                           setTextValue
   *?  Sets the value of the text field based on the place
   *@param value int the value to set  
@@ -141,7 +149,7 @@ void setButtonState(int activeButton, int inactiveButton1, int inactiveButton2){
                           1 -> qty
                           2 -> strip   
   *@return void
-  *========================================================================**/
+  *===============================================================================================**/
 void setTextValue(int value, int place){
   
     tft.setCursor(TEXT_X + 2 + (place*(160)), TEXT_Y+10);
@@ -156,17 +164,17 @@ void setTextValue(int value, int place){
     tft.print(value);
 }
 
-/**========================================================================
- **                           setupTouchscreen
+/**================================================================================================
+ **                                   setupTouchscreen
  *?  Draws the buttons and textfields for the touchscreen 
  *@return void
- *========================================================================**/
+ *================================================================================================**/
 
 void setupTouchscreen(){
   Serial.println("Setting up Touchscreen...");
   
   /**========================================================================
-   *                           Setup the Touchscreen Display
+   **                           Setup the Touchscreen Display
    *========================================================================**/
   tft.reset();
   uint16_t identifier = 0x9486;
@@ -174,22 +182,19 @@ void setupTouchscreen(){
   tft.setRotation(3);
   tft.fillScreen(BLACK);
   //Define button states
-  const char* current_button_state_list[3] = {"length", "qty", "strip"};
-  const char* current_menu_state = current_button_state_list[0];
+  
 
   /**========================================================================
-   *                           Setup the text field
-   * 
-   *  ? There are three text fields
-   *  TODO initialize fields with preset values
+   **                           Setup the text field
    *========================================================================**/
   setTextValue(wire_length,0);
   setTextValue(wire_qty,1);
   setTextValue(wire_strip_length,2);
   
-  /* -------------------------------------------------------------------------- */
-  /*                                Unit buttons                                */
-  /* -------------------------------------------------------------------------- */
+  /**========================================================================
+   **                           Create Unit buttons 
+   *========================================================================**/
+  
   #define BUTTON_X 40
   #define BUTTON_Y 180
   #define BUTTON_W 60
@@ -226,9 +231,10 @@ void setupTouchscreen(){
     }
     
   }
-  /* -------------------------------------------------------------------------- */
-  /*                                Menu buttons                                */
-  /* -------------------------------------------------------------------------- */
+
+  /**========================================================================
+   **                           Create Menu Buttons
+   *========================================================================**/
   #define TITLE_X 80
   #define TITLE_Y 120
   int TITLE_W = (BUTTON_W * 2) + BUTTON_Padding;
@@ -255,11 +261,13 @@ void setupTouchscreen(){
                                 BUTTON_TEXTSIZE);
         menu_buttons[col].drawButton();
   }
-
 /* ---------------------- Make length the active button --------------------- */
-  setButtonState(0,1,2); //
+  setButtonState(0,1,2);
   Serial.println("Touchscreen Setup");
 }
+/*============================ END OF Touchscreen Setup ============================*/
+
+
 
 /**========================================================================
  **                           Setup Cutting Stepper Motor
@@ -371,6 +379,7 @@ void loop() {
     if ((menu_buttons[b].contains(p.y, p.x)) && p.x > 10){
       menu_buttons[b].press(true);  // tell the button it is pressed
       setMenuSelection(b);
+      setMenuState = 
     }
   }
 
