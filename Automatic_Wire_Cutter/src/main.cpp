@@ -111,8 +111,7 @@ int cut_values [3] = {wire_length, wire_qty, wire_strip_length};
  **                           Menu field variables
  *========================================================================**/
 
-const char* current_button_state_list[3] = {"length", "qty", "strip"};
-const char* current_menu_state = current_button_state_list[0];
+int current_menu_state = 0;
 
 /**========================================================================
  **                           Feed stepper variables
@@ -137,7 +136,7 @@ void setButtonState(int activeButton, int inactiveButton1, int inactiveButton2){
   menu_buttons[activeButton].drawButton(true);
   menu_buttons[inactiveButton1].drawButton();
   menu_buttons[inactiveButton2].drawButton();
-  current_menu_state = current_button_state_list[activeButton];
+  current_menu_state = activeButton;
 }
 
  /**================================================================================================
@@ -318,33 +317,31 @@ int setMenuSelection(uint8_t b){
 /**========================================================================
  **                           Set which multiple to use
  *========================================================================**/
-int setMultiple(uint8_t function_button){
+void setMultiple(uint8_t function_button){
     // Serial.println(function_button);
     switch (function_button){
       case 0:
-        wire_length-=1;
+        cut_values[current_menu_state]-=1;
         break;
       case 1:
-        wire_length+=1;
+        cut_values[current_menu_state]-=1;
         break;
       case 2:
-        wire_length-=10;
+        cut_values[current_menu_state]-=1;
         break;
       case 3:
-        wire_length+=10;
+        cut_values[current_menu_state]-=1;
         break;
       case 4:
-        wire_length-=50;
+        cut_values[current_menu_state]-=1;
         break;
       case 5:
-        wire_length+=50;
+        cut_values[current_menu_state]-=1;
         break;
     }
-    if (wire_length < 0){
-      wire_length = 0;
+    if (cut_values[current_menu_state] < 0){
+      cut_values[current_menu_state] = 0;
     }
-    Serial.println(wire_length);
-    
 }
 
 void setup(void) {
@@ -389,6 +386,7 @@ void loop() {
       if ((btn.contains(p.y, p.x)) && p.x > 10){
         btn.press(true);  // tell the button it is pressed
         setMultiple(function_button);
+        setTextValue(cut_values[current_menu_state], current_menu_state);
         // tft.setCursor(TEXT_X + 2, TEXT_Y+10);
         // tft.setTextColor(WHITE, BLACK);
         // tft.setTextSize(TEXT_TSIZE);
