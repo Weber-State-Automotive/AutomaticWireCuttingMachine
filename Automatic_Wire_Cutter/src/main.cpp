@@ -318,7 +318,7 @@ int setMenuSelection(uint8_t b){
 /**========================================================================
  **                           Set which multiple to use
  *========================================================================**/
-void setMultiple(uint8_t function_button){
+int setMultiple(uint8_t function_button){
     // Serial.println(function_button);
     switch (function_button){
       case 0:
@@ -379,7 +379,6 @@ void loop() {
     if ((menu_buttons[b].contains(p.y, p.x)) && p.x > 10){
       menu_buttons[b].press(true);  // tell the button it is pressed
       setMenuSelection(b);
-      setMenuState = 
     }
   }
 
@@ -390,16 +389,16 @@ void loop() {
       if ((btn.contains(p.y, p.x)) && p.x > 10){
         btn.press(true);  // tell the button it is pressed
         setMultiple(function_button);
-        tft.setCursor(TEXT_X + 2, TEXT_Y+10);
-        tft.setTextColor(WHITE, BLACK);
-        tft.setTextSize(TEXT_TSIZE);
-        if (wire_length < 10){
-          tft.print("  ");
-        }
-        else if (wire_length < 100){
-          tft.print(" ");
-        }
-        tft.print(wire_length);
+        // tft.setCursor(TEXT_X + 2, TEXT_Y+10);
+        // tft.setTextColor(WHITE, BLACK);
+        // tft.setTextSize(TEXT_TSIZE);
+        // if (wire_length < 10){
+        //   tft.print("  ");
+        // }
+        // else if (wire_length < 100){
+        //   tft.print(" ");
+        // }
+        // tft.print(wire_length);
       }
       delay(20);
   }
