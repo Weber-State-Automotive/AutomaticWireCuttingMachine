@@ -378,17 +378,10 @@ void loop() {
         btn.press(true);  // tell the button it is pressed
         int change_number_by = setMultiple(function_button);
         Serial.println(change_number_by);
+        Serial.println('cut value');
+        Serial.println(cut_values[current_menu_state]);
         setTextValue(current_menu_state, cut_values[current_menu_state]);
-        // tft.setCursor(TEXT_X + 2, TEXT_Y+10);
-        // tft.setTextColor(WHITE, BLACK);
-        // tft.setTextSize(TEXT_TSIZE);
-        // if (wire_length < 10){
-        //   tft.print("  ");
-        // }
-        // else if (wire_length < 100){
-        //   tft.print(" ");
-        // }
-        // tft.print(wire_length);
+        
       }
       delay(20);
   }
