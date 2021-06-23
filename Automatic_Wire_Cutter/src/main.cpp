@@ -386,7 +386,7 @@ void loop() {
       if ((btn.contains(p.y, p.x)) && p.x > 10){
         btn.press(true);  // tell the button it is pressed
         setMultiple(function_button);
-        setTextValue(cut_values[current_menu_state], current_menu_state);
+        setTextValue(current_menu_state, cut_values[current_menu_state]);
         // tft.setCursor(TEXT_X + 2, TEXT_Y+10);
         // tft.setTextColor(WHITE, BLACK);
         // tft.setTextSize(TEXT_TSIZE);
