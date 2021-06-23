@@ -377,15 +377,12 @@ void loop() {
       if ((btn.contains(p.y, p.x)) && p.x > 10){
         btn.press(true);  // tell the button it is pressed
         int change_number_by = setMultiple(function_button);
-        Serial.println(change_number_by);
-        Serial.println("cut value");
-        Serial.println(cut_values[current_menu_state]);
         int current_value = cut_values[current_menu_state];
         int newValue = current_value += change_number_by;
+        if (newValue < 0){
+          newValue = 0;
+        }
         cut_values[current_menu_state] = newValue;
-        Serial.println("new value = ");
-        Serial.println(newValue);
-        
         setTextValue(cut_values[current_menu_state], current_menu_state);
         
       }
