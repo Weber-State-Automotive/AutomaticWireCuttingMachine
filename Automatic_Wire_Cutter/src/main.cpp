@@ -386,7 +386,7 @@ void loop() {
         Serial.println("new value = ");
         Serial.println(newValue);
         
-        setTextValue(current_menu_state, cut_values[current_menu_state]);
+        setTextValue(cut_values[current_menu_state], current_menu_state);
         
       }
       delay(20);
