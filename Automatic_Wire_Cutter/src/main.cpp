@@ -317,30 +317,21 @@ int setMenuSelection(uint8_t b){
 /**========================================================================
  **                           Set which multiple to use
  *========================================================================**/
-void setMultiple(uint8_t function_button){
+int setMultiple(uint8_t function_button){
     // Serial.println(function_button);
     switch (function_button){
       case 0:
-        cut_values[current_menu_state]-=1;
-        break;
+        return -1;
       case 1:
-        cut_values[current_menu_state]+=1;
-        break;
+        return 1;
       case 2:
-        cut_values[current_menu_state]-=10;
-        break;
+        return -10;
       case 3:
-        cut_values[current_menu_state]+=10;
-        break;
+        return 10;
       case 4:
-        cut_values[current_menu_state]-=50;
-        break;
+        return -50;
       case 5:
-        cut_values[current_menu_state]+=50;
-        break;
-    }
-    if (cut_values[current_menu_state] < 0){
-      cut_values[current_menu_state] = 0;
+        return 50;
     }
 }
 
@@ -385,7 +376,8 @@ void loop() {
       Adafruit_GFX_Button btn = unit_buttons[function_button];
       if ((btn.contains(p.y, p.x)) && p.x > 10){
         btn.press(true);  // tell the button it is pressed
-        setMultiple(function_button);
+        int change_number_by = setMultiple(function_button);
+        Serial.println(change_number_by);
         setTextValue(current_menu_state, cut_values[current_menu_state]);
         // tft.setCursor(TEXT_X + 2, TEXT_Y+10);
         // tft.setTextColor(WHITE, BLACK);
