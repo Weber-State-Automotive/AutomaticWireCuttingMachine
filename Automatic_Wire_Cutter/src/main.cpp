@@ -382,7 +382,7 @@ void loop() {
         Serial.println(cut_values[current_menu_state]);
         int current_value = cut_values[current_menu_state];
         int newValue = current_value += change_number_by;
-        cut_values[current_value] = newValue;
+        cut_values[current_menu_state] = newValue;
         Serial.println("new value = ");
         Serial.println(newValue);
         
