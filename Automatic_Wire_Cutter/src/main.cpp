@@ -231,37 +231,16 @@ void setButtonState(int activeButton, int inactiveButton1, int inactiveButton2){
 
 
 int setMenu(uint8_t b){
-  if (b == 0) {
-    // Toggle Length button on turn off qty and strip   
-    length_button_state = 1;
-    qty_button_state = 0;
-    strip_button_state = 0;
+  if (b == 0) { // length   
     setButtonState(0,1,2);
-    // menu_buttons[0].drawButton(true);
-    // menu_buttons[1].drawButton();
-    // menu_buttons[2].drawButton();
     return 0;
   }
-  if (b == 1) {
-    // Toggle qty button on turn off length and strip       
-    length_button_state = 0;
-    qty_button_state = 1;
-    strip_button_state = 0;
+  if (b == 1) { // qty
     setButtonState(1,0,2);
-    
-    // menu_buttons[0].drawButton();
-    // menu_buttons[1].drawButton(true);
-    // menu_buttons[2].drawButton();
     return 1;
   }
-  if (b == 2) {
-    length_button_state = 0;
-    qty_button_state = 0;
-    strip_button_state = 1;
+  if (b == 2) { //strip
     setButtonState(2,0,1);
-    // menu_buttons[0].drawButton();
-    // menu_buttons[1].drawButton();
-    // menu_buttons[2].drawButton(true);
     return 2;
   }
 }
