@@ -105,7 +105,7 @@ boolean cut_stepper_is_homed = false;
 int wire_length = 0;
 int wire_qty = 1;
 int wire_strip_length = 10;
-int cut_values [3] = {0, 1, 10};
+int cut_values [3] = {wire_length, wire_qty, wire_strip_length};
 
 /**========================================================================
  **                           Menu field variables
