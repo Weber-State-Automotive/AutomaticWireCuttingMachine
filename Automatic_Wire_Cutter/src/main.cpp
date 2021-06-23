@@ -93,6 +93,11 @@ int wire_length = 0;
 int wire_qty = 1;
 int strip_size = 10;
 
+void setButtonState(int activeButton, int inactiveButton1, int inactiveButton2){
+  menu_buttons[activeButton].drawButton(true);
+  menu_buttons[inactiveButton1].drawButton();
+  menu_buttons[inactiveButton2].drawButton();
+}
 
 void setupTouchscreen(){
   Serial.println("Setting up Touchscreen...");
@@ -219,11 +224,7 @@ void setupFeedStepper(){
   Serial.println("Feed Stepper Setup");
 }
 
-void setButtonState(int activeButton, int inactiveButton1, int inactiveButton2){
-  menu_buttons[activeButton].drawButton(true);
-  menu_buttons[inactiveButton1].drawButton();
-  menu_buttons[inactiveButton2].drawButton();
-}
+
 
 
 int setMenu(uint8_t b){
