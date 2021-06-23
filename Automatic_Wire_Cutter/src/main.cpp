@@ -378,7 +378,7 @@ void loop() {
         btn.press(true);  // tell the button it is pressed
         int change_number_by = setMultiple(function_button);
         Serial.println(change_number_by);
-        Serial.println('cut value');
+        Serial.println("cut value");
         Serial.println(cut_values[current_menu_state]);
         setTextValue(current_menu_state, cut_values[current_menu_state]);
         
