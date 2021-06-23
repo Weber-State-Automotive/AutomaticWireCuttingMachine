@@ -324,19 +324,19 @@ void setMultiple(uint8_t function_button){
         cut_values[current_menu_state]-=1;
         break;
       case 1:
-        cut_values[current_menu_state]-=1;
+        cut_values[current_menu_state]+=1;
         break;
       case 2:
-        cut_values[current_menu_state]-=1;
+        cut_values[current_menu_state]-=10;
         break;
       case 3:
-        cut_values[current_menu_state]-=1;
+        cut_values[current_menu_state]+=10;
         break;
       case 4:
-        cut_values[current_menu_state]-=1;
+        cut_values[current_menu_state]-=50;
         break;
       case 5:
-        cut_values[current_menu_state]-=1;
+        cut_values[current_menu_state]+=50;
         break;
     }
     if (cut_values[current_menu_state] < 0){
