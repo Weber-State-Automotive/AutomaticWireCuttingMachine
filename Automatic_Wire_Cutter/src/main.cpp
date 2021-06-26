@@ -84,6 +84,7 @@ TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
 Adafruit_GFX_Button unit_buttons[6];
 Adafruit_GFX_Button number_buttons[3];
 Adafruit_GFX_Button menu_buttons[3];
+Adafruit_GFX_Button control_buttons[4];
 
 /**========================================================================
  **                           Cutting Stepper variables
@@ -112,7 +113,6 @@ int cut_values [3] = {wire_length, wire_qty, wire_strip_length};
 /**========================================================================
  **                           Menu field variables
  *========================================================================**/
-
 int current_menu_state = 0;
 
 /**========================================================================
@@ -124,15 +124,20 @@ int current_menu_state = 0;
 AccelStepper FEED_stepper(1, FEED_STP_PIN, FEED_DIR_PIN);
 float feed_current_pos = 0;
 
-
 /**========================================================================
+ **                           Control Buttons
+ *========================================================================**/
+
+
+
+/**================================================================================================
  **                           setButtonState
  *?  Inverts the button to show which one is selected
  *@param activeButton --> Invert this button  
  *@param inactiveButton1 --> draw normal button state  
  *@param inactiveButton2 --> draw normal button state
  *@return void
- *========================================================================**/
+ *===============================================================================================**/
 
 void setButtonState(int activeButton, int inactiveButton1, int inactiveButton2){
   menu_buttons[activeButton].drawButton(true);
@@ -228,6 +233,45 @@ void setupTouchscreen(){
         function_button++;
     }
   }
+    /**========================================================================
+     *                           Control Buttons
+     *========================================================================**/
+  #define CTRL_BUTTON_X 240
+  #define CTRL_BUTTON_Y 180
+  #define CTRL_BUTTON_W 60
+  #define CTRL_BUTTON_H 45
+  #define CTRL_BUTTON_SPACING_X 60
+  #define CTRL_BUTTON_Padding 20
+  #define CTRL_BUTTON_SPACING_Y 30
+  #define CTRL_BUTTON_TEXTSIZE 3
+
+  const char* ctrl_buttonlabels[2][2] ={ 
+      { "Zero", "STOP"}, 
+      { "-10", "RUN"}};
+  uint16_t ctrl_buttoncolors[6] = {RED, GREEN, BLUE, YELLOW, GREY, CYAN};
+
+  int ctrl_function_button = 0;
+  for (uint8_t row = 0; row < 2; row++){
+    int y_coord = CTRL_BUTTON_Y + row * 50;
+    for (uint8_t col = 0; col < 2; col++) {
+        int x_coord = CTRL_BUTTON_X + col * (80);
+        control_buttons[ctrl_function_button].initButton(&tft, 
+                                x_coord,
+                                y_coord, // x, y, w, h, outline, fill, text
+                                CTRL_BUTTON_W, 
+                                CTRL_BUTTON_H, 
+                                WHITE, 
+                                ctrl_buttoncolors[col],
+                                WHITE,
+                                ctrl_buttonlabels[row][col], 
+                                CTRL_BUTTON_TEXTSIZE);
+        control_buttons[ctrl_function_button].drawButton();
+        ctrl_function_button++;
+    }
+
+  }
+
+
 
   /**========================================================================
    **                           Create Menu Buttons
@@ -261,13 +305,13 @@ void setupTouchscreen(){
   setButtonState(0,1,2);
   Serial.println("Touchscreen Setup");
 }
-/*============================ END OF Touchscreen Setup ============================*/
+/*============================ END OF Touchscreen Setup =============================================*/
 
 
 
-/**========================================================================
+/**===================================================================================================
  **                           Setup Cutting Stepper Motor
- *========================================================================**/
+ *==================================================================================================**/
 void setupCutStepper(){
   Serial.println("Setting up Stepper Cut...");
   // Setup the cutting stepper motor
@@ -277,9 +321,9 @@ void setupCutStepper(){
   Serial.println("Cut Stepper Setup");
 }
 
-/**========================================================================
+/**===================================================================================================
  **                           Setup Feed Stepper Motor
- *========================================================================**/
+ *==================================================================================================**/
 void setupFeedStepper(){
   Serial.println("Setting up Feed Stepper...");
   
@@ -314,9 +358,9 @@ int setMenuSelection(uint8_t b){
     return 2;
   }
 }
-/**========================================================================
+/**====================================================================================================
  **                           Set which multiple to use
- *========================================================================**/
+ *==================================================================================================**/
 int setMultiple(uint8_t function_button){
     switch (function_button){
       case 0:
