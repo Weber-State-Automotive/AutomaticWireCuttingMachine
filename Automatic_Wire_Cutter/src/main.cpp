@@ -6,10 +6,6 @@
  * @createdOn      :  March 2019
  * @description    :  Wire Cutting and Stripping Machine. Ada 
  * 
- * 
- * 
- * 
- * 
  * @credit         :  DJ Harrigan Element 14 Presents
  *                        https://www.element14.com/community/docs/DOC-91289/l/episode-368-arduino-automatic-wire-cutter-and-stripper?CMP=SOM-YOUTUBE-E14PRESENTS-EP368-DESC
  *                    Adafruit phone screen demo 
@@ -46,35 +42,41 @@
 #define WHITE   0xFFFF
 #define GREY    0x8410
 
-// Define pins for resistive touchscreen
+/**========================================================================
+ **                        Touchscreen Wiring
+ *========================================================================**/
 #define YP A2  // must be an analog pin, use "An" notation!
 #define XM A3  // must be an analog pin, use "An" notation!
 #define YM 8   // can be a digital pin
 #define XP 9   // can be a digital pin
 
-// Define touchscreen pressure points
+/**========================================================================
+ **                    Touchscreen Pressure Parameters
+ *========================================================================**/
 #define MINPRESSURE 10
 #define MAXPRESSURE 1000
 
-// Define touchscreen parameters
-// Use test sketch to refine if necessary
+/**========================================================================
+ **                       Touchscreen Parameters
+ *========================================================================**/
 #define TS_MINX 130
 #define TS_MAXX 905
-
 #define TS_MINY 75
 #define TS_MAXY 930
-
 #define STATUS_X 10
 #define STATUS_Y 65
 
-// Define object for TFT (LCD)display
+/**========================================================================
+ **                    MCUFRIEND for Touch Screen
+ *========================================================================**/
 MCUFRIEND_kbv tft;
 
-// Define object for touchscreen
-// Last parameter is X-Y resistance, measure or use 300 if unsure
+/**========================================================================
+ **                           Touchscreen
+ **                  Last parameter is X-Y resistance            
+ *========================================================================**/
 TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
-
-#define PIN_SENSOR A8 // Hall effect sensor for determining position of cutter (RED wire to 5V, BLACK wire to GND, BLUE wire to A8)
+#define PIN_SENSOR A8 // sensor for cutting blade
 
 /**========================================================================
  **                           Adafruit Button variables
@@ -180,8 +182,6 @@ void setupTouchscreen(){
   tft.begin(identifier);
   tft.setRotation(3);
   tft.fillScreen(BLACK);
-  //Define button states
-  
 
   /**========================================================================
    **                           Setup the text field
@@ -193,7 +193,6 @@ void setupTouchscreen(){
   /**========================================================================
    **                           Create Unit buttons 
    *========================================================================**/
-  
   #define BUTTON_X 40
   #define BUTTON_Y 180
   #define BUTTON_W 60
@@ -202,7 +201,7 @@ void setupTouchscreen(){
   #define BUTTON_Padding 20
   #define BUTTON_SPACING_Y 30
   #define BUTTON_TEXTSIZE 3
-  
+
   const char* buttonlabels[3][2] ={ 
       { "-1", "+1"}, 
       { "-10", "+10"}, 
@@ -228,7 +227,6 @@ void setupTouchscreen(){
         unit_buttons[function_button].drawButton();
         function_button++;
     }
-    
   }
 
   /**========================================================================
@@ -243,7 +241,6 @@ void setupTouchscreen(){
   int TITLE_TEXTSIZE = 3;
   const char* menu_labels[3] = { "Length", "Qty", "Strip"};
   uint16_t title_colors[3] = {RED, GREY, BLUE};
-
 
   for (uint8_t col = 0; col < 3; col++) {
 
@@ -301,14 +298,17 @@ void setupFeedStepper(){
  *========================================================================**/
 
 int setMenuSelection(uint8_t b){
-  if (b == 0) { // length   
+  /*================== Length =================*/
+  if (b == 0) {  
     setButtonState(0,1,2);
     return 0;
   }
-  if (b == 1) { // qty
+  /*================== QTY =================*/
+  if (b == 1) {
     setButtonState(1,0,2);
     return 1;
   }
+  /*================== Strip =================*/
   if (b == 2) { //strip
     setButtonState(2,0,1);
     return 2;
@@ -318,7 +318,6 @@ int setMenuSelection(uint8_t b){
  **                           Set which multiple to use
  *========================================================================**/
 int setMultiple(uint8_t function_button){
-    // Serial.println(function_button);
     switch (function_button){
       case 0:
         return -1;
@@ -341,7 +340,6 @@ void setup(void) {
   setupTouchscreen();
   setupCutStepper();
   setupFeedStepper();
-
 }
 
 void loop() {
@@ -350,8 +348,10 @@ void loop() {
   pinMode(XM, OUTPUT);
   pinMode(YP, OUTPUT);
 
-  // There is a minimum pressure that is consider valid
-  // Pressure of 0 means no pressing
+  /**============================================
+   *               Minimum pressure
+   *           Pressure of 0 -> no press
+   *=============================================**/
   if (p.z > MINPRESSURE && p.z < MAXPRESSURE)
   {
     p.x = p.x + p.y;
@@ -362,7 +362,9 @@ void loop() {
 
   }
   
-  // Go thru all the menu buttons, checking if they were pressed
+  /**============================================
+   *          Check for menu button press
+   *=============================================**/
   for (uint8_t b = 0; b < 3; b++) {
     if ((menu_buttons[b].contains(p.y, p.x)) && p.x > 10){
       menu_buttons[b].press(true);  // tell the button it is pressed
@@ -370,8 +372,9 @@ void loop() {
     }
   }
 
-  // Go thru all the unit buttons, checking if they were pressed
-  
+  /**============================================
+   *          Check for function button press
+   *=============================================**/
   for (uint8_t function_button = 0; function_button < 6; function_button++) {
       Adafruit_GFX_Button btn = unit_buttons[function_button];
       if ((btn.contains(p.y, p.x)) && p.x > 10){

@@ -25,5 +25,11 @@
         - current resistor and is set to OPEN. 
         - stepper motor to the driver for the cutter on the larger motor driver
         - red to a, blue to a-
-        - green to b, black to b-,  
+        - green to b, black to b-
+
+- Hall Effect Sensor
+    - Senses position of the cutter
+        - RED wire to 5V
+        - BLACK wire to GND
+        - BLUE wire to A8
     
