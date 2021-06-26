@@ -449,6 +449,15 @@ void loop() {
     setTextValue(1, 1);
     setTextValue(10, 2);
   }
+  if (clear_btn.justReleased()) {
+    clear_btn.drawButton();  // draw normal
+  }
+  if (clear_btn.justPressed()) {
+    clear_btn.drawButton(true);  // draw invert!
+    delay(100); // UI debouncing
+  }
+
+
   
   FEED_stepper.run();
 }
