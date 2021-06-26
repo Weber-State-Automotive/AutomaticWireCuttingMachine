@@ -277,7 +277,7 @@ void setupTouchscreen(){
   #define CTRL_BUTTON_SPACING_Y 30
   int CTRL_BUTTON_TEXTSIZE = TITLE_TEXTSIZE;
 
-  int run_button_x = CTRL_BUTTON_X + 2 * CTRL_BUTTON_SPACING_X;
+  int run_button_x = CTRL_BUTTON_X + CTRL_BUTTON_SPACING_X;
   int run_button_y = CTRL_BUTTON_Y;
   int run_button_w = CTRL_BUTTON_W;
   int run_button_h = CTRL_BUTTON_H * 2 + CTRL_BUTTON_SPACING_Y;
