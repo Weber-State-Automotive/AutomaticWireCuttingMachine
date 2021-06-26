@@ -127,7 +127,22 @@ float feed_current_pos = 0;
 /**========================================================================
  **                           Control Buttons
  *========================================================================**/
+typedef struct controlButton
+{
+   int x;
+  int y;
+  int w;
+  int h;
+  int text_color;
+  int btn_color;
+  char* label;
+  int text_size;
+};
 
+typedef struct controlButton ControlButton;
+
+
+// void create_button(struct button)
 
 
 /**================================================================================================
@@ -268,24 +283,34 @@ void setupTouchscreen(){
   /**========================================================================
   *                           Control Buttons
   *========================================================================**/
-  int CTRL_BUTTON_X = TITLE_X + TITLE_SPACING_X;
-  int CTRL_BUTTON_W = TITLE_W;
-  int CTRL_BUTTON_Y = BUTTON_Y + CTRL_BUTTON_W/6;
-  int CTRL_BUTTON_H = BUTTON_H * 2;
-  int CTRL_BUTTON_SPACING_X = TITLE_SPACING_X;
-  #define CTRL_BUTTON_Padding 20
-  #define CTRL_BUTTON_SPACING_Y 30
-  int CTRL_BUTTON_TEXTSIZE = TITLE_TEXTSIZE;
+  int clear_button_x = TITLE_X + TITLE_SPACING_X;
+  int clear_button_w = TITLE_W;
+  int clear_button_y = BUTTON_Y;
+  int clear_button_h = BUTTON_H * 2;
+  int clear_button_spacing_x = TITLE_SPACING_X;
+  int clear_button_textsize = TITLE_TEXTSIZE;
 
-  int run_button_x = CTRL_BUTTON_X + CTRL_BUTTON_SPACING_X;
+  int run_button_x = clear_button_x + clear_button_spacing_x;
   int run_button_y = 240;
-  int run_button_w = CTRL_BUTTON_W;
+  int run_button_w = clear_button_w;
   int run_button_padding = TITLE_Padding;
-  int run_button_h = CTRL_BUTTON_H + BUTTON_H;
-  int run_button_text_size = CTRL_BUTTON_TEXTSIZE;
+  int run_button_h = clear_button_h + BUTTON_H;
+  int run_button_text_size = clear_button_textsize;
 
-
-  control_buttons[2].initButton(&tft, 
+  
+  control_buttons[1].initButton(&tft, 
+                                clear_button_x,
+                                clear_button_y, 
+                                clear_button_w, 
+                                clear_button_h, 
+                                WHITE, 
+                                GREEN,
+                                WHITE,
+                                "Clear", 
+                                clear_button_textsize);
+  control_buttons[1].drawButton();
+  
+  control_buttons[1].initButton(&tft, 
                                 run_button_x,
                                 run_button_y, 
                                 run_button_w, 
@@ -295,7 +320,9 @@ void setupTouchscreen(){
                                 WHITE,
                                 "RUN", 
                                 run_button_text_size);
-  control_buttons[2].drawButton();
+  control_buttons[1].drawButton();
+
+
 
   // const char* ctrl_buttonlabels[2][2] ={ 
   //     { "Zero", "STOP"}, 
