@@ -270,14 +270,12 @@ void setupTouchscreen(){
   int clear_button_w = TITLE_W;
   int clear_button_h = BUTTON_H * 1.5;
   int clear_button_y = 240 + clear_button_h/2;
-  int clear_button_spacing_x = TITLE_SPACING_X;
   int clear_button_textsize = TITLE_TEXTSIZE;
 
   int run_button_x = clear_button_x + TITLE_SPACING_X;
-  int run_button_y = 240;
+  int run_button_y = clear_button_y;
   int run_button_w = clear_button_w;
-  int run_button_padding = TITLE_Padding;
-  int run_button_h = clear_button_h + BUTTON_H;
+  int run_button_h = clear_button_h;
   int run_button_text_size = clear_button_textsize;
 
   
@@ -303,7 +301,6 @@ void setupTouchscreen(){
                                 WHITE,
                                 "RUN", 
                                 run_button_text_size);
-  control_buttons[0].drawButton();
   control_buttons[1].drawButton();
 
 
