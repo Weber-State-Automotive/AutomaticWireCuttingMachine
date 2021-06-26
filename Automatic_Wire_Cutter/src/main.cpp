@@ -290,7 +290,7 @@ void setupTouchscreen(){
                       WHITE,
                       "Clear", 
                       clear_button_textsize);
-  control_buttons[0].drawButton();
+  clear_btn.drawButton();
   
   control_buttons[1].initButton(&tft, 
                                 run_button_x,
@@ -442,13 +442,13 @@ void loop() {
   /**============================================
    *          Check for clear button press
    *=============================================**/
-  // if ((clear_btn.contains(p.y, p.x)) && p.x > 10){
-  //   clear_btn.press(true);  // tell the button it is pressed
-  //   Serial.println("clear");
-  //   // setTextValue(0, 0);
-  //   // setTextValue(1, 1);
-  //   // setTextValue(10, 2);
-  // }
+  if ((clear_btn.contains(p.y, p.x)) && p.x > 10){
+    clear_btn.press(true);  // tell the button it is pressed
+    Serial.println("clear");
+    // setTextValue(0, 0);
+    // setTextValue(1, 1);
+    // setTextValue(10, 2);
+  }
   
   FEED_stepper.run();
 }
