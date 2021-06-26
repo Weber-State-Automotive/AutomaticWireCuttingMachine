@@ -449,7 +449,7 @@ void loop() {
     setTextValue(10, 2);
     
   }
-  delay(20);
+  
   FEED_stepper.run();
 }
 
