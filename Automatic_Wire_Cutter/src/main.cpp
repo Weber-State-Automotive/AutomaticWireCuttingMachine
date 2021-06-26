@@ -85,6 +85,7 @@ Adafruit_GFX_Button unit_buttons[6];
 Adafruit_GFX_Button number_buttons[3];
 Adafruit_GFX_Button menu_buttons[3];
 Adafruit_GFX_Button control_buttons[4];
+Adafruit_GFX_Button clear_btn;
 
 /**========================================================================
  **                           Cutting Stepper variables
@@ -277,18 +278,18 @@ void setupTouchscreen(){
   int run_button_w = clear_button_w;
   int run_button_h = clear_button_h;
   int run_button_text_size = clear_button_textsize;
-
   
-  control_buttons[0].initButton(&tft, 
-                                clear_button_x,
-                                clear_button_y, 
-                                clear_button_w, 
-                                clear_button_h, 
-                                WHITE, 
-                                BLUE,
-                                WHITE,
-                                "Clear", 
-                                clear_button_textsize);
+  
+  clear_btn.initButton(&tft, 
+                      clear_button_x,
+                      clear_button_y, 
+                      clear_button_w, 
+                      clear_button_h, 
+                      WHITE, 
+                      BLUE,
+                      WHITE,
+                      "Clear", 
+                      clear_button_textsize);
   control_buttons[0].drawButton();
   
   control_buttons[1].initButton(&tft, 
@@ -302,35 +303,6 @@ void setupTouchscreen(){
                                 "RUN", 
                                 run_button_text_size);
   control_buttons[1].drawButton();
-
-
-
-  // const char* ctrl_buttonlabels[2][2] ={ 
-  //     { "Zero", "STOP"}, 
-  //     { "-10", "RUN"}};
-  // uint16_t ctrl_buttoncolors[6] = {RED, GREEN, BLUE, YELLOW, GREY, CYAN};
-
-  // int ctrl_function_button = 0;
-  // for (uint8_t row = 0; row < 2; row++){
-  //   int y_coord = CTRL_BUTTON_Y + row * CTRL_BUTTON_SPACING_Y;
-  //   for (uint8_t col = 0; col < 2; col++) {
-  //       int x_coord = 
-  //       control_buttons[ctrl_function_button].initButton(&tft, 
-  //                               x_coord,
-  //                               y_coord, // x, y, w, h, outline, fill, text
-  //                               CTRL_BUTTON_W, 
-  //                               CTRL_BUTTON_H, 
-  //                               WHITE, 
-  //                               ctrl_buttoncolors[col],
-  //                               WHITE,
-  //                               ctrl_buttonlabels[row][col], 
-  //                               CTRL_BUTTON_TEXTSIZE);
-  //       control_buttons[ctrl_function_button].drawButton();
-  //       ctrl_function_button++;
-  //   }
-
-  // }
-
   Serial.println("Touchscreen Setup");
 }
 /*============================ END OF Touchscreen Setup =============================================*/
@@ -457,6 +429,9 @@ void loop() {
         if (newValue < 0){
           newValue = 0;
         }
+        if (newValue > 999){
+          newValue = 999;
+        }
         cut_values[current_menu_state] = newValue;
         setTextValue(cut_values[current_menu_state], current_menu_state);
         
@@ -464,9 +439,18 @@ void loop() {
       delay(20);
   }
   
- 
-   FEED_stepper.run();
-
+  /**============================================
+   *          Check for clear button press
+   *=============================================**/
+  if ((clear_btn.contains(p.y, p.x)) && p.x > 10){
+    clear_btn.press(true);  // tell the button it is pressed
+    setTextValue(0, 0);
+    setTextValue(1, 1);
+    setTextValue(10, 2);
+    
+  }
+  delay(20);
+  FEED_stepper.run();
 }
 
 
