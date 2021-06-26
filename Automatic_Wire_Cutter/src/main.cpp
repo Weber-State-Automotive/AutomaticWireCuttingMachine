@@ -445,9 +445,9 @@ void loop() {
   if ((clear_btn.contains(p.y, p.x)) && p.x > 10){
     clear_btn.press(true);  // tell the button it is pressed
     Serial.println("clear");
-    // setTextValue(0, 0);
-    // setTextValue(1, 1);
-    // setTextValue(10, 2);
+    setTextValue(0, 0);
+    setTextValue(1, 1);
+    setTextValue(10, 2);
   }
   
   FEED_stepper.run();
