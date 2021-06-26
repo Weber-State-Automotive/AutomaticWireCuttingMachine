@@ -280,7 +280,8 @@ void setupTouchscreen(){
   int run_button_x = CTRL_BUTTON_X + CTRL_BUTTON_SPACING_X;
   int run_button_y = 220;
   int run_button_w = CTRL_BUTTON_W;
-  int run_button_h = CTRL_BUTTON_H + BUTTON_H;
+  int run_button_padding = TITLE_Padding;
+  int run_button_h = CTRL_BUTTON_H + BUTTON_H + 2*run_button_padding;
   int run_button_text_size = CTRL_BUTTON_TEXTSIZE;
 
 
