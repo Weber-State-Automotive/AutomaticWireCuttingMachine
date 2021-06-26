@@ -277,31 +277,49 @@ void setupTouchscreen(){
   #define CTRL_BUTTON_SPACING_Y 30
   int CTRL_BUTTON_TEXTSIZE = TITLE_TEXTSIZE;
 
-  const char* ctrl_buttonlabels[2][2] ={ 
-      { "Zero", "STOP"}, 
-      { "-10", "RUN"}};
-  uint16_t ctrl_buttoncolors[6] = {RED, GREEN, BLUE, YELLOW, GREY, CYAN};
+  int run_button_x = CTRL_BUTTON_X + 2 * CTRL_BUTTON_SPACING_X;
+  int run_button_y = CTRL_BUTTON_Y;
+  int run_button_w = CTRL_BUTTON_W;
+  int run_button_h = CTRL_BUTTON_H * 2 + CTRL_BUTTON_SPACING_Y;
+  int run_button_text_size = CTRL_BUTTON_TEXTSIZE;
 
-  int ctrl_function_button = 0;
-  for (uint8_t row = 0; row < 2; row++){
-    int y_coord = CTRL_BUTTON_Y + row * CTRL_BUTTON_SPACING_Y;
-    for (uint8_t col = 0; col < 2; col++) {
-        int x_coord = CTRL_BUTTON_X + col * CTRL_BUTTON_SPACING_X;
-        control_buttons[ctrl_function_button].initButton(&tft, 
-                                x_coord,
-                                y_coord, // x, y, w, h, outline, fill, text
-                                CTRL_BUTTON_W, 
-                                CTRL_BUTTON_H, 
+
+  control_buttons[2].initButton(&tft, 
+                                run_button_x,
+                                run_button_y, 
+                                run_button_w, 
+                                run_button_h, 
                                 WHITE, 
-                                ctrl_buttoncolors[col],
+                                GREEN,
                                 WHITE,
-                                ctrl_buttonlabels[row][col], 
-                                CTRL_BUTTON_TEXTSIZE);
-        control_buttons[ctrl_function_button].drawButton();
-        ctrl_function_button++;
-    }
+                                "RUN", 
+                                run_button_text_size);
 
-  }
+  // const char* ctrl_buttonlabels[2][2] ={ 
+  //     { "Zero", "STOP"}, 
+  //     { "-10", "RUN"}};
+  // uint16_t ctrl_buttoncolors[6] = {RED, GREEN, BLUE, YELLOW, GREY, CYAN};
+
+  // int ctrl_function_button = 0;
+  // for (uint8_t row = 0; row < 2; row++){
+  //   int y_coord = CTRL_BUTTON_Y + row * CTRL_BUTTON_SPACING_Y;
+  //   for (uint8_t col = 0; col < 2; col++) {
+  //       int x_coord = 
+  //       control_buttons[ctrl_function_button].initButton(&tft, 
+  //                               x_coord,
+  //                               y_coord, // x, y, w, h, outline, fill, text
+  //                               CTRL_BUTTON_W, 
+  //                               CTRL_BUTTON_H, 
+  //                               WHITE, 
+  //                               ctrl_buttoncolors[col],
+  //                               WHITE,
+  //                               ctrl_buttonlabels[row][col], 
+  //                               CTRL_BUTTON_TEXTSIZE);
+  //       control_buttons[ctrl_function_button].drawButton();
+  //       ctrl_function_button++;
+  //   }
+
+  // }
 
   Serial.println("Touchscreen Setup");
 }
