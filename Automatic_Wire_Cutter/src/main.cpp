@@ -268,8 +268,8 @@ void setupTouchscreen(){
   *========================================================================**/
   int clear_button_x = TITLE_X + TITLE_SPACING_X;
   int clear_button_w = TITLE_W;
-  int clear_button_y = 240;
-  int clear_button_h = BUTTON_H * 2;
+  int clear_button_h = BUTTON_H * 1.5;
+  int clear_button_y = 240 + clear_button_h/2;
   int clear_button_spacing_x = TITLE_SPACING_X;
   int clear_button_textsize = TITLE_TEXTSIZE;
 
