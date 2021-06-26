@@ -294,7 +294,7 @@ void setupTouchscreen(){
                                 WHITE,
                                 "RUN", 
                                 run_button_text_size);
-  control_buttons[2].drawButton;
+  control_buttons[2].drawButton();
 
   // const char* ctrl_buttonlabels[2][2] ={ 
   //     { "Zero", "STOP"}, 
