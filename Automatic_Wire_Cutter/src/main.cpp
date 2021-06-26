@@ -454,7 +454,6 @@ void loop() {
   }
   if (clear_btn.justPressed()) {
     clear_btn.drawButton(true);  // draw invert!
-    delay(100); // UI debouncing
   }
 
 
