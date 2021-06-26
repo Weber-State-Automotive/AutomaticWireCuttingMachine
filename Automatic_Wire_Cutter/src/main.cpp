@@ -238,12 +238,12 @@ void setupTouchscreen(){
      *========================================================================**/
   #define CTRL_BUTTON_X 240
   #define CTRL_BUTTON_Y 180
-  #define CTRL_BUTTON_W 60
-  #define CTRL_BUTTON_H 45
+  #define CTRL_BUTTON_W 100
+  #define CTRL_BUTTON_H 100
   #define CTRL_BUTTON_SPACING_X 60
   #define CTRL_BUTTON_Padding 20
   #define CTRL_BUTTON_SPACING_Y 30
-  #define CTRL_BUTTON_TEXTSIZE 3
+  #define CTRL_BUTTON_TEXTSIZE 8
 
   const char* ctrl_buttonlabels[2][2] ={ 
       { "Zero", "STOP"}, 
