@@ -270,7 +270,7 @@ void setupTouchscreen(){
   *========================================================================**/
   int CTRL_BUTTON_X = TITLE_X + TITLE_SPACING_X;
   int CTRL_BUTTON_W = TITLE_W;
-  int CTRL_BUTTON_Y = BUTTON_Y + CTRL_BUTTON_W/4;
+  int CTRL_BUTTON_Y = BUTTON_Y;
   int CTRL_BUTTON_H = BUTTON_H * 2;
   int CTRL_BUTTON_SPACING_X = TITLE_SPACING_X;
   #define CTRL_BUTTON_Padding 20
