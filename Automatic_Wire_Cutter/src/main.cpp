@@ -86,6 +86,7 @@ Adafruit_GFX_Button number_buttons[3];
 Adafruit_GFX_Button menu_buttons[3];
 Adafruit_GFX_Button control_buttons[4];
 Adafruit_GFX_Button clear_btn;
+Adafruit_GFX_Button run_btn;
 
 /**========================================================================
  **                           Cutting Stepper variables
@@ -160,6 +161,7 @@ void setTextValue(int value, int place){
     tft.setCursor(TEXT_X + 2 + (place*(160)), TEXT_Y+10);
     tft.setTextColor(WHITE, BLACK);
     tft.setTextSize(TEXT_TSIZE);
+    cut_values[place] = value;
     if (value < 10){
       tft.print("  ");
     }
@@ -292,7 +294,7 @@ void setupTouchscreen(){
                       clear_button_textsize);
   clear_btn.drawButton();
   
-  control_buttons[1].initButton(&tft, 
+  run_btn.initButton(&tft, 
                                 run_button_x,
                                 run_button_y, 
                                 run_button_w, 
@@ -302,7 +304,7 @@ void setupTouchscreen(){
                                 WHITE,
                                 "RUN", 
                                 run_button_text_size);
-  control_buttons[1].drawButton();
+  run_btn.drawButton();
   Serial.println("Touchscreen Setup");
 }
 /*============================ END OF Touchscreen Setup =============================================*/
@@ -327,11 +329,11 @@ void setupCutStepper(){
 void setupFeedStepper(){
   Serial.println("Setting up Feed Stepper...");
   
-  FEED_stepper.setMaxSpeed(50000.0);
-  FEED_stepper.setAcceleration(50000.0);
+  FEED_stepper.setMaxSpeed(10000.0);
+  FEED_stepper.setAcceleration(10000.0);
   FEED_stepper.setCurrentPosition(0);
   FEED_stepper.setPinsInverted(true,true,true);
-  // FEED_stepper.moveTo(2048);
+  // FEED_stepper.move(2048);
   FEED_stepper.setEnablePin(FEED_PIN_ENABLE);
   FEED_stepper.enableOutputs();
   Serial.println("Feed Stepper Setup");
@@ -406,9 +408,9 @@ void loop() {
 
   }
   
-  /**============================================
-   *          Check for menu button press
-   *=============================================**/
+  // /**============================================
+  //  *          Check for menu button press
+  //  *=============================================**/
   for (uint8_t b = 0; b < 3; b++) {
     if ((menu_buttons[b].contains(p.y, p.x)) && p.x > 10){
       menu_buttons[b].press(true);  // tell the button it is pressed
@@ -416,9 +418,9 @@ void loop() {
     }
   }
 
-  /**============================================
-   *          Check for function button press
-   *=============================================**/
+  // /**============================================
+  //  *          Check for function button press
+  //  *=============================================**/
   for (uint8_t function_button = 0; function_button < 6; function_button++) {
       Adafruit_GFX_Button btn = unit_buttons[function_button];
       if ((btn.contains(p.y, p.x)) && p.x > 10){
@@ -434,22 +436,41 @@ void loop() {
         }
         cut_values[current_menu_state] = newValue;
         setTextValue(cut_values[current_menu_state], current_menu_state);
-        
+        delay(20);
       }
-      delay(20);
+      
   }
   
-  /**============================================
-   *          Check for clear button press
-   *=============================================**/
+  // /**============================================
+  //  *          Check for clear button press
+  //  *=============================================**/
   if ((clear_btn.contains(p.y, p.x)) && p.x > 10){
     clear_btn.press(true);  // tell the button it is pressed
     Serial.println("clear");
     setTextValue(0, 0);
     setTextValue(1, 1);
     setTextValue(10, 2);
+    
   }
-  FEED_stepper.run();
+
+  // /**============================================
+  //  *               Check for Run button press
+  //  *=============================================**/
+  if ((run_btn.contains(p.y, p.x)) && p.x > 10){
+    run_btn.press(true);  // tell the button it is pressed
+    Serial.println("RUN");
+    int feed_target_rotation = cut_values[0]*100;
+    for (int wires = cut_values[1]; wires > 0; wires--){
+      feed_current_pos = FEED_stepper.currentPosition();
+      int feed_target_position = feed_current_pos - feed_target_rotation;
+      FEED_stepper.moveTo(feed_target_position);
+      FEED_stepper.runToPosition();
+      Serial.println("END RUN");
+      delay(30); //TODO Change wait for cut
+    }
+    delay(10);
+  }
+  
 }
 
 
