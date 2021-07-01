@@ -30,6 +30,7 @@
 #define LCD_WR A1 // LCD Write goes to Analog 1
 #define LCD_RD A0 // LCD Read goes to Analog 0
 #define LCD_RESET A4 // Can alternately just connect to Arduino's reset pin
+#define HALL_PIN A8
 
 // Assign human-readable names to some common 16-bit color values:
 #define BLACK   0x0000
@@ -95,11 +96,12 @@ Adafruit_GFX_Button run_btn;
 #define CUT_STP_PIN 43
 AccelStepper CUT_stepper(1, CUT_STP_PIN, CUT_DIR_PIN);
 
-long current_time = 0;
-long last_time = 0;
-int delta_time = 100;
-long retracted_cut_position = 1700; 
-boolean cut_stepper_is_homed = false;
+
+// long current_time = 0; TODO
+// long last_time = 0;
+// int delta_time = 100;
+// long retracted_cut_position = 1700; 
+// boolean cut_stepper_is_homed = false;
 
 /**========================================================================
  **                           Text field variables
@@ -309,8 +311,6 @@ void setupTouchscreen(){
 }
 /*============================ END OF Touchscreen Setup =============================================*/
 
-
-
 /**===================================================================================================
  **                           Setup Cutting Stepper Motor
  *==================================================================================================**/
@@ -380,12 +380,20 @@ int setMultiple(uint8_t function_button){
     }
 }
 
+/**========================================================================
+ *                           Move Cutter
+ *========================================================================**/
+// void move_cut_stepper(){
+ 
+// }
+
 void setup(void) {
   Serial.begin(9600);  
 
   setupTouchscreen();
   setupCutStepper();
   setupFeedStepper();
+  setupCutStepper();
 }
 
 void loop() {
@@ -393,6 +401,13 @@ void loop() {
   TSPoint p = ts.getPoint();
   pinMode(XM, OUTPUT);
   pinMode(YP, OUTPUT);
+
+  int sensorValue = analogRead(HALL_PIN); //read the value of A8
+  
+  Serial.print("Sensor Value "); 
+  Serial.println(sensorValue); //print the value of A8
+  delay(1000);//delay 200ms
+
 
   /**============================================
    *               Minimum pressure
