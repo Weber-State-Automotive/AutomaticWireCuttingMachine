@@ -77,7 +77,7 @@ MCUFRIEND_kbv tft;
  **                  Last parameter is X-Y resistance            
  *========================================================================**/
 TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
-#define PIN_SENSOR A8 // sensor for cutting blade
+
 
 /**========================================================================
  **                           Adafruit Button variables
@@ -95,10 +95,16 @@ Adafruit_GFX_Button run_btn;
 #define CUT_DIR_PIN 35
 #define CUT_STP_PIN 43
 AccelStepper CUT_stepper(1, CUT_STP_PIN, CUT_DIR_PIN);
+#define PIN_SENSOR A8 // sensor for cutting blade
+boolean isHomed = false;
+long current_time = 0;
+long last_time = 0;
+int sensor_value = 0;
+int cut_taget_position = 0;
+int DOWN_CUT_STOP = 275;
+int UP_CUT_STOP = 370;
+int cut_step_speed = 50;
 
-
-// long current_time = 0; TODO
-// long last_time = 0;
 // int delta_time = 100;
 // long retracted_cut_position = 1700; 
 // boolean cut_stepper_is_homed = false;
@@ -337,6 +343,7 @@ void setupFeedStepper(){
   FEED_stepper.setEnablePin(FEED_PIN_ENABLE);
   FEED_stepper.enableOutputs();
   Serial.println("Feed Stepper Setup");
+  
 }
 
 /**========================================================================
@@ -383,9 +390,20 @@ int setMultiple(uint8_t function_button){
 /**========================================================================
  *                           Move Cutter
  *========================================================================**/
-// void move_cut_stepper(){
- 
-// }
+void home_stepper(){
+    while(analogRead(HALL_PIN) > DOWN_CUT_STOP){
+      int cut_current_position = CUT_stepper.currentPosition();
+      int cut_target_position = cut_current_position - cut_step_speed;
+      CUT_stepper.moveTo(cut_target_position);
+      CUT_stepper.runToPosition();
+    }
+    while(analogRead(HALL_PIN) < UP_CUT_STOP){
+      int cut_current_position = CUT_stepper.currentPosition();
+      int cut_target_position = cut_current_position + cut_step_speed;
+      CUT_stepper.moveTo(cut_target_position);
+      CUT_stepper.runToPosition();
+    }
+}
 
 void setup(void) {
   Serial.begin(9600);  
@@ -393,7 +411,7 @@ void setup(void) {
   setupTouchscreen();
   setupCutStepper();
   setupFeedStepper();
-  setupCutStepper();
+  home_stepper();
 }
 
 void loop() {
@@ -406,7 +424,7 @@ void loop() {
   
   Serial.print("Sensor Value "); 
   Serial.println(sensorValue); //print the value of A8
-  delay(1000);//delay 200ms
+  delay(200);//delay 200ms
 
 
   /**============================================
@@ -480,8 +498,9 @@ void loop() {
       int feed_target_position = feed_current_pos - feed_target_rotation;
       FEED_stepper.moveTo(feed_target_position);
       FEED_stepper.runToPosition();
+      home_stepper();
       Serial.println("END RUN");
-      delay(30); //TODO Change wait for cut
+      delay(30); 
     }
     delay(10);
   }
