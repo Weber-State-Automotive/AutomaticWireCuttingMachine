@@ -97,10 +97,8 @@ Adafruit_GFX_Button run_btn;
 AccelStepper CUT_stepper(1, CUT_STP_PIN, CUT_DIR_PIN);
 #define PIN_SENSOR A8 // sensor for cutting blade
 boolean isHomed = false;
-long current_time = 0;
-long last_time = 0;
-int sensor_value = 0;
-int cut_taget_position = 0;
+int cut_target_position = 0;
+int retract_target_position = 0;
 int DOWN_CUT_STOP = 275;
 int UP_CUT_STOP = 370;
 int cut_step_speed = 50;
@@ -397,13 +395,23 @@ void home_stepper(){
       CUT_stepper.moveTo(cut_target_position);
       CUT_stepper.runToPosition();
     }
-    
+    cut_target_position = CUT_stepper.currentPosition();
+    Serial.println(cut_target_position);
     while(analogRead(HALL_PIN) < UP_CUT_STOP){
       int cut_current_position = CUT_stepper.currentPosition();
       int cut_target_position = cut_current_position + cut_step_speed;
       CUT_stepper.moveTo(cut_target_position);
       CUT_stepper.runToPosition();
     }
+    retract_target_position = CUT_stepper.currentPosition();
+    Serial.println(retract_target_position);
+}
+
+void cut_wire(){
+  CUT_stepper.moveTo(cut_target_position);
+  CUT_stepper.runToPosition();
+  CUT_stepper.moveTo(retract_target_position);
+  CUT_stepper.runToPosition();
 }
 
 void setup(void) {
@@ -420,14 +428,7 @@ void loop() {
   TSPoint p = ts.getPoint();
   pinMode(XM, OUTPUT);
   pinMode(YP, OUTPUT);
-
-  int sensorValue = analogRead(HALL_PIN); //read the value of A8
-  
-  Serial.print("Sensor Value "); 
-  Serial.println(sensorValue); //print the value of A8
   delay(200);//delay 200ms
-
-
   /**============================================
    *               Minimum pressure
    *           Pressure of 0 -> no press
@@ -499,7 +500,7 @@ void loop() {
       int feed_target_position = feed_current_pos - feed_target_rotation;
       FEED_stepper.moveTo(feed_target_position);
       FEED_stepper.runToPosition();
-      home_stepper();
+      cut_wire();
       Serial.println("END RUN");
       delay(30); 
     }
