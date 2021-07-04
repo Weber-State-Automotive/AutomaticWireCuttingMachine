@@ -397,6 +397,7 @@ void home_stepper(){
       CUT_stepper.moveTo(cut_target_position);
       CUT_stepper.runToPosition();
     }
+    
     while(analogRead(HALL_PIN) < UP_CUT_STOP){
       int cut_current_position = CUT_stepper.currentPosition();
       int cut_target_position = cut_current_position + cut_step_speed;
