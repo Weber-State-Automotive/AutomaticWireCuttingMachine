@@ -98,6 +98,7 @@ AccelStepper CUT_stepper(1, CUT_STP_PIN, CUT_DIR_PIN);
 #define PIN_SENSOR A8 // sensor for cutting blade
 boolean isHomed = false;
 int cut_target_position = 0;
+int strip_target_position = 0;
 int retract_target_position = 0;
 int DOWN_CUT_STOP = 275;
 int UP_CUT_STOP = 370;
@@ -115,7 +116,7 @@ int cut_step_speed = 50;
 #define TEXT_TSIZE 6
 int wire_length = 0;
 int wire_qty = 1;
-int wire_strip_length = 10;
+int wire_strip_length = 6;
 int cut_values [3] = {wire_length, wire_qty, wire_strip_length};
 
 /**========================================================================
@@ -386,7 +387,7 @@ int setMultiple(uint8_t function_button){
 }
 
 /**========================================================================
- *                           Move Cutter
+ *                           Home Cutter
  *========================================================================**/
 void home_stepper(){
     while(analogRead(HALL_PIN) > DOWN_CUT_STOP){
@@ -396,7 +397,9 @@ void home_stepper(){
       CUT_stepper.runToPosition();
     }
     cut_target_position = CUT_stepper.currentPosition();
+    strip_target_position = cut_target_position + 500;
     Serial.println(cut_target_position);
+    Serial.println(strip_target_position);
     while(analogRead(HALL_PIN) < UP_CUT_STOP){
       int cut_current_position = CUT_stepper.currentPosition();
       int cut_target_position = cut_current_position + cut_step_speed;
@@ -409,6 +412,12 @@ void home_stepper(){
 
 void cut_wire(){
   CUT_stepper.moveTo(cut_target_position);
+  CUT_stepper.runToPosition();
+  CUT_stepper.moveTo(retract_target_position);
+  CUT_stepper.runToPosition();
+}
+void strip_wire(){
+  CUT_stepper.moveTo(strip_target_position);
   CUT_stepper.runToPosition();
   CUT_stepper.moveTo(retract_target_position);
   CUT_stepper.runToPosition();
@@ -492,13 +501,33 @@ void loop() {
   //  *               Check for Run button press
   //  *=============================================**/
   if ((run_btn.contains(p.y, p.x)) && p.x > 10){
+    // feed_current_pos = FEED_stepper.setCurrentPosition(0);
     run_btn.press(true);  // tell the button it is pressed
-    Serial.println("RUN");
-    int feed_target_rotation = cut_values[0]*100;
+    Serial.println("RUN"); 
+    int total_wire_length = cut_values[0]*100;
+    int first_strip_position = cut_values[2]*100;
+    int second_strip_position = total_wire_length - cut_values[2]*100;
+    Serial.print("Current Position: ");
+    Serial.println(feed_current_pos);
+    Serial.print("First Strip Position: ");
+    Serial.println(first_strip_position);
+    Serial.print("Second Strip Position: ");
+    Serial.println(second_strip_position);
+    Serial.print("Total wire Position: ");
+    Serial.println(total_wire_length);
+
+
+
     for (int wires = cut_values[1]; wires > 0; wires--){
-      feed_current_pos = FEED_stepper.currentPosition();
-      int feed_target_position = feed_current_pos - feed_target_rotation;
-      FEED_stepper.moveTo(feed_target_position);
+      feed_current_pos = FEED_stepper.currentPosition();  
+      FEED_stepper.moveTo(-first_strip_position + feed_current_pos);
+      FEED_stepper.runToPosition();
+      
+      strip_wire();
+      FEED_stepper.moveTo(-second_strip_position+ feed_current_pos);
+      FEED_stepper.runToPosition();
+      strip_wire();
+      FEED_stepper.moveTo(-total_wire_length + feed_current_pos);
       FEED_stepper.runToPosition();
       cut_wire();
       Serial.println("END RUN");
