@@ -88,6 +88,8 @@ Adafruit_GFX_Button menu_buttons[3];
 Adafruit_GFX_Button control_buttons[4];
 Adafruit_GFX_Button clear_btn;
 Adafruit_GFX_Button run_btn;
+Adafruit_GFX_Button blade_adjust_btn_down;
+Adafruit_GFX_Button blade_adjust_btn_up;
 
 /**========================================================================
  **                           Cutting Stepper variables
@@ -178,6 +180,14 @@ void setTextValue(int value, int place){
     tft.print(value);
 }
 
+
+void createButton(Adafruit_GFX_Button btn, int x, int y, int w, int h, int text_size, char * text, int btn_color){
+  btn.initButton(&tft, x, y, w, h, WHITE, BLUE, WHITE, text, text_size);
+  btn.drawButton();
+}
+
+
+
 /**================================================================================================
  **                                   setupTouchscreen
  *?  Draws the buttons and textfields for the touchscreen 
@@ -241,7 +251,6 @@ void setupTouchscreen(){
         function_button++;
     }
   }
-
   /**========================================================================
    **                           Create Menu Buttons
    *========================================================================**/
@@ -279,16 +288,8 @@ void setupTouchscreen(){
   int clear_button_x = TITLE_X + TITLE_SPACING_X;
   int clear_button_w = TITLE_W;
   int clear_button_h = BUTTON_H * 1.5;
-  int clear_button_y = 240 + clear_button_h/2;
+  int clear_button_y = 160 + clear_button_h/2;
   int clear_button_textsize = TITLE_TEXTSIZE;
-
-  int run_button_x = clear_button_x + TITLE_SPACING_X;
-  int run_button_y = clear_button_y;
-  int run_button_w = clear_button_w;
-  int run_button_h = clear_button_h;
-  int run_button_text_size = clear_button_textsize;
-  
-  
   clear_btn.initButton(&tft, 
                       clear_button_x,
                       clear_button_y, 
@@ -300,6 +301,12 @@ void setupTouchscreen(){
                       "Clear", 
                       clear_button_textsize);
   clear_btn.drawButton();
+
+  int run_button_x = clear_button_x + TITLE_SPACING_X;
+  int run_button_y = clear_button_y;
+  int run_button_w = clear_button_w;
+  int run_button_h = clear_button_h;
+  int run_button_text_size = clear_button_textsize;
   
   run_btn.initButton(&tft, 
                                 run_button_x,
@@ -307,11 +314,65 @@ void setupTouchscreen(){
                                 run_button_w, 
                                 run_button_h, 
                                 WHITE, 
-                                GREEN,
+                                RED,
                                 WHITE,
-                                "RUN", 
+                                "CUT++", 
                                 run_button_text_size);
   run_btn.drawButton();
+
+  
+  int blade_adjust_button_y = clear_button_y + 100;
+  int blade_adjust_button_w = clear_button_w/2;
+  int blade_adjust_button_x = clear_button_x - blade_adjust_button_w / 2;
+  int blade_adjust_button_h = clear_button_h; 
+  int blade_adjust_button_text_size = clear_button_textsize;
+
+  blade_adjust_btn_down.initButton(&tft, 
+                                blade_adjust_button_x,
+                                blade_adjust_button_y, 
+                                blade_adjust_button_w, 
+                                blade_adjust_button_h, 
+                                WHITE, 
+                                RED,
+                                WHITE,
+                                "DN", 
+                                run_button_text_size);
+  blade_adjust_btn_down.drawButton();
+
+  blade_adjust_btn_up.initButton(&tft, 
+                                blade_adjust_button_x + blade_adjust_button_w +20,
+                                blade_adjust_button_y, 
+                                blade_adjust_button_w, 
+                                blade_adjust_button_h, 
+                                WHITE, 
+                                GREEN,
+                                BLACK,
+                                "UP", 
+                                run_button_text_size);
+  blade_adjust_btn_up.drawButton();
+
+  int cut_pos_button_y = clear_button_y + 100;
+  int cut_pos_button_w = clear_button_w;
+  int cut_pos_button_x = clear_button_x - blade_adjust_button_w / 2;
+  int cut_pos_button_h = clear_button_h; 
+  int cut_pos_button_text_size = clear_button_textsize;
+
+  blade_adjust_btn_down.initButton(&tft, 
+                                cut_pos_button_x,
+                                cut_pos_button_y, 
+                                cut_pos_button_w, 
+                                cut_pos_button_h, 
+                                WHITE, 
+                                RED,
+                                WHITE,
+                                "CUT", 
+                                run_button_text_size);
+  blade_adjust_btn_down.drawButton();
+
+
+
+
+
   Serial.println("Touchscreen Setup");
 }
 /*============================ END OF Touchscreen Setup =============================================*/
